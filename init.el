@@ -207,9 +207,7 @@
 ;;  (message "%s" (sacha/random-keybinding)))
 
 
-(use-package w3m
-  :init
-  (setq w3m-use-cookies t))
+(require 'setup-w3m)
 
 ;; Display Emacs Startup Time
 (add-hook 'after-init-hook (lambda ()
