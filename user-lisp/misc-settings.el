@@ -1,0 +1,119 @@
+(setq visual-line-mode t)
+(setq-default indent-tabs-mode nil)
+(setq default-tab-width 4)
+(show-paren-mode 1)
+(setq default-directory "~/")
+
+; gnutls
+;(setq ssl-program-name "gnutls-cli"
+;      ssl-program-arguments '("--insecure" "-p" service host) ; remove insecure
+;      ssl-certificate-verification-policy 1)
+
+(setq echo-keystrokes 0.1)
+
+;; Taken from http://whattheemacsd.com//sane-defaults.el-01.html
+;; Auto refresh buffers
+(global-auto-revert-mode 1)
+;; Also auto refresh dired, but be quiet about it
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+
+(global-font-lock-mode t)
+
+(delete-selection-mode 1) ; delete selected block when start typing
+(setq-default truncante-lines t)
+;(global-visual-line-mode t)
+
+;; Never insert tabs
+(set-default 'indent-tabs-mode nil)
+;; Show me empty lines after buffer end
+(set-default 'indicate-empty-lines t)
+
+(setq transient-mark-mode t)
+
+;; A saner ediff
+(setq ediff-diff-options "-w")
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+(setq org-src-fontify-natively t)
+
+;; UTF-8
+(setenv "LANG" "en_US.UTF-8")
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+;(fset 'yes-or-no-p 'y-or-n-p)
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;;; Show Line numbers
+(require 'linum)
+(line-number-mode 1)
+(column-number-mode 1)  ;; Line numbers on left most column
+;(global-linum-mode 1)
+(setq fill-column 80)
+
+(auto-compression-mode t)
+(global-auto-revert-mode 1)
+
+;; Disabled shift selecting
+(setq shift-select-mode nil)
+
+(setq x-select-enable-clipboard t)
+
+; BackupStuff
+(setq backup-directory-alist `(("." . ,(expand-file-name
+                                        (concat dotfiles-dir "backups")))))
+(setq make-backup-files t)
+(setq vc-make-backup-files t)
+(setq auto-save-default nil)
+
+
+;; Whitespace config
+;(setq-default indicate-empty-lines t)
+;(global-whitespace-mode 1)
+(setq whitespace-style '(face trailing tab empty))
+
+;; css-mode stuff
+(setq css-indent-offset 2)
+
+;; Winner mode
+(when (fboundp 'winner-mode) (winner-mode 1))
+
+;; Icicles
+;; (require 'icicles)
+;; (icy-mode 1)
+
+;; Setting a custom file
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
+
+;; Save point position between sessions
+;; taken from: http://whattheemacsd.com/init.el-03.html
+(require 'saveplace)
+(setq-default save-place t)
+(setq save-place-file (expand-file-name ".places" user-emacs-directory))
+
+;; Taken from http://whattheemacsd.com/key-bindings.el-01.html
+;; Display the line numbers when using goto-line
+(defun goto-line-with-feedback ()
+  "Show line numbers temporarily, while prompting for the line number input"
+  (interactive)
+  (unwind-protect
+      (progn
+        (linum-mode 1)
+        (goto-line (read-number "Goto line: ")))
+    (linum-mode -1)))
+
+(global-set-key [remap goto-line] 'goto-line-with-feedback)
+
+;; Move blocks of text with M-Up/Down
+(require 'move-text)
+
+;; (color-theme-sanityinc-tomorrow-eighties)
+(setq source-directory "~/.apps/emacs-24.3/src/")
+
+(provide 'misc-settings)
