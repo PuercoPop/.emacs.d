@@ -26,4 +26,7 @@
 ;; Don't scroll when not in focus
 (mouse-wheel-mode -1)
 
+;; http://emacsredux.com/blog/2013/07/05/locate/
+(setq locate-command "mdfind")
+
 (provide 'mac)
