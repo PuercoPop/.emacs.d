@@ -13,6 +13,7 @@
 (add-hook 'scheme-mode-hook (lambda () (paredit-mode +1)))
 
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'clojure-mode-hook (lambda () (paredit-mode +1)))
 
 (require 'eldoc) ; if not already loaded
 (eldoc-add-command
