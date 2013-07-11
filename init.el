@@ -96,14 +96,27 @@
 (require 'setup-css)
 ;(require 'google-contacts) ; missing oauth from elpa
 (require 'setup-games)
-(require 'setup-js2-mode)
-(use-package js2-mode
-  :init
-  (progn
-    ;; Taken from https://github.com/andialbrecht/emacs-config/blob/master/init.el
-    (setq js2-cleanup-whitespace t)
-    (setq js2-global-externs (list "$")) ; Always asume jquery is included
-    (setq js2-basic-offset 2)))
+;; Javascript
+(add-auto-mode 'js2-mode "\\.js$")
+(after-load 'js2-mode
+  (setq-default js2-auto-indent-p t
+                js2-basic-offset 2
+                js2-cleanup-whitespace t
+                js2-enter-indents-newline t
+                js2-indent-on-enter-key t
+                js2-mode-indent-ignore-first-tab t
+                js2-show-parse-errors nil
+                js2-strict-inconsistent-return-warning nil
+                js2-strict-var-hides-function-arg-warning nil
+                js2-strict-missing-semi-warning nil
+                js2-strict-trailing-comma-warning nil
+                js2-strict-cond-assign-warning nil
+                js2-strict-var-redeclaration-warning nil
+                js2-global-externs '("module" "require" "$" "_" "_gaq"))
+  (require 'js2-refactor)
+
+)
+
 
 ;;; Irc Stuff
 ;;(require 'setup-erc)
