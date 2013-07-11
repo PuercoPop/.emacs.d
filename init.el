@@ -95,6 +95,7 @@
 (require 'gist)
 (require 'setup-css)
 ;(require 'google-contacts) ; missing oauth from elpa
+(require 'setup-games)
 (require 'setup-js2-mode)
 (use-package js2-mode
   :init
