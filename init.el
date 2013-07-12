@@ -98,6 +98,9 @@
 (require 'setup-games)
 ;; Javascript
 (add-auto-mode 'js2-mode "\\.js$")
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode-hook 'skewer-css-mode)
+(add-hook 'html-mode-hook 'skewer-html-mode)
 (after-load 'js2-mode
   (setq-default js2-auto-indent-p t
                 js2-basic-offset 2
@@ -113,7 +116,18 @@
                 js2-strict-cond-assign-warning nil
                 js2-strict-var-redeclaration-warning nil
                 js2-global-externs '("module" "require" "$" "_" "_gaq"))
+
   (require 'js2-refactor)
+
+  (require 'js-comint)
+  (setq inferior-js-program-command "/usr/local/bin/js")
+  (add-hook 'js2-mode-hook '(lambda ()
+                              (local-set-key "\C-x\C-e" 'js-send-last-sexp)
+                              (local-set-key "\C-\M-x" 'js-send-last-sexp-and-go)
+			    (local-set-key "\C-cb" 'js-send-buffer)
+			    (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
+			    (local-set-key "\C-cl" 'js-load-file-and-go)
+			    ))
 
 )
 
