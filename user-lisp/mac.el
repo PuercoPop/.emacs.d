@@ -29,4 +29,6 @@
 ;; http://emacsredux.com/blog/2013/07/05/locate/
 (setq locate-command "mdfind")
 
+;; So that ⌘-c gets pushed into the kill ring
+(setq save-interprogram-paste-before-kill t)
 (provide 'mac)
