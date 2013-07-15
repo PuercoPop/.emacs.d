@@ -117,9 +117,8 @@
                 js2-strict-var-redeclaration-warning nil
                 js2-global-externs '("module" "require" "$" "_" "_gaq"))
 
-  (require 'js2-refactor)
+  (js2r-add-keybindings-with-prefix "C-c C-m")
 
-  (require 'js-comint)
   (setq inferior-js-program-command "/usr/local/bin/js")
   (add-hook 'js2-mode-hook '(lambda ()
                               (local-set-key "\C-x\C-e" 'js-send-last-sexp)
