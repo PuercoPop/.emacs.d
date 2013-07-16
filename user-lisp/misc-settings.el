@@ -116,4 +116,6 @@
 ;; (color-theme-sanityinc-tomorrow-eighties)
 (setq source-directory "~/.apps/emacs-24.3/src/")
 
+(setq visible-bell t)
+
 (provide 'misc-settings)
