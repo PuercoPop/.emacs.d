@@ -5,20 +5,9 @@
 
 ;; Stuff to run at the beginning
 (setq inhibit-startup-message t)
-(if (display-graphic-p)
-    (progn
-      (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-      (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-      (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))))
-;; Add to every emacsclient run
-(add-hook 'server-visit-hook
-          (lambda ()
-            (message "Running server-visit-hook")
-            (if (display-graphic-p)
-                (progn
-                  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-                  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-                  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))))))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 ;; Set path to .emacs.d
 (setq dotfiles-dir (file-name-directory
