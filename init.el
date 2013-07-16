@@ -44,20 +44,10 @@
     (load file)))
 
 (require 'setup-package)
-(require 'use-package)
 (require 'key-bindings)
 (require 'misc-settings)
 (when (equal system-type 'darwin) (require 'mac))
-(use-package diminish)
-;; (require 'secrets)
-;; (use-package secrets
-;;   :init
-;;   (progn
-;;     (epa-file-enable)
-;;     ;;(setq epa-file-select-keys t)
-;;     ;;(setq epg-gpg-program "gpg2")
-;;     (load-library "~/.emacs.d/user-lisp/passwords.el.gpg")))
-(use-package midnight)
+(require ' midnight)
 (require 'setup-dired+)
 (require 'setup-org-mode)
 (require 'setup-ido-mode)
@@ -66,11 +56,11 @@
 (require 'setup-undo-tree)
 (require 'setup-tramp-mode)
 (require 'sudo-ext)
-(use-package wgrep
-  :init
-  (progn
-    (setq wgrep-auto-save-buffer t)
-    (setq wgrep-enable-key "r"))) ;; Originally C-c C-p
+
+;; wgrep
+(setq wgrep-auto-save-buffer t
+      wgrep-enable-key "r")
+
 (require 'setup-rainbow-delimiters)
 (require 'setup-markdown-mode)
 (require 'setup-python)                 ; Stock Python mode
@@ -79,18 +69,20 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (require 'setup-expand-region)
 (require 'setup-mark-multiple)
-(use-package ace-jump-mode
-  :bind ("C-c SPC" . ace-jump-mode))
-(use-package multiple-cursors
-             :bind (("C-c C-a" . mc/mark-all-like-this)
-                    ("C->" . mc/mark-next-like-this)
-                    ("C-<" . mc/mark-prev-like-this)))
+
+;; Ace Jump mode
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+
+;; multiple-cursors
+(global-set-key (kbd "C-c C-a") 'mc/mark-all-like-this)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-prev-like-this)
+
 ;; (require 'setup-mediawiki)
 (require 'setup-smtp)
 ;(require 'mud)
 (require 'setup-popwin)
 (require 'setup-mu)
-(require 'campfire)
 (require 'setup-twittering-mode)
 (require 'gist)
 (require 'setup-css)
@@ -137,8 +129,6 @@
 
 ;;; Shell Stuff
 ;;(require 'setup-eshell)
-(require 'term+)
-(require 'term+mux)
 
 ;;; Misc Stuff
 (require 'osx-plist)
@@ -175,11 +165,9 @@
 (require 'setup-magit)
 
 ;; SQL
-(use-package sql
-  :init
-  (progn
-    (sql-set-product 'postgres)
-    (load-library "sql-indent")))
+(after-load 'sql
+  (sql-set-product 'postgres)
+  (require 'sql-indent))
 
 ;;; Scheme / Racket
 ;(require setup-scheme)
@@ -191,12 +179,10 @@
 (require 'html-validate)
 
 ;; Save point position between sessions
-(use-package saveplace
-  :init
-  (progn
-    (setq-default save-place t
-                  save-place-file (expand-file-name ".places"
-                                                    user-emacs-directory))))
+(require 'saveplace)
+(setq-default save-place t
+              save-place-file (expand-file-name ".places"
+                                                user-emacs-directory))
 
 ;; Spitout random keybindings every 3 minuts
 ;; (use-package keywiz)
