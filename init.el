@@ -74,6 +74,7 @@
 (require 'setup-mu)
 (require 'setup-twittering-mode)
 (require 'gist)
+(require 'setup-html-templates)
 (require 'setup-css)
 ;(require 'google-contacts) ; missing oauth from elpa
 (require 'setup-games)
