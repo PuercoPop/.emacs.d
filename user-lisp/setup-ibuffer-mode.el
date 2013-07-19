@@ -1,9 +1,13 @@
 ;; Replacing buffer with iBuffer
 (defalias 'list-buffers 'ibuffer)
-(setq ibuffer-expert t)
-(setq ibuffer-show-empty-filter-groups nil)
 
-;; Taken from: http://emacs-fu.blogspot.com/2010/02/dealing-with-many-buffers-ibuffer.html
+(after-load 'ibuffer
+  (define-key ibuffer-mode-map (kbd "C-x C-f") nil) ;; Don't know why local-unset-key doesn't work
+  (setq ibuffer-expert t
+        ibuffer-show-empty-filter-groups nil))
+
+;; Taken from:
+;;http://emacs-fu.blogspot.com/2010/02/dealing-with-many-buffers-ibuffer.html
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("Org" ;; all org-related buffers
