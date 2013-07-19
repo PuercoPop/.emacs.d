@@ -1,4 +1,5 @@
 (ido-mode t)
+(ido-everywhere t)
 (ido-vertical-mode)
 
 ;; Smex too slow, disable
@@ -6,14 +7,17 @@
 ;; (global-set-key (kbd "M-x") 'smex)
 ;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
-(setq ido-enable-flex-matching t)
-;; (setq ido-use-virtual-buffers nil)
+(setq ido-enable-flex-matching t
+      ido-create-new-buffer 'always
+      ido-use-virtual-buffers nil)
 
+(after-load 'ido
+  (define-key ido-file-completion-map (kbd "C-w") 'ido-delete-backward-updir)
+  (when (equal system-type 'darwin)
+    (add-to-list 'ido-ignore-files "\\.DS_Store")))
 
-(define-key ido-file-completion-map (kbd "C-w") 'ido-delete-backward-updir)
 (ido-better-flex/enable)
 
-(when (equal system-type 'darwin)
-  (add-to-list 'ido-ignore-files "\\.DS_Store"))
+
 
 (provide 'setup-ido-mode)
