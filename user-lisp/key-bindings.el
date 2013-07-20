@@ -18,5 +18,6 @@
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
 (global-set-key (kbd "C-M-w") 'backward-kill-sentence)
+(global-set-key (kbd "C-c g") 'google-this)
 
 (provide 'key-bindings)

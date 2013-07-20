@@ -112,6 +112,15 @@
 )
 
 
+;; Smart-mode-line
+
+(after-init
+  (sml/setup)
+  (setq sml/shorten-directory t
+        sml/shorten-modes t
+        sml/name-width 40
+        sml/mode-width 'full))
+
 ;;; Irc Stuff
 ;;(require 'setup-erc)
 (require 'setup-rcirc)
@@ -141,7 +150,6 @@
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
 (eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
-
 
 ;;; clojure mode
 (require 'setup-ac-mode)
