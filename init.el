@@ -2,6 +2,7 @@
 (require 'cl-lib)
 (server-start)
 (setq debug-on-error t)
+(setq lexical-binding t)
 
 ;; Stuff to run at the beginning
 (setq inhibit-startup-message t)
@@ -33,6 +34,7 @@
     (load file)))
 
 (require 'setup-package)
+(require 'package)
 (require 'key-bindings)
 (require 'misc-settings)
 (when (equal system-type 'darwin) (require 'mac))
@@ -68,12 +70,9 @@
 (global-set-key (kbd "C-<") 'mc/mark-prev-like-this)
 
 ;; (require 'setup-mediawiki)
-(require 'setup-smtp)
 ;(require 'mud)
 (require 'setup-popwin)
-(require 'setup-mu)
 (require 'setup-twittering-mode)
-(require 'gist)
 (require 'setup-html-templates)
 (require 'setup-css)
 ;(require 'google-contacts) ; missing oauth from elpa
@@ -159,13 +158,7 @@
   (sql-set-product 'postgres)
   (require 'sql-indent))
 
-;;; Scheme / Racket
-;(require setup-scheme)
-
-;;; Java Android
-(require 'setup-java)
-
-(require 'growl-notify)
+(autoload 'growl-notify-notification "growl-notify" "Enable growl notifications" nil nil)
 (require 'html-validate)
 
 ;; Save point position between sessions

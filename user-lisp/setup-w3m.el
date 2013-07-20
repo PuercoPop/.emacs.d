@@ -1,5 +1,3 @@
-(require 'w3m)
-
 (defun w3m-browse-url-other-window (url &optional newwin)
   (interactive
    (browse-url-interactive-arg "w3m URL: "))

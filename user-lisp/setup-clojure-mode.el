@@ -1,11 +1,6 @@
-;; Rainbow parentesis
-(require 'clojure-mode)
-(require 'clojure-test-mode)
 (require 'cljsbuild-mode)
 (require 'elein)
-(require 'nrepl)
 (require 'slamhound)
-(require 'ac-nrepl)
 
 
 (setq nrepl-popup-stacktraces-in nil
