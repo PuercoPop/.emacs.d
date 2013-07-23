@@ -176,6 +176,7 @@
                                                 user-emacs-directory))
 
 (require 'setup-w3m)
+(require 'setup-smtp)
 
 ;; Display Emacs Startup Time
 (add-hook 'after-init-hook (lambda ()
