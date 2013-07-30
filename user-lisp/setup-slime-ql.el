@@ -4,9 +4,8 @@
       slime-repl-history-remove-duplicates t
       slime-repl-history-trim-whitespaces t)
 
-;(require 'slime-asdf)
-
 (global-set-key "\C-z" 'slime-selector)
+(setq slime-enable-evaluate-in-emacs t)
 
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
