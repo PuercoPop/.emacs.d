@@ -42,6 +42,11 @@
   (require 'mac))
 (require 'midnight)
 (require 'setup-dired+)
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
+(global-set-key (kbd "C-x p")
+                'direx-project:jump-to-project-root)
+(global-set-key (kbd "C-x 4 p")
+                'direx-project:jump-to-project-root-other-window)
 (require 'setup-org-mode)
 (require 'setup-ido-mode)
 (require 'setup-ibuffer-mode)
@@ -125,17 +130,15 @@
   (setq inferior-js-program-command "/usr/local/bin/js")
   (add-hook 'js2-mode-hook '(lambda ()
                               (local-set-key "\C-x\C-e" 'js-send-last-sexp)
-                              (local-set-key "\C-\M-x" 'js-send-last-sexp-and-go)
-			    (local-set-key "\C-cb" 'js-send-buffer)
-			    (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
-			    (local-set-key "\C-cl" 'js-load-file-and-go)
-			    ))
-
-)
+                              (local-set-key "\C-\M-x"
+                                             'js-send-last-sexp-and-go)
+                              (local-set-key "\C-cb" 'js-send-buffer)
+                              (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
+                              (local-set-key "\C-cl" 'js-load-file-and-go)
+                              )))
 
 
 ;; Smart-mode-line
-
 (after-init
   (sml/setup)
   (setq sml/shorten-directory t
