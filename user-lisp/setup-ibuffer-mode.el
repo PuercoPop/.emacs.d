@@ -13,9 +13,8 @@
                ("Org" ;; all org-related buffers
                 (mode . org-mode))
                ("Mail"
-                (or  ;; mail-related buffers
-                 (mode . message-mode)
-                 (mode . mail-mode)))
+                (or (mode . message-mode)
+                    (mode . mail-mode)))
                ("Twitter"
                 (mode . twittering-mode))
                ("Emacs init.el & src"
@@ -26,6 +25,11 @@
                ("ERC"   (mode . erc-mode))
                ("rcirc"   (mode . rcirc-mode))
                ("twitter"   (mode . twittering-mode))
+               ("Dired" (mode .  dired-mode))
+               ("Special Buffers"
+                (or
+                 (mode . magit-status-mode)
+                 (mode . ediff-mode)))
                ))))
 
 
