@@ -97,7 +97,6 @@
 (require 'setup-twittering-mode)
 (require 'setup-html-templates)
 (require 'setup-css)
-;(require 'google-contacts) ; missing oauth from elpa
 (require 'setup-games)
 
 ;; Scala
