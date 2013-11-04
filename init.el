@@ -68,6 +68,13 @@
 (require 'setup-expand-region)
 (drag-stuff-mode t)
 
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (or (derived-mode-p 'lisp-mode)
+                      (derived-mode-p 'emacs-lisp-mode)
+                      (derived-mode-p 'clojure-mode))
+              (indent-buffer))))
+
 ;; Ace Jump mode
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 
