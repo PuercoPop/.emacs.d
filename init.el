@@ -47,6 +47,13 @@
 (require 'setup-undo-tree)
 (require 'setup-tramp-mode)
 (require 'sudo-ext)
+(require 'setup-ac-mode)
+
+
+(require 'guide-key)
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c" "C-x")
+      guide-key/popup-window-position 'bottom)
+(guide-key-mode 1)
 
 ;; wgrep
 (setq wgrep-auto-save-buffer t
