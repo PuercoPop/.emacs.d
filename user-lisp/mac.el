@@ -31,4 +31,5 @@
 
 ;; So that ⌘-c gets pushed into the kill ring
 (setq save-interprogram-paste-before-kill t)
+
 (provide 'mac)

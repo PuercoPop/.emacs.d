@@ -37,8 +37,9 @@
 (require 'package)
 (require 'key-bindings)
 (require 'misc-settings)
-(when (equal system-type 'darwin) (require 'mac))
-(require ' midnight)
+(when (equal system-type 'darwin)
+  (require 'mac))
+(require 'midnight)
 (require 'setup-dired+)
 (require 'setup-org-mode)
 (require 'setup-ido-mode)
@@ -167,7 +168,6 @@
 (eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
 
 ;;; clojure mode
-(require 'setup-ac-mode)
 (require 'setup-clojure-mode)
 
 (require 'setup-cl-mode)
