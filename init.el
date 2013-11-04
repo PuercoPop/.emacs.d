@@ -35,6 +35,7 @@
 
 (require 'setup-package)
 (require 'package)
+(require 'ensure-packages)
 (require 'key-bindings)
 (require 'misc-settings)
 (when (equal system-type 'darwin)

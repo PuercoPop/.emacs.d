@@ -1,4 +1,3 @@
-(setq lexical-binding t)
 (require 'package)
 
 ;; Add marmalade to package repos
