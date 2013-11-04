@@ -1,6 +1,10 @@
 (setq mail-default-headers
       "From: pirata@gmail.com\nReply-to: pirata@gmail.com")
-(setq user-mail-address "pirata@gmail.com") 
-(setq user-full-name "Javier")
-(setq mail-host-address "gmail.com")
-(setq mail-user-agent 'gnus-user-agent)
+(setq user-mail-address "pirata@gmail.com"
+      user-full-name "Javier"
+      mail-host-address "gmail.com")
+
+
+(setq smtpmail-stream-type 'ssl
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
