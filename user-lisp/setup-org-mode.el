@@ -7,12 +7,11 @@
 
       ;; Agenda
       org-startup-truncated nil
-      org-completion-use-ido 1
-      org-return-follows-link 1
-      org-special-ctrl-a 1
-      org-special-ctrl-e 1
-      org-special-ctrl-k 1
-      org-ctrl-k-protect-subtree 1
+      org-completion-use-ido t
+      org-return-follows-link t
+      org-special-ctrl-a/e t
+      org-special-ctrl-k t
+      org-ctrl-k-protect-subtree t
 
       org-todo-keywords '((sequence "TODO" "|" "DONE")
                           (sequence "To-Download" "Downloading" "|"
@@ -29,12 +28,11 @@
                            ("cpp" . c++)
                            ("screen" . shell-script)
                            ("javascript" . js2)
-                           ("json" . json)
-                           )
+                           ("json" . json))
 
       ;; Add pdflatex to exec-path
-      exec-path (append exec-path '("/usr/local/texlive/2012/bin/universal-darwin/"))
-      )
+      exec-path (append exec-path '("/usr/local/texlive/2012/bin/universal-darwin/")))
+
 
 ;; Leuven src blocks: http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
 (defface org-block-begin-line
@@ -72,8 +70,6 @@
       '(("v" tags "Movies")
         ("e" tags "Eventos")))
 ;; To add: quicklink to bookmarks, weight,
-
-
 
 ;; Capture Templates
 ;; Add idea, mind-onanism, contacts, movies to download
