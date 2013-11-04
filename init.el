@@ -86,13 +86,19 @@
 (global-set-key (kbd "C-<") 'mc/mark-prev-like-this)
 
 ;; (require 'setup-mediawiki)
-;(require 'mud)
+;; (require 'mud)
 (require 'setup-popwin)
+(require 'setup-forth)
 (require 'setup-twittering-mode)
 (require 'setup-html-templates)
 (require 'setup-css)
 ;(require 'google-contacts) ; missing oauth from elpa
 (require 'setup-games)
+
+;; Scala
+
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
 ;; Javascript
 (add-auto-mode 'js2-mode "\\.js$")
 (add-hook 'js2-mode-hook 'skewer-mode)
