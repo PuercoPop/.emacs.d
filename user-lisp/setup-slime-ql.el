@@ -1,8 +1,11 @@
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
+
 (setq inferior-lisp-program "sbcl"
       slime-export-save-file t
       slime-repl-history-remove-duplicates t
-      slime-repl-history-trim-whitespaces t)
+      slime-repl-history-trim-whitespaces t
+      ;; Thanks nightshade427
+      slime-compile-file-options '(:fasl-directory (slime-temp-directory)))
 
 (global-set-key "\C-z" 'slime-selector)
 (setq slime-enable-evaluate-in-emacs t)
