@@ -66,7 +66,7 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (require 'setup-expand-region)
-(require 'setup-mark-multiple)
+(drag-stuff-mode t)
 
 ;; Ace Jump mode
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
