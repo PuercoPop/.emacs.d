@@ -3,15 +3,14 @@
   (interactive)
   (unless (memq 'secrets features)
     (require 'secrets))
-  (rcirc-connect
-   "irc.puercopop.com"
-   1099
-   "PuercoPop"
-   "PuercoPop"
-   "PuercoPop"
-   '("#lisp" "#limajs")
-   znc-password
-   'ssl))
+  (rcirc-connect "irc.puercopop.com"
+                 1099
+                 "PuercoPop"
+                 "PuercoPop"
+                 "PuercoPop"
+                 '("#lisp" "#limajs")
+                 znc-password
+                 'ssl))
 
 
 (setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
@@ -68,47 +67,46 @@
       (when (and (eq 'closed (process-status process))
                  (buffer-live-p (process-buffer process)))
         (with-rcirc-process-buffer process
-                                   (unless seconds
-                                     (setq seconds (exp (1+ rcirc-reconnect-attempts))))
-                                   (rcirc-print
-                                    process "my-rcirc.el" "ERROR" rcirc-target
-                                    (format "scheduling reconnection attempt in %s second(s)." seconds) t)
-                                   (run-with-timer
-                                    seconds
-                                    nil
-                                    'rcirc-reconnect-perform-reconnect
-                                    process)))
+          (unless seconds
+            (setq seconds (exp (1+ rcirc-reconnect-attempts))))
+          (rcirc-print
+           process "my-rcirc.el" "ERROR" rcirc-target
+           (format "scheduling reconnection attempt in %s second(s)." seconds) t)
+          (run-with-timer
+           seconds
+           nil
+           'rcirc-reconnect-perform-reconnect
+           process)))
     (error
      (rcirc-print process "RCIRC" "ERROR" nil
-                  (format "%S" err) t)))
-  )
+                  (format "%S" err) t))))
 
 (defun rcirc-reconnect-perform-reconnect (process)
   (when (and (eq 'closed (process-status process))
              (buffer-live-p (process-buffer process))
              )
     (with-rcirc-process-buffer process
-                               (when rcirc-reconnect-mode
-                                 (if (get-buffer-process (process-buffer process))
-                                     ;; user reconnected manually
-                                     (setq rcirc-reconnect-attempts 0)
-                                   (let ((msg (format "attempting reconnect to %s..."
-                                                      (process-name process)
-                                                      )))
-                                     (rcirc-print process "my-rcirc.el" "ERROR" rcirc-target
-                                                  msg t))
-                                   ;; remove the prompt from buffers
-                                   (condition-case err
-                                       (progn
-                                         (save-window-excursion
-                                           (save-excursion
-                                             (rcirc-cmd-reconnect nil)))
-                                         (setq rcirc-reconnect-attempts 0))
-                                     ((quit error)
-                                      (incf rcirc-reconnect-attempts)
-                                      (rcirc-print process "my-rcirc.el" "ERROR" rcirc-target
-                                                   (format "reconnection attempt failed: %s" err)  t)
-                                      (rcirc-reconnect-schedule process))))))))
+      (when rcirc-reconnect-mode
+        (if (get-buffer-process (process-buffer process))
+            ;; user reconnected manually
+            (setq rcirc-reconnect-attempts 0)
+          (let ((msg (format "attempting reconnect to %s..."
+                             (process-name process)
+                             )))
+            (rcirc-print process "my-rcirc.el" "ERROR" rcirc-target
+                         msg t))
+          ;; remove the prompt from buffers
+          (condition-case err
+              (progn
+                (save-window-excursion
+                  (save-excursion
+                    (rcirc-cmd-reconnect nil)))
+                (setq rcirc-reconnect-attempts 0))
+            ((quit error)
+             (incf rcirc-reconnect-attempts)
+             (rcirc-print process "my-rcirc.el" "ERROR" rcirc-target
+                          (format "reconnection attempt failed: %s" err)  t)
+             (rcirc-reconnect-schedule process))))))))
 
 (add-hook 'rcirc-mode-hook (lambda ()
                              (flyspell-mode 1)
@@ -117,6 +115,14 @@
                              (set (make-local-variable 'scroll-conservatively)
                                   8192)
                              (rcirc-reconnect-mode 1)))
+
+(defun rcirc-growl-notify (process sender response target text)
+  (let ((nick (rcirc-nick process)))
+    (when (and (string-match (regexp-quote nick) text)
+               (not (string= nick sender))
+               (not (string= (rcirc-server-name process) sender)))
+      (growl-notify-notification sender text))))
+(add-hook 'rcirc-print-functions 'rcirc-growl-notify)
 
 
 (provide 'setup-rcirc)
