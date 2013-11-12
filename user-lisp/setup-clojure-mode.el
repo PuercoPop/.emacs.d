@@ -2,19 +2,19 @@
 (require 'slamhound)
 
 
-(setq nrepl-popup-stacktraces-in nil
+(setq cider-popup-stacktraces-in nil
       nrepl-hide-special-buffers t
-      nrepl-popup-stacktraces-in-repl t
-      nrepl-history-file "~/.emacs.d/nrepl-history")
+      cider-popup-stacktraces-in-repl t
+      cider-history-file "~/.emacs.d/cider-history")
 
-(after-load 'nrepl
-  (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-  (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-  (add-hook 'nrepl-mode-hook 'paredit-mode)
-  (add-hook 'nrepl-mode-hook 'subword-mode)
-  (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
-  (add-hook 'nrepl-connected-hook 'nrepl-enable-on-existing-clojure-buffers)
-  (define-key nrepl-interaction-mode-map (kbd "C-c C-d")
+(after-load 'cider
+  (add-hook 'cider-mode-hook 'ac-nrepl-setup)
+  (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+  (add-hook 'cider-mode-hook 'paredit-mode)
+  (add-hook 'cider-mode-hook 'subword-mode)
+  (add-hook 'cider-mode-hook 'nrepl-turn-on-eldoc-mode)
+  (add-hook 'cider-connected-hook 'nrepl-enable-on-existing-clojure-buffers)
+  (define-key cider-repl-mode-map (kbd "C-c C-d")
     'ac-nrepl-popup-doc))
 
 (after-load  'clojure-mode
@@ -27,7 +27,7 @@
 (add-hook 'clojure-nrepl-mode-hook 'ac-nrepl-setup)
 
 (eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'nrepl-mode))
+  '(add-to-list 'ac-modes 'cider-mode))
 (put 'erase-buffer 'disabled nil)
 
 (provide 'setup-clojure-mode)

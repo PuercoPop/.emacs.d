@@ -42,7 +42,7 @@
     ac-slime
 
     ;; Clojure
-    nrepl
+    cider
     cljsbuild-mode
     elein
     slamhound
