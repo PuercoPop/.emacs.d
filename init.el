@@ -58,7 +58,7 @@
 
 
 (require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c" "C-x")
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c")
       guide-key/popup-window-position 'bottom)
 (guide-key-mode 1)
 
@@ -68,8 +68,7 @@
 
 (require 'setup-rainbow-delimiters)
 (require 'setup-markdown-mode)
-(require 'setup-python)                 ; Stock Python mode
-;; (require 'setup-python-mode)            ; LaunchPad
+(require 'setup-python)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (require 'setup-expand-region)
@@ -146,7 +145,7 @@
         sml/mode-width 'full))
 
 ;;; Irc Stuff
-;;(require 'setup-erc)
+(require 'setup-erc)
 (require 'setup-rcirc)
 
 ;;; Shell Stuff
@@ -181,6 +180,10 @@
 
 (require 'setup-cl-mode)
 (require 'setup-slime-ql)
+(add-hook 'slime-mode-hook
+          #'(lambda ()
+              (unless (slime-connected-p)
+                (save-excursion (slime)))))
 
 ;;; Magit
 (require 'setup-magit)
