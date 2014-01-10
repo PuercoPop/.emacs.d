@@ -4,14 +4,14 @@
       slime-export-save-file t
       slime-repl-history-remove-duplicates t
       slime-repl-history-trim-whitespaces t
-      ;; Thanks nightshade427
-      slime-compile-file-options '(:fasl-directory (slime-temp-directory)))
+      slime-load-failed-fasl 'always)
 
 (global-set-key "\C-z" 'slime-selector)
 (setq slime-enable-evaluate-in-emacs t)
 
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'slime-repl-mode))
 
