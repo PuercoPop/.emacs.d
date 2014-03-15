@@ -32,4 +32,8 @@
 ;; So that ⌘-c gets pushed into the kill ring
 (setq save-interprogram-paste-before-kill t)
 
+;; Interact with growl
+(autoload 'growl-notify-notification "growl-notify" "Enable growl notifications" nil nil)
+
+
 (provide 'mac)
