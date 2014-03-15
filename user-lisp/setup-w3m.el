@@ -8,7 +8,7 @@
 
 (setq browse-url-browser-function
       '(("hyperspec" . w3m-browse-url-other-window)
-        ("." . browse-url-default-macosx-browser)))
+        ("." . browse-url-default-browser)))
 
 (setq w3m-use-cookies t
       w3m-coding-system 'utf-8
