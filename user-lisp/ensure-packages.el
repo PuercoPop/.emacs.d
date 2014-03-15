@@ -12,6 +12,7 @@
     osx-plist
     auto-complete
     guide-key
+    password-vault
 
     ;; General Editing
     move-text
@@ -65,6 +66,7 @@
 
     ;; Python
     pep8
+    virtualenvwrapper
 
     ;; SQL
     sql-indent
