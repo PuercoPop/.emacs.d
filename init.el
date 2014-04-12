@@ -47,20 +47,17 @@
                 'direx-project:jump-to-project-root)
 (global-set-key (kbd "C-x 4 p")
                 'direx-project:jump-to-project-root-other-window)
-(require 'setup-org-mode)
+
+(require 'setup-helm)
 (require 'setup-ido-mode)
+(require 'setup-org-mode)
 (require 'setup-ibuffer-mode)
 (require 'setup-uniquify)
 (require 'setup-undo-tree)
 (require 'setup-tramp-mode)
 (require 'sudo-ext)
 (require 'setup-ac-mode)
-
-
-(require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c")
-      guide-key/popup-window-position 'bottom)
-(guide-key-mode 1)
+(require 'move-text)
 
 ;; wgrep
 (setq wgrep-auto-save-buffer t
@@ -136,19 +133,11 @@
                               )))
 
 
-;; Smart-mode-line
-(after-init
-  (sml/setup)
-  (setq sml/shorten-directory t
-        sml/shorten-modes t
-        sml/name-width 40
-        sml/mode-width 'full))
-
 ;;; Irc Stuff
-(require 'setup-erc)
+;; (require 'setup-erc)
 (require 'setup-rcirc)
 
-;;; Shell Stuff
+;;; shell Stuff
 ;;(require 'setup-eshell)
 
 ;;; Misc Stuff
@@ -162,12 +151,17 @@
 
 (smartparens-global-mode)
 (require 'smartparens-config)
+(smartparens-strict-mode)
+(define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
+
 
 (require 'redshank-loader)
-(eval-after-load "redshank-loader"
+(eval-after-load 'redshank-loader
   `(redshank-setup '(lisp-mode-hook
                      slime-repl-mode-hook) t))
-(require 'setup-paredit)
+;; (require 'setup-paredit)
+
 
 (require 'setup-elisp)
 ;; Emacs Lisp

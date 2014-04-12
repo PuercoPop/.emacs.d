@@ -48,9 +48,10 @@ Including indent-buffer, which should not be called automatically on save."
   "When no region is active call backward-kill-word, otherwise kill-region. To
  make it behave like the shell "
   (interactive)
-  (call-interactively (if (region-active-p)
-                          'kill-region
-                        'backward-kill-word)))
+  (call-interactively
+   (if (region-active-p)
+       'kill-region
+     'sp-backward-kill-word)))
 
 (global-set-key (kbd "C-w") 'backward-kill-word-or-kill-region)
 
@@ -143,16 +144,16 @@ Including indent-buffer, which should not be called automatically on save."
 
 ;; Taken from
 (defun transpose-windows (arg)
-   "Transpose the buffers shown in two windows."
-   (interactive "p")
-   (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
-     (while (/= arg 0)
-       (let ((this-win (window-buffer))
-             (next-win (window-buffer (funcall selector))))
-         (set-window-buffer (selected-window) next-win)
-         (set-window-buffer (funcall selector) this-win)
-         (select-window (funcall selector)))
-       (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
+  "Transpose the buffers shown in two windows."
+  (interactive "p")
+  (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
+    (while (/= arg 0)
+      (let ((this-win (window-buffer))
+            (next-win (window-buffer (funcall selector))))
+        (set-window-buffer (selected-window) next-win)
+        (set-window-buffer (funcall selector) this-win)
+        (select-window (funcall selector)))
+      (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 
 (global-set-key (kbd "C-x t") 'transpose-windows)
 

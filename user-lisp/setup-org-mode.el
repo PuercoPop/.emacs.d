@@ -17,6 +17,7 @@
                           (sequence "To-Download" "Downloading" "|"
                                     "Downladed" "To-Watch" "Watched"))
 
+      org-src-fontify-natively t
       org-src-lang-modes '(("ocaml" . tuareg)
                            ("elisp" . emacs-lisp)
                            ("ditaa" . artist)
@@ -33,6 +34,12 @@
       ;; Add pdflatex to exec-path
       exec-path (append exec-path '("/usr/local/texlive/2012/bin/universal-darwin/")))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((lisp . t)))
+(global-set-key (kbd "<f5>") 'epresent-run)
+
+(setq org-confirm-babel-evaluate nil)
 
 ;; Leuven src blocks: http://orgmode.org/worg/org-contrib/babel/examples/fontify-src-code-blocks.html
 (defface org-block-begin-line

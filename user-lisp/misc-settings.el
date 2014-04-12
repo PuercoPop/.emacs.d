@@ -5,11 +5,6 @@
 (setq default-directory "~/")
 (blink-cursor-mode 0)
 
-; gnutls
-;(setq ssl-program-name "gnutls-cli"
-;      ssl-program-arguments '("--insecure" "-p" service host) ; remove insecure
-;      ssl-certificate-verification-policy 1)
-
 (setq echo-keystrokes 0.1)
 
 ;; Taken from http://whattheemacsd.com//sane-defaults.el-01.html
@@ -23,7 +18,7 @@
 
 (delete-selection-mode 1) ; delete selected block when start typing
 (setq-default truncante-lines t)
-;(global-visual-line-mode t)
+;; (global-visual-line-mode t)
 
 ;; Never insert tabs
 (set-default 'indent-tabs-mode nil)
@@ -31,13 +26,12 @@
 (set-default 'indicate-empty-lines t)
 
 (setq transient-mark-mode t)
+(delete-selection-mode t)
 
 ;; A saner ediff
 (setq ediff-diff-options "-w")
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-
-(setq org-src-fontify-natively t)
 
 ;; UTF-8
 (setenv "LANG" "en_US.UTF-8")
@@ -47,15 +41,15 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-;(fset 'yes-or-no-p 'y-or-n-p)
+;;(fset 'yes-or-no-p 'y-or-n-p)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;; Show Line numbers
 (require 'linum)
 (line-number-mode 1)
+;;(global-linum-mode 1)
 (column-number-mode 1)  ;; Line numbers on left most column
-;(global-linum-mode 1)
-(setq fill-column 80)
+(setq-default fill-column 79)
 
 (auto-compression-mode t)
 (global-auto-revert-mode 1)
@@ -65,24 +59,25 @@
 
 (setq x-select-enable-clipboard t)
 
-; BackupStuff
+;; BackupStuff
 (setq backup-directory-alist `(("." . ,(expand-file-name
                                         (concat dotfiles-dir "backups")))))
 (setq make-backup-files t)
 (setq vc-make-backup-files t)
 (setq auto-save-default nil)
 
+;; (global-set-key (kbd "<escape>") 'god-mode-all)
 
 ;; Whitespace config
-;(setq-default indicate-empty-lines t)
-;(global-whitespace-mode 1)
+;; (setq-default indicate-empty-lines t)
+;; (global-whitespace-mode 1)
 (setq whitespace-style '(face trailing tab empty))
 
 ;; css-mode stuff
 (setq css-indent-offset 2)
 
 ;; Winner mode
-(when (fboundp 'winner-mode) (winner-mode 1))
+;; (when (fboundp 'winner-mode) (winner-mode 1))
 
 ;; Icicles
 ;; (require 'icicles)
@@ -110,9 +105,6 @@
     (linum-mode -1)))
 
 (global-set-key [remap goto-line] 'goto-line-with-feedback)
-
-;; Move blocks of text with M-Up/Down
-(require 'move-text)
 
 ;; (color-theme-sanityinc-tomorrow-eighties)
 (setq source-directory "~/.apps/emacs-24.3/src/")

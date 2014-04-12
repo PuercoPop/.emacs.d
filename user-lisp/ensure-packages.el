@@ -6,6 +6,8 @@
     smart-mode-line
     magit
     dired+
+    helm
+    helm-google
 
     ;; Misc
     diminish
@@ -13,6 +15,8 @@
     auto-complete
     guide-key
     password-vault
+    markdown-mode
+    restclient
 
     ;; General Editing
     move-text
@@ -34,7 +38,6 @@
     ob-sml
 
     ;; Lisp
-    paredit
     smartparens
     rainbow-delimiters
 

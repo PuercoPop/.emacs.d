@@ -10,7 +10,6 @@
 (after-load 'cider
   (add-hook 'cider-mode-hook 'ac-nrepl-setup)
   (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-  (add-hook 'cider-mode-hook 'paredit-mode)
   (add-hook 'cider-mode-hook 'subword-mode)
   (add-hook 'cider-mode-hook 'nrepl-turn-on-eldoc-mode)
   (add-hook 'cider-connected-hook 'nrepl-enable-on-existing-clojure-buffers)
