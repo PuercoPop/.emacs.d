@@ -37,7 +37,7 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((lisp . t)))
-(global-set-key (kbd "<f5>") 'epresent-run)
+(define-key org-mode-map (kbd "<f5>") 'epresent-run)
 
 (setq org-confirm-babel-evaluate nil)
 
