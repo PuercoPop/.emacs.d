@@ -59,6 +59,10 @@
 (require 'setup-ac-mode)
 (require 'move-text)
 
+;; Spellcheck
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
 ;; wgrep
 (setq wgrep-auto-save-buffer t
       wgrep-enable-key "r")
@@ -198,6 +202,7 @@
 
 (require 'setup-w3m)
 (require 'setup-smtp)
+(load-theme 'solarized-dark)
 
 ;; Display Emacs Startup Time
 (add-hook 'after-init-hook (lambda ()

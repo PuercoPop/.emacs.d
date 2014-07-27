@@ -5,4 +5,8 @@
                              (local-set-key (kbd "M-o") 'other-window)
                              (local-set-key (kbd "C-x o") 'dired-omit-mode)))
 
+;; dired-toggle
+
+(global-set-key (kbd "<f5>") 'dired-toggle)
+
 (provide 'setup-dired+)
