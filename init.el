@@ -33,7 +33,7 @@
 (dolist (file (directory-files defuns-dir t "\\w+"))
   (when (file-regular-p file)
     (load file)))
-
+(require 'org)
 (require 'setup-package)
 (require 'package)
 (require 'ensure-packages)
