@@ -1,0 +1,16 @@
+elnode/
+emms/
+elpa/
+\.cask/
+var/
+custom.el
+eshell/
+*~
+url/
+tramp
+\.edbi-ds-history
+\.mc-lists.el
+\.places
+.python-environments/
+ac-comphist.dat
+session\.*
