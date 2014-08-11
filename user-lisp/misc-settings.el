@@ -4,6 +4,7 @@
 (show-paren-mode 1)
 (setq default-directory "~/")
 (blink-cursor-mode 0)
+(setq initial-buffer-choice "~/org/life.org")
 
 (setq echo-keystrokes 0.1)
 
@@ -40,6 +41,7 @@
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(require 'iso-transl)
 
 ;;(fset 'yes-or-no-p 'y-or-n-p)
 (defalias 'yes-or-no-p 'y-or-n-p)

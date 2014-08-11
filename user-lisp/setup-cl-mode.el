@@ -24,4 +24,9 @@
                               "basic+search")))))))
 
 (define-key lisp-mode-map (kbd "C-c l") 'lispdoc)
+;; (eval-after-load 'lisp-mode
+;;   '(progn
+;;      (diminish 'redshank)
+;;      (diminish 'autodoc)))
+
 (provide 'setup-cl-mode)

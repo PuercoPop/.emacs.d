@@ -6,10 +6,11 @@
 
 ;; Stuff to run at the beginning
 (setq inhibit-startup-message t)
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+;; (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+;; (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
+(menu-bar-mode t)
 ;; Set path to .emacs.d
 (setq dotfiles-dir (file-name-directory
                     (or (buffer-file-name) load-file-name)))
@@ -38,8 +39,9 @@
 (require 'ensure-packages)
 (require 'key-bindings)
 (require 'misc-settings)
-(when (equal system-type 'darwin)
-  (require 'mac))
+(case system-type
+  (darwin (require 'mac))
+  (gnu/linux (require 'linux)))
 (require 'midnight)
 (require 'setup-dired+)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
@@ -58,6 +60,7 @@
 (require 'sudo-ext)
 (require 'setup-ac-mode)
 (require 'move-text)
+(global-fixmee-mode 1)
 
 ;; Spellcheck
 (add-hook 'text-mode-hook 'flyspell-mode)
@@ -75,12 +78,12 @@
 (require 'setup-expand-region)
 (drag-stuff-mode t)
 
-(add-hook 'before-save-hook
-          (lambda ()
-            (when (or (derived-mode-p 'lisp-mode)
-                      (derived-mode-p 'emacs-lisp-mode)
-                      (derived-mode-p 'clojure-mode))
-              (indent-buffer))))
+;; (add-hook 'before-save-hook
+;;           (lambda ()
+;;             (when (or (derived-mode-p 'lisp-mode)
+;;                       (derived-mode-p 'emacs-lisp-mode)
+;;                       (derived-mode-p 'clojure-mode))
+;;               (indent-buffer))))
 
 ;; Ace Jump mode
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
@@ -105,9 +108,16 @@
 
 ;; Javascript
 (add-auto-mode 'js2-mode "\\.js$")
-(add-hook 'js2-mode-hook 'skewer-mode)
-(add-hook 'css-mode-hook 'skewer-css-mode)
-(add-hook 'html-mode-hook 'skewer-html-mode)
+;;(add-hook 'js2-mode-hook 'skewer-mode)
+;;(add-hook 'css-mode-hook 'skewer-css-mode)
+;;(add-hook 'html-mode-hook 'skewer-html-mode)
+;; Enable tern-mode for js2-mode
+
+;; From: https://gitlab.com/bodil/emacs-d/blob/master/bodil/bodil-js.el#L37
+(add-to-list 'load-path (concat dotfiles-dir "site-lisp/tern/emacs"))
+(autoload 'tern-mode "tern" nil t)
+(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+
 (after-load 'js2-mode
   (setq-default js2-auto-indent-p t
                 js2-basic-offset 2
@@ -159,6 +169,10 @@
 (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
 
+(defun new-lisp-project (project-name)
+  (interactive)
+  (let ((ql-local-projects-dir "~/quicklisp/local-projects/"))
+    ))
 
 (require 'redshank-loader)
 (eval-after-load 'redshank-loader
@@ -177,11 +191,12 @@
 (require 'setup-clojure-mode)
 
 (require 'setup-cl-mode)
-(require 'setup-slime-ql)
-(add-hook 'slime-mode-hook
-          #'(lambda ()
-              (unless (slime-connected-p)
-                (save-excursion (slime)))))
+(require 'setup-slime)
+;; (require 'setup-slime-ql)
+;; (add-hook 'slime-mode-hook
+;;           #'(lambda ()
+;;               (unless (slime-connected-p)
+;;                 (save-excursion (slime)))))
 
 ;;; Magit
 (require 'setup-magit)
@@ -191,7 +206,6 @@
   (sql-set-product 'postgres)
   (require 'sql-indent))
 
-(autoload 'growl-notify-notification "growl-notify" "Enable growl notifications" nil nil)
 (require 'html-validate)
 
 ;; Save point position between sessions
@@ -200,12 +214,16 @@
               save-place-file (expand-file-name ".places"
                                                 user-emacs-directory))
 
-(require 'setup-w3m)
 (require 'setup-smtp)
 (load-theme 'solarized-dark)
 
+(cl-defun notify (message &key (title "Emacs"))
+  "Quick hack to use Ubuntu's notify-send."
+  (shell-command
+   (concat "notify-send " title " " message)))
 ;; Display Emacs Startup Time
 (add-hook 'after-init-hook (lambda ()
-                             (growl-notify-notification "Emacs Startup" (format "The init sequence took %s." (emacs-init-time)))))
+                             (notify (format "The init sequence took %s." (emacs-init-time)) :title "Emacs Startup")))
 (put 'narrow-to-region 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
