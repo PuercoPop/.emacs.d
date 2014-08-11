@@ -142,7 +142,7 @@
 (require 'setup-rcirc)
 
 ;;; shell Stuff
-;;(require 'setup-eshell)
+(require 'setup-eshell)
 
 ;;; Misc Stuff
 (require 'osx-plist)
