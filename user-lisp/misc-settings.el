@@ -4,7 +4,6 @@
 (show-paren-mode 1)
 (setq default-directory "~/")
 (blink-cursor-mode 0)
-(setq initial-buffer-choice "~/org/life.org")
 
 (setq echo-keystrokes 0.1)
 

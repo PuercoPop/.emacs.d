@@ -6,8 +6,8 @@
       slime-repl-history-trim-whitespaces t
       slime-load-failed-fasl 'always
       slime-enable-evaluate-in-emacs t
+      slime-autodoc-use-multiline-p t
       slime-contribs '(slime-fancy
-                       ;; slime-highlight-edits ;; Doesn't play with my theme
                        slime-xref-browser
                        slime-sprof))
 
@@ -15,8 +15,5 @@
 
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'slime-repl-mode))
 
 (provide 'setup-slime)

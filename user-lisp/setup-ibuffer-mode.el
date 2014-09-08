@@ -4,7 +4,8 @@
 (after-load 'ibuffer
   (define-key ibuffer-mode-map (kbd "C-x C-f") nil) ;; Don't know why local-unset-key doesn't work
   (setq ibuffer-expert t
-        ibuffer-show-empty-filter-groups nil))
+        ibuffer-show-empty-filter-groups nil)
+  (require 'ibuffer))
 
 ;; Taken from:
 ;;http://emacs-fu.blogspot.com/2010/02/dealing-with-many-buffers-ibuffer.html

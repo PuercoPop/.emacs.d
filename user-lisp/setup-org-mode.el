@@ -104,5 +104,6 @@
    ((((class color) (min-colors 16) (background dark))
      (:foreground "LightSalmon" :strike-through t)))))
 
+(define-key org-mode-map [f12] 'epresent-run)
 
 (provide 'setup-org-mode)

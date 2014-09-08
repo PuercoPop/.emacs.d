@@ -33,7 +33,6 @@
 (dolist (file (directory-files defuns-dir t "\\w+"))
   (when (file-regular-p file)
     (load file)))
-(require 'org)
 (require 'setup-package)
 (require 'package)
 (require 'ensure-packages)
@@ -57,7 +56,7 @@
 (require 'setup-uniquify)
 (require 'setup-undo-tree)
 (require 'setup-tramp-mode)
-(require 'sudo-ext)
+;; (require 'sudo-ext)
 (require 'setup-ac-mode)
 (require 'move-text)
 (global-fixmee-mode 1)
@@ -136,7 +135,8 @@
 
   (js2r-add-keybindings-with-prefix "C-c C-m")
 
-  (setq inferior-js-program-command "/usr/local/bin/js")
+  (setenv "NODE_NO_READLINE" "1")
+  (setq inferior-js-program-command "/usr/bin/js")
   (add-hook 'js2-mode-hook '(lambda ()
                               (local-set-key "\C-x\C-e" 'js-send-last-sexp)
                               (local-set-key "\C-\M-x"
@@ -167,17 +167,28 @@
 (require 'smartparens-config)
 (smartparens-strict-mode)
 (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp)
 (define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
+(define-key smartparens-mode-map (kbd "M-J") 'sp-join-sexp)
+
+(define-key smartparens-mode-map (kbd "C-x C-t") 'sp-transpose-hybrid-sexp)
+;; (define-key smartparens-mode-map
+;;   (kbd "C-M-<right_bracket>") 'sp-select-next-thing)
+;; (define-key smartparens-mode-map
+;;   (kbd "C-<left_bracket>") 'sp-select-previous-thing)
+
 
 (defun new-lisp-project (project-name)
   (interactive)
   (let ((ql-local-projects-dir "~/quicklisp/local-projects/"))
     ))
 
-(require 'redshank-loader)
-(eval-after-load 'redshank-loader
-  `(redshank-setup '(lisp-mode-hook
-                     slime-repl-mode-hook) t))
+;; (require 'redshank-loader)
+;; (eval-after-load 'redshank-loader
+;;   `(redshank-setup '(lisp-mode-hook
+;;                      slime-repl-mode-hook) t))
 ;; (require 'setup-paredit)
 
 
@@ -191,7 +202,8 @@
 (require 'setup-clojure-mode)
 
 (require 'setup-cl-mode)
-(require 'setup-slime)
+;; (require 'setup-slime)
+(require 'setup-sly)
 ;; (require 'setup-slime-ql)
 ;; (add-hook 'slime-mode-hook
 ;;           #'(lambda ()
@@ -216,6 +228,8 @@
 
 (require 'setup-smtp)
 (load-theme 'solarized-dark)
+(setq initial-buffer-choice "~/org/life.org")
+
 
 (cl-defun notify (message &key (title "Emacs"))
   "Quick hack to use Ubuntu's notify-send."

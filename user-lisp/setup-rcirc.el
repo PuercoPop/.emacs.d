@@ -122,7 +122,8 @@
                (not (string= nick sender))
                (not (string= (rcirc-server-name process) sender)))
       (growl-notify-notification sender text))))
-(add-hook 'rcirc-print-functions 'rcirc-growl-notify)
+;; (add-hook 'rcirc-print-functions 'rcirc-growl-notify
+(require 'rcirc-notify)
 
 
 (provide 'setup-rcirc)

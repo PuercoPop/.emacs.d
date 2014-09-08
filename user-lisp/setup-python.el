@@ -1,8 +1,8 @@
 (require 'virtualenvwrapper)
-(setq venv-location "~/.envs/"
-      python-shell-interpreter "ipython"
-      python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-      python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: ")
+(setq venv-location "~/.envs/")
+;; (setq python-shell-interpreter "ipython"
+;;       python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+;;       python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: ")
 
 (venv-initialize-eshell)
 (venv-initialize-interactive-shells)
