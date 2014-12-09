@@ -7,7 +7,7 @@
     (w3m-browse-url url)))
 
 (setq browse-url-browser-function
-      '(("hyperspec" . w3m-browse-url-other-window)
+      '(("hyperspec" . eww-browse-url)
         ("." . browse-url-default-browser)))
 
 (setq w3m-use-cookies t
