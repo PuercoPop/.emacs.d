@@ -5,7 +5,7 @@
 ;; (("gnu" . "http://elpa.gnu.org/packages/"))
 (let
     ((marmalade '("marmalade" . "http://marmalade-repo.org/packages/"))
-     (melpa '("melpa" . "http://melpa.milkbox.net/packages/"))
+     (melpa '("melpa" . "http://melpa.org/packages/"))
      (org '("org" . "http://orgmode.org/elpa/")))
   (add-to-list 'package-archives marmalade t)
   (add-to-list 'package-archives melpa t)

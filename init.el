@@ -12,14 +12,15 @@
 
 (menu-bar-mode t)
 ;; Set path to .emacs.d
-(setq dotfiles-dir (file-name-directory
-                    (or (buffer-file-name) load-file-name)))
+(setq dotfiles-dir
+      (file-name-directory (or (buffer-file-name) load-file-name)))
+
 ;; Set path to dependencies
 (setq site-lisp-dir (expand-file-name "site-lisp" dotfiles-dir))
 (setq user-lisp-dir (expand-file-name "user-lisp" dotfiles-dir))
 
 ;; Set up Load path
-(add-to-list 'load-path dotfiles-dir)
+;; (add-to-list 'load-path dotfiles-dir)
 (add-to-list 'load-path site-lisp-dir)
 
 (dolist (project (directory-files site-lisp-dir t "\\w+"))
@@ -71,6 +72,7 @@
 
 (require 'setup-rainbow-delimiters)
 (require 'setup-markdown-mode)
+(require 'setup-c++)
 (require 'setup-python)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
@@ -182,8 +184,7 @@
 
 (defun new-lisp-project (project-name)
   (interactive)
-  (let ((ql-local-projects-dir "~/quicklisp/local-projects/"))
-    ))
+  (let ((ql-local-projects-dir "~/quicklisp/local-projects/"))))
 
 ;; (require 'redshank-loader)
 ;; (eval-after-load 'redshank-loader

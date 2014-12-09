@@ -28,5 +28,5 @@
 ;;   '(progn
 ;;      (diminish 'redshank)
 ;;      (diminish 'autodoc)))
-
+(define-key lisp-mode-map (kbd "C-x C-t") 'sp-transpose-sexp)
 (provide 'setup-cl-mode)

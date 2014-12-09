@@ -13,7 +13,8 @@
                  'ssl))
 
 
-(setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
+(setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
+      rcirc-log-directory nil)
 
 ;;;; Auto reconnect
 ;;;; Taken from http://www.emacswiki.org/emacs/rcircReconnect

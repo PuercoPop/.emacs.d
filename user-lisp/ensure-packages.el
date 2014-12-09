@@ -43,7 +43,6 @@
 
     ;; Common Lisp
     redshank
-    ac-slime
 
     ;; Clojure
     cider
