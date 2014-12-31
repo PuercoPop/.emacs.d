@@ -62,4 +62,22 @@
              (ibuffer-switch-to-saved-filter-groups "default")
              (ibuffer-auto-mode 1)))
 
+;; From http://irreal.org/blog/?p=3544
+(defun ibuffer-back-to-top ()
+  (interactive)
+  (beginning-of-buffer)
+  (next-line 3))
+
+(defun ibuffer-jump-to-bottom ()
+  (interactive)
+  (end-of-buffer)
+  (next-line -2))
+
+(eval-after-load 'ibuffer
+  '(progn
+     (define-key ibuffer-mode-map
+       (vector 'remap 'end-of-buffer) 'ibuffer-jump-to-bottom)
+     (define-key ibuffer-mode-map
+       (vector 'remap 'beginning-of-buffer) 'ibuffer-back-to-top)))
+
 (provide 'setup-ibuffer-mode)

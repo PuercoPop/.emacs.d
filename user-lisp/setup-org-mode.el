@@ -37,6 +37,7 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((lisp . t)))
+
 (define-key org-mode-map (kbd "<f5>") 'epresent-run)
 
 (setq org-confirm-babel-evaluate nil)
@@ -105,5 +106,8 @@
      (:foreground "LightSalmon" :strike-through t)))))
 
 (define-key org-mode-map [f12] 'epresent-run)
+
+;; Org-Journal
+(setq org-journal-dir "~/org/journal/")
 
 (provide 'setup-org-mode)

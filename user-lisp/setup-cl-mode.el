@@ -29,4 +29,6 @@
 ;;      (diminish 'redshank)
 ;;      (diminish 'autodoc)))
 (define-key lisp-mode-map (kbd "C-x C-t") 'sp-transpose-sexp)
+(add-hook 'lisp-mode-hook 'form-feed-mode)
+
 (provide 'setup-cl-mode)
