@@ -72,6 +72,7 @@
 
 (require 'setup-rainbow-delimiters)
 (require 'setup-markdown-mode)
+(add-to-list 'auto-mode-alist '("\\.wiki\\'" . creole-mode))
 (require 'setup-c++)
 (require 'setup-python)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)

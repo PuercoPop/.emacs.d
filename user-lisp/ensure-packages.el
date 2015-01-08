@@ -17,6 +17,7 @@
     password-vault
     markdown-mode
     restclient
+    creole-mode
 
     ;; General Editing
     move-text
