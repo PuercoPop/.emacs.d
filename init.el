@@ -62,6 +62,7 @@
 (require 'move-text)
 (whole-line-or-region-mode)
 (global-fixmee-mode 1)
+(fullframe magit-status magit-mode-quit-window)
 
 ;; Spellcheck
 (add-hook 'text-mode-hook 'flyspell-mode)
