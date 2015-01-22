@@ -60,6 +60,7 @@
 ;; (require 'sudo-ext)
 (require 'setup-ac-mode)
 (require 'move-text)
+(whole-line-or-region-mode)
 (global-fixmee-mode 1)
 
 ;; Spellcheck
