@@ -72,6 +72,9 @@
 (setq wgrep-auto-save-buffer t
       wgrep-enable-key "r")
 
+;; Ace Window
+(global-set-key (kbd "C-x o") 'ace-window)
+
 (require 'setup-rainbow-delimiters)
 (require 'setup-markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.wiki\\'" . creole-mode))
@@ -93,7 +96,7 @@
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; multiple-cursors
-(global-set-key (kbd "C-c C-a") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c C-a") 'mc/mark-all-like-this-dwim)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-prev-like-this)
 
