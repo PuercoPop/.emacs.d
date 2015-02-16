@@ -168,6 +168,9 @@
 ;; Lisp Stuff
 (setq geiser-racket-binary "/usr/local/bin/racket")
 
+;; Racket
+(add-to-list 'auto-mode-alist '("\\.rkt$" . racket-mode))
+
 (smartparens-global-mode)
 (require 'smartparens-config)
 (smartparens-strict-mode)
