@@ -224,6 +224,7 @@
 (after-load 'sql
   (sql-set-product 'postgres)
   (require 'sql-indent))
+(add-hook 'sql-mode-hook 'edbi-minor-mode)
 
 (require 'html-validate)
 
