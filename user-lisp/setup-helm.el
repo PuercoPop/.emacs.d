@@ -6,5 +6,6 @@
      (define-key helm-map (kbd "C-r") 'helm-previous-line)))
 (global-set-key (kbd "C-x c g") 'helm-google)
 (global-set-key (kbd "C-M-s") 'helm-occur)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
 
 (provide 'setup-helm)
