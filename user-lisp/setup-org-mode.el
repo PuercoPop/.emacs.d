@@ -36,7 +36,8 @@
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((lisp . t)))
+ '((lisp . t)
+   (sh . t)))
 
 (define-key org-mode-map (kbd "<f5>") 'epresent-run)
 
