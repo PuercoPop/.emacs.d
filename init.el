@@ -106,10 +106,6 @@
 (require 'setup-css)
 (require 'setup-games)
 
-;; Scala
-
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-
 ;; Javascript
 (add-auto-mode 'js2-mode "\\.js$")
 ;;(add-hook 'js2-mode-hook 'skewer-mode)
