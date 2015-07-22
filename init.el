@@ -1,5 +1,4 @@
 (setq message-log-max t)
-(require 'cl-lib)
 (server-start)
 (setq debug-on-error t)
 (setq lexical-binding t)
@@ -37,6 +36,7 @@
 (require 'setup-package)
 (require 'package)
 (require 'ensure-packages)
+(require 'cl-lib)
 (require 'key-bindings)
 (require 'misc-settings)
 (case system-type
@@ -108,9 +108,14 @@
 (require 'setup-html-templates)
 (require 'setup-css)
 (require 'setup-games)
+(require 'setup-mail)
 
 ;; Javascript
 (add-auto-mode 'js2-mode "\\.js$")
+(add-auto-mode 'json-mode "\\.json$")
+(after-load 'json-mode
+  (setq-default js-indent-level 2))
+
 ;;(add-hook 'js2-mode-hook 'skewer-mode)
 ;;(add-hook 'css-mode-hook 'skewer-css-mode)
 ;;(add-hook 'html-mode-hook 'skewer-html-mode)
@@ -170,6 +175,7 @@
 
 ;; Racket
 (add-to-list 'auto-mode-alist '("\\.rkt$" . racket-mode))
+(setq racket-smart-open-bracket-enable t)
 
 (smartparens-global-mode)
 (require 'smartparens-config)
@@ -235,7 +241,7 @@
                                                 user-emacs-directory))
 
 (require 'setup-smtp)
-(load-theme 'solarized-dark)
+(load-theme 'solarized)
 (setq initial-buffer-choice "~/org/life.org")
 
 
