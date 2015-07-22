@@ -61,7 +61,7 @@
 (require 'setup-ac-mode)
 (require 'move-text)
 (whole-line-or-region-mode)
-(global-fixmee-mode 1)
+;; (global-fixmee-mode 1)
 (fullframe magit-status magit-mode-quit-window)
 
 ;; Spellcheck
@@ -145,16 +145,25 @@
   (js2r-add-keybindings-with-prefix "C-c C-m")
 
   (setenv "NODE_NO_READLINE" "1")
-  (setq inferior-js-program-command "/usr/bin/js")
-  (add-hook 'js2-mode-hook '(lambda ()
-                              (local-set-key "\C-x\C-e" 'js-send-last-sexp)
-                              (local-set-key "\C-\M-x"
-                                             'js-send-last-sexp-and-go)
-                              (local-set-key "\C-cb" 'js-send-buffer)
-                              (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
-                              (local-set-key "\C-cl" 'js-load-file-and-go)
-                              )))
+  (setq inferior-js-program-command "/usr/local/bin/iojs")
+  ;; (add-hook 'js2-mode-hook '(lambda ()
+  ;;                             (local-set-key "\C-x\C-e" 'js-send-last-sexp)
+  ;;                             (local-set-key "\C-\M-x"
+  ;;                                            'js-send-last-sexp-and-go)
+  ;;                             (local-set-key "\C-cb" 'js-send-buffer)
+  ;;                             (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
+  ;;                             (local-set-key "\C-cl" 'js-load-file-and-go)
+  ;;                             ))
+  )
 
+(require 'nodejs-repl)
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (let ((map js2-mode-map))
+              (define-key map (kbd "C-x C-e") 'nodejs-repl-send-last-sexp)
+              (define-key map (kbd "C-c C-r") 'nodejs-repl-send-region)
+              (define-key map (kbd "C-c C-l") 'nodejs-repl-load-file)
+              (define-key map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl))))
 
 ;;; Irc Stuff
 ;; (require 'setup-erc)

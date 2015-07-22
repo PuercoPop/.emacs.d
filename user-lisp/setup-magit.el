@@ -1,6 +1,8 @@
 (after-load 'magit
   (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace))
 
+(setq magit-auto-revert-mode nil
+      magit-last-seen-setup-instructions "1.4.0")
 
 (global-set-key (kbd "C-c s") 'magit-status)
 

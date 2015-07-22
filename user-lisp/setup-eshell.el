@@ -1,6 +1,7 @@
 (require 'eshell)
 
-(add-hook 'eshell-load-hook 'nyan-prompt-enable)
+(add-hook 'eshell-load-hook (lambda ()
+                              nyan-prompt-enable))
 
 ;; press F11 to bring up the eshell buffer if no eshell buffer is open then open one
 
