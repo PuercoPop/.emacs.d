@@ -6,5 +6,8 @@
     (sp-local-pair "'" nil :actions nil))
 
 (add-hook 'sly-mrepl-mode-hook 'sly-mrepl--ensure-no-font-lock) ;; FIX for font-lock issue where I can't type
+(eval-after-load 'sly
+  '(define-key lisp-mode-map
+     (kbd "M-i")  'sly-inspect-definition))
 
 (provide 'setup-sly)
