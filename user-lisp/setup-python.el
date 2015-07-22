@@ -1,4 +1,6 @@
 (require 'virtualenvwrapper)
+(require 'python-test)
+
 (setq venv-location "~/.envs/")
 ;; (setq python-shell-interpreter "ipython"
 ;;       python-shell-prompt-regexp "In \\[[0-9]+\\]: "
@@ -22,7 +24,9 @@
              (jedi:ac-setup)))
 
 (eval-after-load "python"
-  '(define-key python-mode-map "\C-cx" 'jedi-direx:pop-to-buffer))
+  '(progn (setq python-fill-docstring-style 'pep-257-nn)
+          (define-key python-mode-map "\C-cx" 'jedi-direx:pop-to-buffer)
+          (define-key python-mode-map (kbd "C-c t") 'python-test-test-function)))
 
 (defun ipython-notebook ()
   "TODO: http://tkf.github.io/emacs-ipython-notebook/#using-package-el-melpa
