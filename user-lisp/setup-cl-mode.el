@@ -30,4 +30,29 @@
 ;;      (diminish 'autodoc)))
 (define-key lisp-mode-map (kbd "C-x C-t") 'sp-transpose-sexp)
 
+(defconst cl-fontify-defforms-alist
+  '((format . 2)
+    (formatter . 1)
+    (error . 1)
+    (signal . 1)
+    (warn . 1)
+    (cerror . 1)
+    (assert . 3)
+    (invalid-method-error . 2)
+    (method-combination-error . 2)
+    (break . 1)
+    (with-simple-restart . 2)
+    (y-or-n-p . 1)))
+
+(require 'cl-format)
+
+(defun fontify-control-strings ()
+  (set
+   (make-local-variable 'cl-format-fontify-defforms-alist)
+   (append cl-format-fontify-defforms-alist
+                 cl-fontify-defforms-alist))
+  (cl-format-font-lock-mode 1))
+
+(add-hook 'lisp-mode-hook 'fontify-control-strings)
+
 (provide 'setup-cl-mode)
