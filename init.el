@@ -160,7 +160,8 @@
 
 ;;; Misc Stuff
 (require 'osx-plist)
-(password-vault-register-secrets-file "passwords")
+(require 'password-vault+)
+(password-vault+-register-secrets-file "passwords")
 
 ;; (require 'setup-evil)
 
