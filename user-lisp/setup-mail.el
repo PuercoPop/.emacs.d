@@ -8,3 +8,5 @@
 (setq smtpmail-stream-type 'ssl
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
+
+(provide 'setup-mail)
