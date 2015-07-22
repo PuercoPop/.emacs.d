@@ -1,6 +1,6 @@
 ;; From http://bc.tech.coop/blog/070515.html
 (defun lispdoc ()
-  "Searches lispdoc.com for SYMBOL, which is by default the symbol currently under the curser"
+  "Searches lispdoc.com for SYMBOL, which is by default the symbol currently under the cursor"
   (interactive)
   (let* ((word-at-point (word-at-point))
          (symbol-at-point (symbol-at-point))
