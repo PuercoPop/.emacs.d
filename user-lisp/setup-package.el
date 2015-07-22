@@ -6,7 +6,8 @@
 (let
     ((marmalade '("marmalade" . "http://marmalade-repo.org/packages/"))
      (melpa '("melpa" . "http://melpa.org/packages/"))
-     (org '("org" . "http://orgmode.org/elpa/")))
+     (org '("org" . "http://orgmode.org/elpa/"))
+     (emacs-pe '("emacs-pe" . "https://emacs-pe.github.io/packages/")))
   (add-to-list 'package-archives marmalade t)
   (add-to-list 'package-archives melpa t)
   (add-to-list 'package-archives org t))
