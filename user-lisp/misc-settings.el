@@ -115,4 +115,7 @@
 (setq-default mode-line-format
               '("%e" mode-line-front-space mode-line-mule-info mode-line-client mode-line-modified mode-line-remote mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position (vc-mode vc-mode) "  " mode-name " " mode-line-misc-info mode-line-end-spaces))
 
+;; Use xdg-open always. Work-around for broken  #'browse-url-can-use-xdg-open. Should hard code org.gnome.SessionManager
+(setq browse-url-browser-function #'browse-url-xdg-open)
+
 (provide 'misc-settings)
