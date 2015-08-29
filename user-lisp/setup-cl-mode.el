@@ -1,3 +1,6 @@
+;; Do something like this
+;; http://cons.pulp.se/post/468541538/tdd-and-slime
+
 ;; From http://bc.tech.coop/blog/070515.html
 (defun lispdoc ()
   "Searches lispdoc.com for SYMBOL, which is by default the symbol currently under the cursor"
@@ -54,5 +57,6 @@
   (cl-format-font-lock-mode 1))
 
 (add-hook 'lisp-mode-hook 'fontify-control-strings)
+(add-hook 'lisp-mode-hook 'turn-on-eldoc-mode)
 
 (provide 'setup-cl-mode)

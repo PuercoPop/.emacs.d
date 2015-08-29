@@ -1,7 +1,11 @@
 (require 'sly-autoloads)
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
-;; (setq inferior-lisp-program "/home/puercopop/.apps/ccl/lx86cl64")
-;; (setq inferior-lisp-program "/home/puercopop/Projects/abcl/abcl/abcl")
+(setq sly-lisp-implementations
+      '((sbcl ("/usr/local/bin/sbcl"))
+        (mezzano ("/opt/local/bin/sbcl-mezzano"))
+        (sbcl-walk-forms ("/opt/local/bin/sbcl-wip-walk-forms"))
+        (ccl ("/home/puercopop/.apps/ccl/lx86cl64"))
+        (abcl ("/home/puercopop/Projects/abcl/abcl/abcl"))))
 
 (sp-with-modes 'sly-mrepl-mode
     (sp-local-pair "'" nil :actions nil))

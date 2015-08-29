@@ -11,12 +11,12 @@
 
 (menu-bar-mode t)
 ;; Set path to .emacs.d
-(setq dotfiles-dir
+(setq user-emacs-directory
       (file-name-directory (or (buffer-file-name) load-file-name)))
 
 ;; Set path to dependencies
-(setq site-lisp-dir (expand-file-name "site-lisp" dotfiles-dir))
-(setq user-lisp-dir (expand-file-name "user-lisp" dotfiles-dir))
+(setq site-lisp-dir (expand-file-name "site-lisp" user-emacs-directory))
+(setq user-lisp-dir (expand-file-name "user-lisp" user-emacs-directory))
 
 ;; Set up Load path
 ;; (add-to-list 'load-path dotfiles-dir)
@@ -35,7 +35,6 @@
     (load file)))
 (require 'setup-package)
 (require 'package)
-(require 'ensure-packages)
 (require 'cl-lib)
 (require 'key-bindings)
 (require 'misc-settings)
@@ -58,7 +57,6 @@
 (require 'setup-undo-tree)
 (require 'setup-tramp-mode)
 ;; (require 'sudo-ext)
-(require 'setup-ac-mode)
 (require 'move-text)
 (whole-line-or-region-mode)
 ;; (global-fixmee-mode 1)
@@ -79,18 +77,8 @@
 (require 'setup-markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.wiki\\'" . creole-mode))
 (require 'setup-c++)
-(require 'setup-python)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (require 'setup-expand-region)
 (drag-stuff-mode t)
-
-;; (add-hook 'before-save-hook
-;;           (lambda ()
-;;             (when (or (derived-mode-p 'lisp-mode)
-;;                       (derived-mode-p 'emacs-lisp-mode)
-;;                       (derived-mode-p 'clojure-mode))
-;;               (indent-buffer))))
 
 ;; Ace Jump mode
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
@@ -103,8 +91,6 @@
 ;; (require 'setup-mediawiki)
 ;; (require 'mud)
 (require 'setup-popwin)
-(require 'setup-forth)
-(require 'setup-twittering-mode)
 (require 'setup-html-templates)
 (require 'setup-css)
 (require 'setup-games)
@@ -115,16 +101,6 @@
 (add-auto-mode 'json-mode "\\.json$")
 (after-load 'json-mode
   (setq-default js-indent-level 2))
-
-;;(add-hook 'js2-mode-hook 'skewer-mode)
-;;(add-hook 'css-mode-hook 'skewer-css-mode)
-;;(add-hook 'html-mode-hook 'skewer-html-mode)
-;; Enable tern-mode for js2-mode
-
-;; From: https://gitlab.com/bodil/emacs-d/blob/master/bodil/bodil-js.el#L37
-(add-to-list 'load-path (concat dotfiles-dir "site-lisp/tern/emacs"))
-(autoload 'tern-mode "tern" nil t)
-(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
 
 (after-load 'js2-mode
   (setq-default js2-auto-indent-p t
@@ -142,28 +118,7 @@
                 js2-strict-var-redeclaration-warning nil
                 js2-global-externs '("module" "require" "$" "_" "_gaq"))
 
-  (js2r-add-keybindings-with-prefix "C-c C-m")
-
-  (setenv "NODE_NO_READLINE" "1")
-  (setq inferior-js-program-command "/usr/local/bin/iojs")
-  ;; (add-hook 'js2-mode-hook '(lambda ()
-  ;;                             (local-set-key "\C-x\C-e" 'js-send-last-sexp)
-  ;;                             (local-set-key "\C-\M-x"
-  ;;                                            'js-send-last-sexp-and-go)
-  ;;                             (local-set-key "\C-cb" 'js-send-buffer)
-  ;;                             (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
-  ;;                             (local-set-key "\C-cl" 'js-load-file-and-go)
-  ;;                             ))
-  )
-
-(require 'nodejs-repl)
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (let ((map js2-mode-map))
-              (define-key map (kbd "C-x C-e") 'nodejs-repl-send-last-sexp)
-              (define-key map (kbd "C-c C-r") 'nodejs-repl-send-region)
-              (define-key map (kbd "C-c C-l") 'nodejs-repl-load-file)
-              (define-key map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl))))
+  (js2r-add-keybindings-with-prefix "C-c C-m"))
 
 ;;; Irc Stuff
 ;; (require 'setup-erc)
@@ -173,15 +128,12 @@
 (require 'setup-eshell)
 
 ;;; Misc Stuff
-(require 'osx-plist)
 (require 'password-vault+)
 (password-vault+-register-secrets-file "passwords")
 
 ;; (require 'setup-evil)
 
 ;; Lisp Stuff
-(setq geiser-racket-binary "/usr/local/bin/racket")
-
 ;; Racket
 (add-to-list 'auto-mode-alist '("\\.rkt$" . racket-mode))
 (setq racket-smart-open-bracket-enable t)
@@ -202,35 +154,14 @@
 ;; (define-key smartparens-mode-map
 ;;   (kbd "C-<left_bracket>") 'sp-select-previous-thing)
 
-
-(defun new-lisp-project (project-name)
-  (interactive)
-  (let ((ql-local-projects-dir "~/quicklisp/local-projects/"))))
-
-;; (require 'redshank-loader)
-;; (eval-after-load 'redshank-loader
-;;   `(redshank-setup '(lisp-mode-hook
-;;                      slime-repl-mode-hook) t))
-;; (require 'setup-paredit)
-
-
-(require 'setup-elisp)
 ;; Emacs Lisp
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
 
-;;; clojure mode
-(require 'setup-clojure-mode)
-
 (require 'setup-cl-mode)
-;; (require 'setup-slime)
 (require 'setup-sly)
-;; (require 'setup-slime-ql)
-;; (add-hook 'slime-mode-hook
-;;           #'(lambda ()
-;;               (unless (slime-connected-p)
-;;                 (save-excursion (slime)))))
 
 ;;; Magit
 (require 'setup-magit)

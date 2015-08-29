@@ -62,7 +62,7 @@
 
 ;; BackupStuff
 (setq backup-directory-alist `(("." . ,(expand-file-name
-                                        (concat dotfiles-dir "backups")))))
+                                        (concat user-emacs-directory "backups")))))
 (setq make-backup-files t)
 (setq vc-make-backup-files t)
 (setq auto-save-default nil)

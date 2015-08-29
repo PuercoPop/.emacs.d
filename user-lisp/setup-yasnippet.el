@@ -2,7 +2,7 @@
 (yas/global-mode 1)
 
 ;; Add custom snippets
-(yas/load-directory (expand-file-name "snippets" dotfiles-dir))
+(yas/load-directory (expand-file-name "snippets" user-emacs-directory))
 
 (defun yas/org-very-safe-expand ()
   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))

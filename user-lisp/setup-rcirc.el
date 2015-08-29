@@ -14,7 +14,9 @@
 
 
 (setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
-      rcirc-log-directory nil)
+      rcirc-log-directory nil
+      rcirc-ignore-list (list "rritoch"))
+
 
 ;;;; Auto reconnect
 ;;;; Taken from http://www.emacswiki.org/emacs/rcircReconnect
