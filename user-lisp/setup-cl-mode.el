@@ -58,5 +58,6 @@
 
 (add-hook 'lisp-mode-hook 'fontify-control-strings)
 (add-hook 'lisp-mode-hook 'turn-on-eldoc-mode)
+;; (add-hook 'lisp-mode-hook 'lispy-mode)
 
 (provide 'setup-cl-mode)

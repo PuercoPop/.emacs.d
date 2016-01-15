@@ -1,6 +1,7 @@
 (setq message-log-max t)
 (server-start)
 (setq debug-on-error t)
+(setq load-prefer-newer t)
 (setq lexical-binding t)
 
 ;; Stuff to run at the beginning
@@ -79,6 +80,9 @@
 (require 'setup-c++)
 (require 'setup-expand-region)
 (drag-stuff-mode t)
+
+(require 'yasnippet)
+(yas-global-mode 1)
 
 ;; Ace Jump mode
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
