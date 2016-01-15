@@ -120,6 +120,8 @@ Including indent-buffer, which should not be called automatically on save."
     (save-excursion
       (forward-line)
       (transpose-lines -1))
+    (forward-line -1)
+    (forward-line -1)
     (move-to-column col)))
 
 (global-set-key (kbd "<C-S-down>") 'move-line-down)
