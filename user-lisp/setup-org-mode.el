@@ -13,7 +13,9 @@
       org-special-ctrl-k t
       org-ctrl-k-protect-subtree t
 
-      org-todo-keywords '((sequence "TODO" "|" "DONE")
+      org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
+                          (sequence "⚑ WAITING(w)" "|")
+                          (sequence "|" "✘ CANCELED(c)")
                           (sequence "To-Download" "Downloading" "|"
                                     "Downladed" "To-Watch" "Watched"))
 
@@ -97,14 +99,6 @@
          "%?\nEntered on %U\n \%i\n %a")
         ("w" "Weight Log" table-line (file+headline "weight.org" "Diario de Peso") " | %? | %t |")
         ("c" "Lucuma Clock In" table-line (file+headline "lucuma.org" "Bitácora de Asistencia") " | %T |")))
-
-(custom-set-faces
- '(org-done ((t (:foreground "PaleGreen"
-                             :weight normal
-                             :strike-through t))))
- '(org-headline-done
-   ((((class color) (min-colors 16) (background dark))
-     (:foreground "LightSalmon" :strike-through t)))))
 
 (define-key org-mode-map [f12] 'epresent-run)
 
