@@ -42,6 +42,8 @@
 (case system-type
   (darwin (require 'mac))
   (gnu/linux (require 'linux)))
+(require 'powerline)
+(powerline-default-theme)
 (require 'midnight)
 (require 'setup-dired+)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
