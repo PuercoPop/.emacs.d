@@ -142,17 +142,18 @@
 (add-to-list 'auto-mode-alist '("\\.rkt$" . racket-mode))
 (setq racket-smart-open-bracket-enable t)
 
-(smartparens-global-mode)
-(require 'smartparens-config)
-(smartparens-strict-mode)
-(define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
-(define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp)
-(define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
-(define-key smartparens-mode-map (kbd "M-J") 'sp-join-sexp)
+(require 'setup-paredit)
+;; (smartparens-global-mode)
+;; (require 'smartparens-config)
+;; (smartparens-strict-mode)
+;; (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
+;; (define-key smartparens-mode-map (kbd "C-(") 'sp-backward-slurp-sexp)
+;; (define-key smartparens-mode-map (kbd "C-}") 'sp-forward-barf-sexp)
+;; (define-key smartparens-mode-map (kbd "C-{") 'sp-backward-barf-sexp)
+;; (define-key smartparens-mode-map (kbd "M-s") 'sp-splice-sexp)
+;; (define-key smartparens-mode-map (kbd "M-J") 'sp-join-sexp)
 
-(define-key smartparens-mode-map (kbd "C-x C-t") 'sp-transpose-hybrid-sexp)
+;; (define-key smartparens-mode-map (kbd "C-x C-t") 'sp-transpose-hybrid-sexp)
 ;; (define-key smartparens-mode-map
 ;;   (kbd "C-M-<right_bracket>") 'sp-select-next-thing)
 ;; (define-key smartparens-mode-map

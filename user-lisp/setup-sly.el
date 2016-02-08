@@ -25,7 +25,8 @@
 (eval-after-load 'sly
   '(progn (define-key lisp-mode-map
             (kbd "M-i")  'sly-inspect-definition)
-          (define-key sly-doc-map (kbd "C-d") 'sly-documentation)))
+          (define-key sly-doc-map
+            (kbd "C-d") 'sly-documentation)))
 
 (require 'sly-company)
 
