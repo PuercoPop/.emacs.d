@@ -81,9 +81,6 @@
 (require 'setup-expand-region)
 (drag-stuff-mode t)
 
-(require 'yasnippet)
-(yas-global-mode 1)
-
 ;; Ace Jump mode
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 
