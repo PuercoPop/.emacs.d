@@ -4,7 +4,7 @@
       '((sbcl ("/usr/local/bin/sbcl"))
         (sbcl-vanilla ("/opt/local/bin/sbcl"))
         (mezzano ("/opt/local/bin/sbcl-mezzano"))
-        (sbcl-walk-forms ("/opt/local/bin/sbcl-wip-walk-forms"))
+        (sbcl-walk-forms ("/opt/local/sbcl-codewalker/bin/sbcl"))
         (ccl ("/home/puercopop/.apps/ccl/lx86cl64"))
         (ecl ("/home/puercopop/.apps/ecl-13.5.1/build/bin/ecl"))
         (abcl ("/home/puercopop/Projects/abcl/abcl/abcl"))))
@@ -36,5 +36,7 @@
 (define-key company-active-map (kbd "\C-p") 'company-select-previous)
 (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
 (define-key company-active-map (kbd "M-.") 'company-show-location)
+
+(require 'sly-macrostep-autoloads)
 
 (provide 'setup-sly)
