@@ -52,6 +52,7 @@
 (global-set-key (kbd "C-x 4 p")
                 'direx-project:jump-to-project-root-other-window)
 
+(require 'setup-notmuch)
 (require 'setup-helm)
 (require 'setup-ido-mode)
 (require 'setup-org-mode)
