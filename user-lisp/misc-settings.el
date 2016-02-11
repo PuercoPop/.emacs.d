@@ -1,6 +1,5 @@
 (setq visual-line-mode t)
 (setq-default indent-tabs-mode nil)
-(setq default-tab-width 4)
 (show-paren-mode 1)
 (setq default-directory "~/")
 (blink-cursor-mode 0)
