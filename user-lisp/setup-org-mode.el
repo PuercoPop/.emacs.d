@@ -13,9 +13,9 @@
       org-special-ctrl-k t
       org-ctrl-k-protect-subtree t
 
-      org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
-                          (sequence "⚑ WAITING(w)" "|")
-                          (sequence "|" "✘ CANCELED(c)")
+      org-todo-keywords '((sequence "TODO" "|" "DONE")
+                          (sequence "WAITING" "|")
+                          (sequence "|" "CANCELED")
                           (sequence "To-Download" "Downloading" "|"
                                     "Downladed" "To-Watch" "Watched"))
 
