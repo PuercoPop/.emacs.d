@@ -41,7 +41,9 @@
  '((lisp . t)
    (sh . t)))
 
-(define-key org-mode-map (kbd "<f5>") 'epresent-run)
+(eval-after-load 'org
+  '(progn
+     (define-key org-mode-map [f12] 'epresent-run)))
 
 (setq org-confirm-babel-evaluate nil)
 
@@ -99,8 +101,6 @@
          "%?\nEntered on %U\n \%i\n %a")
         ("w" "Weight Log" table-line (file+headline "weight.org" "Diario de Peso") " | %? | %t |")
         ("c" "Lucuma Clock In" table-line (file+headline "lucuma.org" "Bitácora de Asistencia") " | %T |")))
-
-(define-key org-mode-map [f12] 'epresent-run)
 
 ;; Org-Journal
 (setq org-journal-dir "~/org/journal/")
