@@ -52,7 +52,6 @@
 (global-set-key (kbd "C-x 4 p")
                 'direx-project:jump-to-project-root-other-window)
 
-(require 'setup-notmuch)
 (require 'setup-helm)
 (require 'setup-ido-mode)
 (require 'setup-org-mode)
@@ -80,6 +79,8 @@
 (require 'setup-rainbow-delimiters)
 (require 'setup-markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.wiki\\'" . creole-mode))
+(add-to-list 'auto-mode-alist '("\\.vs\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
 (require 'setup-c++)
 (require 'setup-expand-region)
 (drag-stuff-mode t)
@@ -98,7 +99,8 @@
 (require 'setup-html-templates)
 (require 'setup-css)
 (require 'setup-games)
-(require 'setup-mail)
+;; (require 'setup-mail)
+(require 'setup-notmuch)
 
 ;; Javascript
 (add-auto-mode 'js2-mode "\\.js$")
@@ -120,9 +122,7 @@
                 js2-strict-trailing-comma-warning nil
                 js2-strict-cond-assign-warning nil
                 js2-strict-var-redeclaration-warning nil
-                js2-global-externs '("module" "require" "$" "_" "_gaq"))
-
-  (js2r-add-keybindings-with-prefix "C-c C-m"))
+                js2-global-externs '("module" "require" "$" "_" "_gaq")))
 
 ;;; Irc Stuff
 ;; (require 'setup-erc)
@@ -185,8 +185,8 @@
               save-place-file (expand-file-name ".places"
                                                 user-emacs-directory))
 
-(require 'setup-smtp)
-(load-theme 'solarized)
+;; (require 'setup-smtp)
+(load-theme 'solarized) 
 (setq initial-buffer-choice "~/org/life.org")
 
 

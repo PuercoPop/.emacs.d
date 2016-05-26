@@ -1,3 +1,5 @@
+(require 'org-habit)
+
 ;; From Bodil's emacs.d
 ;; https://github.com/bodil/emacs.d/blob/master/bodil-orgmode.el
 ;; Stop org-mode from highjacking shift-cursor keys
@@ -34,12 +36,13 @@
                            ("json" . json))
 
       ;; Add pdflatex to exec-path
-      exec-path (append exec-path '("/usr/local/texlive/2012/bin/universal-darwin/")))
+      exec-path (append exec-path '("/usr/local/texlive/2012/bin/universal-darwin/"))
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((lisp . t)
-   (sh . t)))
+      ;; (org-babel-do-load-languages
+      ;;  'org-babel-load-languages
+      ;;  '((lisp . t)
+      ;;    (sh . t)))
+      )
 
 (eval-after-load 'org
   '(progn

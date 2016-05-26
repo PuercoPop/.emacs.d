@@ -1,16 +1,17 @@
 (require 'sly-autoloads)
-(setq inferior-lisp-program "/usr/local/bin/sbcl")
+
 (setq sly-lisp-implementations
-      '((sbcl ("/usr/local/bin/sbcl"))
+      '((ccl ("/home/puercopop/.apps/ccl/lx86cl64"))
+        (sbcl ("/usr/local/bin/sbcl"))
         (sbcl-vanilla ("/opt/local/bin/sbcl"))
         (mezzano ("/opt/local/bin/sbcl-mezzano"))
         (sbcl-walk-forms ("/opt/local/sbcl-codewalker/bin/sbcl"))
-        (ccl ("/home/puercopop/.apps/ccl/lx86cl64"))
         (ecl ("/home/puercopop/.apps/ecl-13.5.1/build/bin/ecl"))
-        (abcl ("/home/puercopop/Projects/abcl/abcl/abcl"))))
+        (abcl ("/home/puercopop/Projects/abcl/abcl/abcl")))
+      sly-default-lisp 'sbcl)
 
-(sp-with-modes 'sly-mrepl-mode
-    (sp-local-pair "'" nil :actions nil))
+;; (sp-with-modes 'sly-mrepl-mode
+;;     (sp-local-pair "'" nil :actions nil))
 
 ;; (add-hook 'sly-mrepl-mode-hook 'sly-mrepl--ensure-no-font-lock) ;; FIX for font-lock issue where I can't type
 
@@ -26,16 +27,20 @@
   '(progn (define-key lisp-mode-map
             (kbd "M-i")  'sly-inspect-definition)
           (define-key sly-doc-map
-            (kbd "C-d") 'sly-documentation)))
+            (kbd "C-d") 'sly-documentation)
+          (define-key sly--completion-transient-mode-map
+            (kbd "C-s") 'sly-next-completion)
+          (define-key sly--completion-transient-mode-map
+            (kbd "C-r") 'sly-prev-completion)))
 
-(require 'sly-company)
+;; (require 'sly-company)
 
-(add-hook 'sly-mode-hook 'sly-company-mode)
+;; (add-hook 'sly-mode-hook 'sly-company-mode)
 
-(define-key company-active-map (kbd "\C-n") 'company-select-next)
-(define-key company-active-map (kbd "\C-p") 'company-select-previous)
-(define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
-(define-key company-active-map (kbd "M-.") 'company-show-location)
+;; (define-key company-active-map (kbd "\C-n") 'company-select-next)
+;; (define-key company-active-map (kbd "\C-p") 'company-select-previous)
+;; (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
+;; (define-key company-active-map (kbd "M-.") 'company-show-location)
 
 (require 'sly-macrostep-autoloads)
 
