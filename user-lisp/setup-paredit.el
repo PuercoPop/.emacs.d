@@ -12,4 +12,7 @@
  'paredit-backward-delete
  'paredit-close-round)
 
+(setq paredit-space-for-delimiter-predicates
+      '((lambda (endp delimiter) nil)))
+
 (provide 'setup-paredit)
