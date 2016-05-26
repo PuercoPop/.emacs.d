@@ -58,6 +58,14 @@
 
 (add-hook 'lisp-mode-hook 'fontify-control-strings)
 (add-hook 'lisp-mode-hook 'turn-on-eldoc-mode)
+
+(make-variable-buffer-local 'tab-always-indent)
+(add-hook 'lisp-mode-hook
+          #'(lambda ()
+              (setq tab-always-indent 'complete)))
+
 ;; (add-hook 'lisp-mode-hook 'lispy-mode)
+(add-to-list 'auto-mode-alist '("\\.paren\\'" . lisp-mode))
+
 
 (provide 'setup-cl-mode)
