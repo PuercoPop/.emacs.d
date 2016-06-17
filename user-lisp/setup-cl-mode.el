@@ -62,7 +62,8 @@
 (make-variable-buffer-local 'tab-always-indent)
 (add-hook 'lisp-mode-hook
           #'(lambda ()
-              (setq tab-always-indent 'complete)))
+              (setq tab-always-indent 'complete)
+              (define-key paredit-mode-map (kbd "\\") nil)))
 
 ;; (add-hook 'lisp-mode-hook 'lispy-mode)
 (add-to-list 'auto-mode-alist '("\\.paren\\'" . lisp-mode))
