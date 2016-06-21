@@ -6,6 +6,7 @@
         (sbcl-vanilla ("/opt/local/bin/sbcl"))
         (mezzano ("/opt/local/bin/sbcl-mezzano"))
         (sbcl-walk-forms ("/opt/local/sbcl-codewalker/bin/sbcl"))
+        (sbcl-walk-forms-v2 ("/opt/local/sbcl-codewalker-v2/bin/sbcl"))
         (ecl ("/home/puercopop/.apps/ecl-13.5.1/build/bin/ecl"))
         (abcl ("/home/puercopop/Projects/abcl/abcl/abcl")))
       sly-default-lisp 'sbcl)

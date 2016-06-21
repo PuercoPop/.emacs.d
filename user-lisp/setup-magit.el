@@ -1,5 +1,8 @@
 (after-load 'magit
-  (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace))
+  (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace)
+  (magit-add-section-hook 'magit-status-sections-hook
+                        'magit-insert-branch-description
+                        nil t))
 
 (setq magit-auto-revert-mode nil
       magit-last-seen-setup-instructions "1.4.0"
@@ -7,9 +10,6 @@
 
 (global-set-key (kbd "C-c s") 'magit-status)
 
-(magit-add-section-hook 'magit-status-sections-hook
-                        'magit-insert-branch-description
-                        nil t)
 
 ;; Taken from http://whattheemacsd.com//setup-magit.el-02.html
 (defun magit-toggle-whitespace ()
