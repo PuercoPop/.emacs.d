@@ -7,6 +7,10 @@
 
 (global-set-key (kbd "C-c s") 'magit-status)
 
+(magit-add-section-hook 'magit-status-sections-hook
+                        'magit-insert-branch-description
+                        nil t)
+
 ;; Taken from http://whattheemacsd.com//setup-magit.el-02.html
 (defun magit-toggle-whitespace ()
   (interactive)
