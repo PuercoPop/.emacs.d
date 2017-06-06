@@ -117,4 +117,6 @@
 ;; Use xdg-open always. Work-around for broken  #'browse-url-can-use-xdg-open. Should hard code org.gnome.SessionManager
 (setq browse-url-browser-function #'browse-url-xdg-open)
 
+(global-set-key (kbd "C-c C-r") 'sudo-edit)
+
 (provide 'misc-settings)
