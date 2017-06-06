@@ -25,6 +25,7 @@
 (set-default 'indicate-empty-lines t)
 
 (setq transient-mark-mode t)
+(setq set-mark-command-repeat-pop t)
 (delete-selection-mode t)
 
 ;; A saner ediff
