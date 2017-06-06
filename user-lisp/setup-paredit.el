@@ -1,5 +1,6 @@
 (require 'paredit)
 
+(setq paredit-override-check-parens-function (lambda (c) t))
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
@@ -7,6 +8,7 @@
 (add-hook 'lisp-mode-hook #'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
 (add-hook 'sly-mrepl-mode-hook #'enable-paredit-mode)
+(add-hook 'scheme-mode-hook #'enable-paredit-mode)
 
 (eldoc-add-command
  'paredit-backward-delete
