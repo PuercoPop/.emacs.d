@@ -124,5 +124,6 @@
                              (switch-to-buffer "*Bookmark List*")))
 
 (global-set-key (kbd "C-c C-r") 'sudo-edit)
+(global-set-key (kbd "C-c o") 'occur)
 
 (provide 'misc-settings)
