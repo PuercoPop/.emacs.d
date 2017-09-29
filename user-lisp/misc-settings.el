@@ -125,5 +125,6 @@
 
 (global-set-key (kbd "C-c C-r") 'sudo-edit)
 (global-set-key (kbd "C-c o") 'occur)
+(global-set-key (kbd "C-c ;") 'iedit-mode)
 
 (provide 'misc-settings)
