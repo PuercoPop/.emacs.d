@@ -66,6 +66,9 @@
 ;; Spellcheck
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'flyspell-mode-hook
+          (lambda ()
+            (define-key flyspell-mode-map (kbd "C-.") nil)))
 
 ;; wgrep
 (setq wgrep-auto-save-buffer t

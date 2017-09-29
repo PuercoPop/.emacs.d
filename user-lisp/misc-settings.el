@@ -126,5 +126,6 @@
 (global-set-key (kbd "C-c C-r") 'sudo-edit)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c ;") 'iedit-mode)
+(global-set-key (kbd "C-.") #'ido-imenu-anywhere)
 
 (provide 'misc-settings)
