@@ -74,16 +74,6 @@
 ;; (global-whitespace-mode 1)
 (setq whitespace-style '(face trailing tab empty))
 
-;; css-mode stuff
-(setq css-indent-offset 2)
-
-;; Winner mode
-;; (when (fboundp 'winner-mode) (winner-mode 1))
-
-;; Icicles
-;; (require 'icicles)
-;; (icy-mode 1)
-
 ;; Setting a custom file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
