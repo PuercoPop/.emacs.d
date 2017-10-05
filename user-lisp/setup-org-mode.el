@@ -83,8 +83,7 @@
 
 ;; Org Agenda
 (setq org-agenda-custom-commands
-      '(("v" tags "Movies")
-        ("e" tags "Eventos")))
+      '(("e" tags "Eventos")))
 ;; To add: quicklink to bookmarks, weight,
 
 ;; Capture Templates
@@ -98,8 +97,6 @@
         ;;  "* %(org-contacts-template-name)\n  :PROPERTIES:\n  :EMAIL: %(org-contacts-template-email)\n  :END:")
         ("b" "Bookmark links" entry (file+headline "links.org" "Bookmarks")
          "* %?%^g")
-        ("m" "Movies to see" entry (file "movies.org")
-         "* ToDownload %? \n  :PROPERTIES:\n  :DATE: %t\n  :URL: %c\n  :END:")
         ("l" "Temp Links from the interwebs" item (file+headline "links.org" "Temporary Links")
          "%?\nEntered on %U\n \%i\n %a")
         ("w" "Weight Log" table-line (file+headline "weight.org" "Diario de Peso") " | %? | %t |")
