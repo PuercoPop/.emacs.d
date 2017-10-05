@@ -9,7 +9,8 @@
         (sbcl-walk-forms-v2 ("/opt/local/sbcl-codewalker-v2/bin/sbcl"))
         (ecl ("/usr/local/bin/ecl"))
         (abcl ("/home/puercopop/Projects/abcl/abcl/abcl"))
-        (clisp ("/usr/bin/clisp")))
+        (clisp ("/usr/bin/clisp"))
+        (cmucl ("/home/puercopop/.apps/cmucl/bin/lisp")))
       sly-default-lisp 'sbcl)
 
 ;; (sp-with-modes 'sly-mrepl-mode
