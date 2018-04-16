@@ -1,3 +1,5 @@
+(package-initialize)
+
 (setq message-log-max t)
 (server-start)
 (setq debug-on-error t)
@@ -6,11 +8,10 @@
 
 ;; Stuff to run at the beginning
 (setq inhibit-startup-message t)
-;; (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-;; (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-(menu-bar-mode t)
 ;; Set path to .emacs.d
 (setq user-emacs-directory
       (file-name-directory (or (buffer-file-name) load-file-name)))
@@ -171,6 +172,7 @@
 
 ;;; Magit
 (require 'setup-magit)
+(fullframe magit-status magit-mode-quit-window)
 
 ;; SQL
 (after-load 'sql
@@ -190,6 +192,12 @@
 (load-theme 'solarized) 
 (setq initial-buffer-choice "~/org/life.org")
 
+(use-package moody
+  :ensure t
+  :config (progn
+            (setq x-underline-at-descent-line t)
+            (moody-replace-mode-line-buffer-identification)
+            (moody-replace-vc-mode)))
 
 (cl-defun notify (message &key (title "Emacs"))
   "Quick hack to use Ubuntu's notify-send."
