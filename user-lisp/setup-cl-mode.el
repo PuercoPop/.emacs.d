@@ -26,12 +26,7 @@
                                 "full+text+search"
                               "basic+search")))))))
 
-(define-key lisp-mode-map (kbd "C-c l") 'lispdoc)
-;; (eval-after-load 'lisp-mode
-;;   '(progn
-;;      (diminish 'redshank)
-;;      (diminish 'autodoc)))
-(define-key lisp-mode-map (kbd "C-x C-t") 'sp-transpose-sexp)
+
 
 (defconst cl-fontify-defforms-alist
   '((format . 2)
@@ -47,8 +42,6 @@
     (with-simple-restart . 2)
     (y-or-n-p . 1)))
 
-(require 'cl-format)
-
 (defun fontify-control-strings ()
   (set
    (make-local-variable 'cl-format-fontify-defforms-alist)
@@ -57,16 +50,23 @@
   (cl-format-font-lock-mode 1))
 
 (add-hook 'lisp-mode-hook 'fontify-control-strings)
-(add-hook 'lisp-mode-hook 'turn-on-eldoc-mode)
+
 
 (make-variable-buffer-local 'tab-always-indent)
 (add-hook 'lisp-mode-hook
           #'(lambda ()
-              (setq tab-always-indent 'complete)
-              (define-key paredit-mode-map (kbd "\\") nil)))
+              (setq tab-always-indent 'complete)))
 
-;; (add-hook 'lisp-mode-hook 'lispy-mode)
-(add-to-list 'auto-mode-alist '("\\.paren\\'" . lisp-mode))
-
+(use-package lisp-mode
+  :mode (("\\.paren" . lisp-mode))
+  :bind (:map lisp-mode-map
+              (("C-c l" . lispdoc)
+               ("C-x C-t" . sp-transpose-sexp)))
+  :bind (:map paredit-mode-map
+              (("\\" . nil)))
+  ;; :hook ((lisp-mode . #'fontify-control-strings)
+  ;;        (lisp-mode . #'turn-on-eldoc-mode))
+  :init
+  (add-hook 'lisp-mode-hook #'turn-on-eldoc-mode))
 
 (provide 'setup-cl-mode)

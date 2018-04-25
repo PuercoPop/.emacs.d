@@ -97,7 +97,7 @@
 (add-to-list 'auto-mode-alist '("\\.vs\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.ttl\\'" . ttl-mode))
-(require 'setup-c++)
+
 (require 'setup-expand-region)
 (drag-stuff-mode t)
 
@@ -209,7 +209,6 @@
   (require 'sql-indent))
 (add-hook 'sql-mode-hook 'edbi-minor-mode)
 
-(require 'html-validate)
 
 ;; Save point position between sessions
 (use-package saveplace
