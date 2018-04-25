@@ -8,14 +8,21 @@
                  "PuercoPop"
                  "PuercoPop"
                  "PuercoPop"
-                 '("#lisp" "#limajs")
+                 '("#lisp" "#endoli")
                  znc-password
                  'ssl))
 
+;; (setq rcirc-server-alist
+;;       `(("irc.freenode.net"
+;;          :nick "PuercoPop"
+;;          :user-name "PuercoPop"
+;;          :port 6697
+;;          :password ,freenode-nickserv-password
+;;          :encryption tls
+;;          :channels ("#lisp" "#endoli"))))
 
 (setq rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
-      rcirc-log-directory nil
-      rcirc-ignore-list (list "rritoch"))
+      rcirc-log-directory nil)
 
 
 ;;;; Auto reconnect

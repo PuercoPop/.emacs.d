@@ -57,7 +57,8 @@
 (require 'setup-ibuffer-mode)
 (require 'setup-uniquify)
 (require 'setup-undo-tree)
-(require 'setup-tramp-mode)
+(use-package tramp
+  :custom (tramp-default-method "ssh"))
 ;; (require 'sudo-ext)
 (require 'move-text)
 (whole-line-or-region-mode)
@@ -83,6 +84,7 @@
 (add-to-list 'auto-mode-alist '("\\.wiki\\'" . creole-mode))
 (add-to-list 'auto-mode-alist '("\\.vs\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.ttl\\'" . ttl-mode))
 (require 'setup-c++)
 (require 'setup-expand-region)
 (drag-stuff-mode t)
@@ -106,6 +108,7 @@
 
 ;; Javascript
 (add-auto-mode 'js2-mode "\\.js$")
+(add-auto-mode 'js2-mode "\\.es6$")
 (add-auto-mode 'json-mode "\\.json$")
 (after-load 'json-mode
   (setq-default js-indent-level 2))
@@ -163,7 +166,9 @@
 
 ;; Emacs Lisp
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
-(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+(add-hook 'emacs-lisp-mode-hook (lambda ()
+                                  (elisp-slime-nav-mode t)
+                                  (setq tab-always-indent 'complete)))
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
 
@@ -183,10 +188,12 @@
 (require 'html-validate)
 
 ;; Save point position between sessions
-(require 'saveplace)
-(setq-default save-place t
-              save-place-file (expand-file-name ".places"
-                                                user-emacs-directory))
+(use-package saveplace
+  :ensure t
+  :init (setq-default save-place t
+                      save-place-file (expand-file-name ".places"
+                                                        user-emacs-directory)))
+
 
 ;; (require 'setup-smtp)
 (load-theme 'solarized) 
