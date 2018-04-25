@@ -107,13 +107,13 @@
 (require 'setup-notmuch)
 
 ;; Javascript
-(add-auto-mode 'js2-mode "\\.js$")
-(add-auto-mode 'js2-mode "\\.es6$")
-(add-auto-mode 'json-mode "\\.json$")
-(after-load 'json-mode
-  (setq-default js-indent-level 2))
 
-(after-load 'js2-mode
+(use-package json-mode
+  :mode (("\\.json$" . json-mode))
+  :init (setq-default js-indent-level 2))
+
+(use-package js2-mode
+  :init
   (setq-default js2-auto-indent-p t
                 js2-basic-offset 2
                 js2-cleanup-whitespace t
@@ -127,7 +127,19 @@
                 js2-strict-trailing-comma-warning nil
                 js2-strict-cond-assign-warning nil
                 js2-strict-var-redeclaration-warning nil
-                js2-global-externs '("module" "require" "$" "_" "_gaq")))
+                js2-global-externs '("module" "require" "$" "_" "_gaq"))
+  :mode (("\\.js$" . js2-mode)
+         ("\\.es6$" . js2-mode)))
+
+(use-package rjsx-mode
+  :ensure t
+  :mode (("\\.jsx" . rjsx-mode)))
+
+(use-package prettier-js
+  :ensure t
+  :custom
+  (prettier-js-command "npx")
+  (prettier-js-args '("prettier")))
 
 ;;; Irc Stuff
 ;; (require 'setup-erc)
