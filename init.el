@@ -57,6 +57,10 @@
 (require 'setup-ibuffer-mode)
 (require 'setup-uniquify)
 (require 'setup-undo-tree)
+
+(use-package undo-tree
+  :diminish undo-tree)
+
 (use-package tramp
   :custom (tramp-default-method "ssh"))
 ;; (require 'sudo-ext)
