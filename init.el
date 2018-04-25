@@ -51,7 +51,15 @@
 (global-set-key (kbd "C-x 4 p")
                 'direx-project:jump-to-project-root-other-window)
 
-(require 'setup-helm)
+(use-package helm
+  :ensure t
+  :bind (("C-M-s" . helm-occur)
+         ("M-y" . helm-show-kill-ring)
+         ("C-c g" . helm-suggest-google))
+  :bind (:map helm-map
+              (("C-s" . helm-next-line)
+               ("C-r" . helm-previous-line))))
+
 (require 'setup-ido-mode)
 (require 'setup-org-mode)
 (require 'setup-ibuffer-mode)
