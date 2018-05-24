@@ -64,10 +64,10 @@
 (require 'setup-org-mode)
 (require 'setup-ibuffer-mode)
 (require 'setup-uniquify)
-(require 'setup-undo-tree)
 
 (use-package undo-tree
-  :diminish undo-tree)
+  :diminish undo-tree
+  :config (global-undo-tree-mode 1))
 
 (use-package tramp
   :custom (tramp-default-method "ssh"))
