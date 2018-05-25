@@ -218,6 +218,43 @@
                                                         user-emacs-directory)))
 
 
+(use-package elfeed
+  :ensure t
+  :bind (("C-x w" . 'elfeed))
+  :config (progn
+            (setq elfeed-feeds
+                  '("https://gilesbowkett.blogspot.com/feeds/posts/default?alt=atom"
+                    "https://dorophone.blogspot.com/feeds/posts/default?alt=atom"
+                    "https://swannodette.github.io/atom.xml"
+                    "http://emacsninja.com/feed.atoml"
+                    "https://existentialtype.wordpress.com/feed/"
+                    "https://feeds.feedburner.com/lmeyerov"
+                    "http://blog.kingcons.io/rss.xml"
+                    "http://feeds.feedburner.com/glyph"
+                    "https://irreal.org/blog/?feed=atom"
+                    "https://langnostic.inaimathi.ca/feed/atom"
+                    "https://lisp-univ-etc.blogspot.com/feeds/posts/default"
+                    "http://www.loper-os.org/?feed=atom"
+                    "https://feeds.feedburner.com/kvardek-du"
+                    "https://patricklogan.blogspot.com/feeds/posts/default"
+                    "http://nullprogram.com/blog/index.rss"
+                    "http://nullprogram.com/blog/index.rss"
+                    "http://www.pvk.ca/atom.xml"
+                    "http://www.pvk.ca/atom.xml"
+                    "https://pchiusano.blogspot.com/feeds/posts/default"
+                    "http://pchiusano.io/feed.xml"
+                    "http://russ.unwashedmeme.com/blog/?feed=atom"
+                    "https://yinwang0.wordpress.com/feed/"
+                    "https://unlearningeconomics.wordpress.com/feed/"
+                    "http://feeds.feedburner.com/vivekhaldar"
+                    "http://whattheemacsd.com/atom.xml"
+                    "http://wingolog.org/feed/atom"
+                    "http://alex-charlton.com/rss.xml"
+                    "http://lisptips.com/rss"
+                    "http://sciencebitesperu.weebly.com/1/feed"
+                    "http://planet.lisp.org/github.atom"
+                    "http://250bpm.com/feed/pages/pagename/start/category/blog/t/250bpm-blogs/h/http%3A%2F%2Fwww.250bpm.com%2Fblog"))))
+
 ;; (require 'setup-smtp)
 (load-theme 'solarized) 
 (setq initial-buffer-choice "~/org/life.org")
