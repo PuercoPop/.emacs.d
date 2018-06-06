@@ -66,6 +66,7 @@
 (require 'setup-uniquify)
 
 (use-package undo-tree
+  :ensure t
   :diminish undo-tree
   :config (global-undo-tree-mode 1))
 
@@ -163,8 +164,6 @@
 ;;; Misc Stuff
 (require 'password-vault+)
 (password-vault+-register-secrets-file "passwords")
-
-;; (require 'setup-evil)
 
 ;; Lisp Stuff
 ;; Racket
