@@ -72,11 +72,10 @@
 
 (use-package tramp
   :custom (tramp-default-method "ssh"))
-;; (require 'sudo-ext)
+
 (require 'move-text)
 (whole-line-or-region-mode)
 ;; (global-fixmee-mode 1)
-(fullframe magit-status magit-mode-quit-window)
 
 ;; Spellcheck
 (add-hook 'text-mode-hook 'flyspell-mode)
@@ -85,9 +84,11 @@
           (lambda ()
             (define-key flyspell-mode-map (kbd "C-.") nil)))
 
-;; wgrep
-(setq wgrep-auto-save-buffer t
-      wgrep-enable-key "r")
+(use-package wgrep
+  :ensure t
+  :config
+  (setq wgrep-auto-save-buffer t
+        wgrep-enable-key "r"))
 
 ;; Ace Window
 (global-set-key (kbd "C-x o") 'ace-window)
@@ -99,7 +100,10 @@
 (add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.ttl\\'" . ttl-mode))
 
-(require 'setup-expand-region)
+(use-package expand-region
+  :ensure t
+  :init (global-set-key (kbd "C-=") 'er/expand-region))
+
 (drag-stuff-mode t)
 
 ;; Ace Jump mode
@@ -117,8 +121,15 @@
 (require 'setup-css)
 (require 'setup-games)
 ;; (require 'setup-mail)
-(require 'setup-notmuch)
 
+(setq c-default-style '((c-mode . "bsd")
+                        (java-mode . "java")
+                        (awk-mode . "awk")
+                        (other . "gnu")))
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (define-key c-mode-map (kbd "<f8>") 'compile)))
 ;; Javascript
 
 (use-package json-mode
@@ -195,6 +206,13 @@
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
 
+(use-package macrostep
+  :ensure t
+  :bind (:map emacs-lisp-mode-map
+        ("C-c M-e" . macrostep-expand)
+        :map lisp-mode-map
+        ("C-c M-e" . macrostep-expand)))
+
 (require 'setup-cl-mode)
 (require 'setup-sly)
 
@@ -208,6 +226,9 @@
   (require 'sql-indent))
 (add-hook 'sql-mode-hook 'edbi-minor-mode)
 
+(setq prolog-system 'swi
+      auto-mode-alist (append '(("\\.pl$" . prolog-mode))
+                              auto-mode-alist))
 
 ;; Save point position between sessions
 (use-package saveplace
@@ -254,16 +275,18 @@
                     "http://planet.lisp.org/github.atom"
                     "http://250bpm.com/feed/pages/pagename/start/category/blog/t/250bpm-blogs/h/http%3A%2F%2Fwww.250bpm.com%2Fblog"))))
 
-;; (require 'setup-smtp)
-(load-theme 'solarized) 
-(setq initial-buffer-choice "~/org/life.org")
-
 (use-package moody
   :ensure t
   :config (progn
             (setq x-underline-at-descent-line t)
             (moody-replace-mode-line-buffer-identification)
             (moody-replace-vc-mode)))
+
+(use-package docean
+  :load-path "site-lisp/docean.el")
+
+(use-package eyebrowse
+  :ensure t)
 
 (cl-defun notify (message &key (title "Emacs"))
   "Quick hack to use Ubuntu's notify-send."
