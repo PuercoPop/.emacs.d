@@ -75,14 +75,14 @@
 
 (require 'move-text)
 (whole-line-or-region-mode)
-;; (global-fixmee-mode 1)
 
-;; Spellcheck
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-(add-hook 'flyspell-mode-hook
+(use-package flyspell
+  :diminish 'flyspell-mode
+  :init (progn (add-hook 'flyspell-mode-hook
           (lambda ()
-            (define-key flyspell-mode-map (kbd "C-.") nil)))
+            (define-key flyspell-mode-map (kbd "C-.") nil))))
+  :hook ((text-mode . flyspell-mode)
+         (prog-mode . flyspell-prog-mode)))
 
 (use-package wgrep
   :ensure t
@@ -90,8 +90,15 @@
   (setq wgrep-auto-save-buffer t
         wgrep-enable-key "r"))
 
-;; Ace Window
-(global-set-key (kbd "C-x o") 'ace-window)
+(use-package ace-window
+  :ensure t
+  :bind (("M-o" . 'other-window)
+         ("M-0" . 'delete-window)
+         ("M-1" . 'delete-other-windows)
+         ("M-2" . 'split-window-vertically)
+         ("M-3" . 'split-window-right)
+         ("C-x o" . 'ace-window)
+         ("C-x t" . (lambda () (interactive) (ace-window 4)))))
 
 (require 'setup-rainbow-delimiters)
 (require 'setup-markdown-mode)
@@ -102,9 +109,11 @@
 
 (use-package expand-region
   :ensure t
-  :init (global-set-key (kbd "C-=") 'er/expand-region))
+  :bind (("C-=" . 'er/expand-region)))
 
-(drag-stuff-mode t)
+(use-package drag-stuff
+  :ensure t
+  :config (drag-stuff-mode t))
 
 ;; Ace Jump mode
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
@@ -237,6 +246,39 @@
                       save-place-file (expand-file-name ".places"
                                                         user-emacs-directory)))
 
+(defun my/read-env-file (env-file)
+  (with-current-buffer (find-file-noselect env-file)
+    (cl-loop for line in (split-string (buffer-string) "\n")
+             when (string-match "^\\(.+[^[:space:]]\\)[[:space:]]*=[[:space:]]*\\(.+\\)" line)
+             collect (format "%s=%s"
+                             (match-string-no-properties 1 line)
+                             (match-string-no-properties 2 line)))))
+
+(defun my/maybe-inject-proccess-environment (orig-fun &rest args)
+  (chruby-use-corresponding)
+  (when-let ((default-directory (locate-dominating-file default-directory ".git/"))
+             (process-environment (append (my/read-env-file ".env") process-environment)))
+    (apply orig-fun args)))
+
+(use-package chruby
+  :ensure t)
+
+(use-package robe
+  :ensure t
+  :hook (ruby-mode . robe-mode)
+  :init (advice-add 'inf-ruby-console-auto :around #'my/maybe-inject-proccess-environment))
+
+(use-package rspec-mode
+  :ensure t
+  :load-path "site-lisp/rspec-mode"
+  :hook ((ruby-mode . rspec-mode)
+         (dired-mode . rspec-dired-mode))
+  :diminish rspec-mode
+  :init (progn (advice-add 'rspec-compile :around #'my/maybe-inject-proccess-environment)
+               (advice-add 'recompile :around #'my/maybe-inject-proccess-environment)))
+
+(use-package honcho
+  :ensure t)
 
 (use-package elfeed
   :ensure t
@@ -274,6 +316,10 @@
                     "http://sciencebitesperu.weebly.com/1/feed"
                     "http://planet.lisp.org/github.atom"
                     "http://250bpm.com/feed/pages/pagename/start/category/blog/t/250bpm-blogs/h/http%3A%2F%2Fwww.250bpm.com%2Fblog"))))
+
+(use-package doom-themes
+  :ensure t
+  :init (load-theme 'doom-molokai))
 
 (use-package moody
   :ensure t
