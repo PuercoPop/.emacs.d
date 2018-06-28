@@ -270,7 +270,6 @@
 
 (use-package rspec-mode
   :ensure t
-  :load-path "site-lisp/rspec-mode"
   :hook ((ruby-mode . rspec-mode)
          (dired-mode . rspec-dired-mode))
   :diminish rspec-mode
@@ -338,9 +337,11 @@
   "Quick hack to use Ubuntu's notify-send."
   (shell-command
    (concat "notify-send " title " " message)))
-;; Display Emacs Startup Time
+
 (add-hook 'after-init-hook (lambda ()
-                             (notify (format "The init sequence took %s." (emacs-init-time)) :title "Emacs Startup")))
+                             (org-todo-list)
+                             (delete-other-windows)))
 (put 'narrow-to-region 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
+
