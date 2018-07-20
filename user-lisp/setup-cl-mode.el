@@ -27,7 +27,6 @@
                               "basic+search")))))))
 
 
-
 (defconst cl-fontify-defforms-alist
   '((format . 2)
     (formatter . 1)
@@ -46,10 +45,12 @@
   (set
    (make-local-variable 'cl-format-fontify-defforms-alist)
    (append cl-format-fontify-defforms-alist
-                 cl-fontify-defforms-alist))
+           cl-fontify-defforms-alist))
   (cl-format-font-lock-mode 1))
 
-(add-hook 'lisp-mode-hook 'fontify-control-strings)
+(use-package cl-format
+  :ensure t
+  :hook ((lisp-mode-hook . fontify-control-strings)))
 
 
 (make-variable-buffer-local 'tab-always-indent)

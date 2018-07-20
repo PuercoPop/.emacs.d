@@ -51,16 +51,37 @@
 (global-set-key (kbd "C-x 4 p")
                 'direx-project:jump-to-project-root-other-window)
 
+
+(use-package ivy
+  :ensure t
+  :config (setq ivy-display-style 'fancy
+                ivy-use-virtual-buffers t)
+  :bind (("C-c C-r" . ivy-resume)))
+
+(use-package swiper
+  :ensure t
+  :bind (("C-c C-o" . swiper)))
+
+(use-package counsel
+  :ensure t
+  :bind (("C-x C-f" . counsel-find-file)
+         ("M-y" . counsel-yank-pop)
+         ("C-h f" . counsel-describe-function)
+         ("C-h f" . counsel-describe-variable)))
+
+(use-package find-file-in-project
+  :ensure t
+  :bind (("M-p" . find-file-in-project)))
+
 (use-package helm
   :ensure t
   :bind (("C-M-s" . helm-occur)
-         ("M-y" . helm-show-kill-ring)
+         ;; ("M-y" . helm-show-kill-ring)
          ("C-c g" . helm-suggest-google))
   :bind (:map helm-map
               (("C-s" . helm-next-line)
                ("C-r" . helm-previous-line))))
 
-(require 'setup-ido-mode)
 (require 'setup-org-mode)
 (require 'setup-ibuffer-mode)
 (require 'setup-uniquify)
@@ -332,6 +353,18 @@
 
 (use-package eyebrowse
   :ensure t)
+
+;; (require 'exwm)
+;; (require 'exwm-config)
+;; (exwm-config-default)
+
+;; (exwm-input-set-key (kbd "M-p")
+;;                     (lambda (command)
+;;                       (interactive (list (read-shell-command "$ ")))
+;;                       (start-process-shell-command command nil command)))
+
+;; (exwm-input-set-key (kbd "C-x w t") #'exwm-floating-toggle-floating)
+;; (exwm-input-set-key (kbd "C-x w f") #'exwm-layout-toggle-fullscreen)
 
 (cl-defun notify (message &key (title "Emacs"))
   "Quick hack to use Ubuntu's notify-send."
