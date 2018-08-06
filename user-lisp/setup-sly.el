@@ -8,8 +8,8 @@
         (sbcl-walk-forms ("/opt/local/sbcl-codewalker/bin/sbcl"))
         (sbcl-walk-forms-v2 ("/opt/local/sbcl-codewalker-v2/bin/sbcl"))
         (ecl ("/usr/local/bin/ecl"))
-        ;; (abcl ("/home/puercopop/Projects/abcl/abcl/abcl"))
-        (abcl ("/home/puercopop/Projects/abcl-git/abcl"))
+        (abcl ("/home/puercopop/Projects/abcl/abcl/abcl"))
+        (abcl-git ("/home/puercopop/Projects/abcl-git/abcl"))
         (clisp ("/usr/bin/clisp"))
         (cmucl ("/home/puercopop/.apps/cmucl/bin/lisp")))
       sly-default-lisp 'sbcl)
@@ -17,15 +17,12 @@
 ;; (sp-with-modes 'sly-mrepl-mode
 ;;     (sp-local-pair "'" nil :actions nil))
 
-;; (add-hook 'sly-mrepl-mode-hook 'sly-mrepl--ensure-no-font-lock) ;; FIX for font-lock issue where I can't type
+(add-to-list 'Info-default-directory-list
+             "/home/puercopop/.emacs.d/site-lisp/sly/doc/")
 
-(setq Info-default-directory-list
-      (cons "/home/puercopop/.emacs.d/site-lisp/sly/doc/"
-            Info-default-directory-list))
-
-(push 'sly-repl-ansi-color sly-contribs)
-(push 'sly-indentation sly-contribs)
-;; (setq sly-contribs (delete 'sly-retro sly-contribs))
+(add-to-list 'sly-contribs 'sly-macrostep 'append)
+(add-to-list 'sly-contribs 'sly-repl-ansi-color 'append)
+(add-to-list 'sly-contribs 'sly-repl-ansi-color 'append)
 
 (eval-after-load 'sly
   '(progn (define-key lisp-mode-map
@@ -46,6 +43,6 @@
 ;; (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
 ;; (define-key company-active-map (kbd "M-.") 'company-show-location)
 
-(require 'sly-macrostep-autoloads)
+;; (require 'sly-macrostep-autoloads)
 
 (provide 'setup-sly)

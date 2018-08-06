@@ -102,6 +102,8 @@
         ("c" "Lucuma Clock In" table-line (file+headline "lucuma.org" "Bitácora de Asistencia") " | %T |")))
 
 ;; Org-Journal
-(setq org-journal-dir "~/org/journal/")
+(use-package org-journal
+  :ensure t
+  :config (setq org-journal-dir "~/org/journal/"))
 
 (provide 'setup-org-mode)

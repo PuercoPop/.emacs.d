@@ -44,19 +44,22 @@
   (darwin (require 'mac))
   (gnu/linux (require 'linux)))
 (require 'midnight)
-(require 'setup-dired+)
-(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory)
-(global-set-key (kbd "C-x p")
-                'direx-project:jump-to-project-root)
-(global-set-key (kbd "C-x 4 p")
-                'direx-project:jump-to-project-root-other-window)
 
+(use-package dired
+  :config (setq dired-dwim-target t))
+
+(require 'setup-dired+)
 
 (use-package ivy
   :ensure t
   :config (setq ivy-display-style 'fancy
-                ivy-use-virtual-buffers t)
-  :bind (("C-c C-r" . ivy-resume)))
+                ivy-use-virtual-buffers t
+                ivy-wrap t)
+  :bind (("C-c C-r" . ivy-resume)
+         ("C-x b" . ivy-switch-buffer)
+         :map ivy-minibuffer-map
+         (("C-s" . ivy-next-line)
+          ("C-r" . ivy-previous-line-or-history))))
 
 (use-package swiper
   :ensure t
@@ -67,11 +70,11 @@
   :bind (("C-x C-f" . counsel-find-file)
          ("M-y" . counsel-yank-pop)
          ("C-h f" . counsel-describe-function)
-         ("C-h f" . counsel-describe-variable)))
+         ("C-h v" . counsel-describe-variable)))
 
 (use-package find-file-in-project
   :ensure t
-  :bind (("M-p" . find-file-in-project)))
+  :bind (("C-x p" . find-file-in-project)))
 
 (use-package helm
   :ensure t
@@ -132,24 +135,18 @@
   :ensure t
   :bind (("C-=" . 'er/expand-region)))
 
-(use-package drag-stuff
-  :ensure t
-  :config (drag-stuff-mode t))
-
-;; Ace Jump mode
-(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-
 ;; multiple-cursors
-(global-set-key (kbd "C-c C-a") 'mc/mark-all-like-this-dwim)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-prev-like-this)
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-c C-a" . 'mc/mark-all-like-this-dwim)
+         ("C->" . 'mc/mark-next-like-this)
+         ("C-<" . 'mc/mark-previous-like-this)))
+
 
 ;; (require 'setup-mediawiki)
 ;; (require 'mud)
-(require 'setup-popwin)
 (require 'setup-html-templates)
 (require 'setup-css)
-(require 'setup-games)
 ;; (require 'setup-mail)
 
 (setq c-default-style '((c-mode . "bsd")
@@ -160,6 +157,11 @@
 (add-hook 'c-mode-common-hook
           (lambda ()
             (define-key c-mode-map (kbd "<f8>") 'compile)))
+
+(use-package nyan-prompt
+  :load-path "site-lisp/nyan-prompt"
+  :init (nyan-prompt-enable))
+
 ;; Javascript
 
 (use-package json-mode
@@ -302,7 +304,6 @@
 
 (use-package elfeed
   :ensure t
-  :bind (("C-x w" . 'elfeed))
   :config (progn
             (setq elfeed-feeds
                   '("https://gilesbowkett.blogspot.com/feeds/posts/default?alt=atom"
