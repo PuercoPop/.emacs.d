@@ -348,9 +348,9 @@
                     "http://planet.lisp.org/github.atom"
                     "http://250bpm.com/feed/pages/pagename/start/category/blog/t/250bpm-blogs/h/http%3A%2F%2Fwww.250bpm.com%2Fblog"))))
 
-(use-package doom-themes
+(use-package darktooth-theme
   :ensure t
-  :init (load-theme 'doom-molokai))
+  :init (load-theme 'darktooth))
 
 (use-package moody
   :ensure t
