@@ -100,6 +100,11 @@
   :diminish undo-tree
   :config (global-undo-tree-mode 1))
 
+(use-package info
+  :bind (:map Info-mode-map
+              (("(" . Info-backward-node)
+               (")" . Info-forward-node))))
+
 (use-package tramp
   :custom (tramp-default-method "ssh"))
 
