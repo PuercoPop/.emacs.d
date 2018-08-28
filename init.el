@@ -50,25 +50,31 @@
 
 (require 'setup-dired+)
 
-(use-package ivy
+(use-package ido
+  :init (progn
+          (ido-mode t)
+          (ido-everywhere t))
+  :config (setq ido-enable-flex-matching t
+                ido-create-new-buffer 'always
+                ido-use-virtual-buffers nil)
+  :bind (:map ido-file-completion-map
+              (("C-w" . ido-delete-backward-updir))))
+
+(use-package ido-vertical-mode
   :ensure t
-  :config (setq ivy-display-style 'fancy
-                ivy-use-virtual-buffers t
-                ivy-wrap t)
-  :bind (("C-c C-r" . ivy-resume)
-         ("C-x b" . ivy-switch-buffer)
-         :map ivy-minibuffer-map
-         (("C-s" . ivy-next-line)
-          ("C-r" . ivy-previous-line-or-history))))
+  :init (ido-vertical-mode))
+
+(use-package ido-better-flex
+  :ensure t
+  :init (ido-better-flex/enable))
 
 (use-package swiper
   :ensure t
-  :bind (("C-c C-o" . swiper)))
+  :bind (("C-c o" . swiper)))
 
 (use-package counsel
   :ensure t
-  :bind (("C-x C-f" . counsel-find-file)
-         ("M-y" . counsel-yank-pop)
+  :bind (("M-y" . counsel-yank-pop)
          ("C-h f" . counsel-describe-function)
          ("C-h v" . counsel-describe-variable)))
 
