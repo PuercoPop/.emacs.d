@@ -313,7 +313,8 @@
 
 (defun my/call-in-rspec (fn)
   (lambda (&rest args)
-    (apply fn args)))
+    (when (eq major-mode 'rspec-compilation-mode)
+      (apply fn args))))
 
 (defun my/maybe-inject-proccess-environment (orig-fun &rest args)
   (chruby-use-corresponding)
@@ -335,7 +336,7 @@
          (dired-mode . rspec-dired-mode))
   :diminish rspec-mode
   :init (progn (advice-add 'rspec-compile :around #'my/maybe-inject-proccess-environment)
-               (advice-add 'recompile :around #'(my/call-in-rspec #'my/maybe-inject-proccess-environment))))
+               (advice-add 'recompile :around (my/call-in-rspec #'my/maybe-inject-proccess-environment))))
 
 (use-package inf-ruby
   :ensure t)
