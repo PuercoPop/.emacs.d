@@ -1,4 +1,5 @@
 (setq visual-line-mode t)
+(setq disabled-command-function nil)
 (setq-default indent-tabs-mode nil)
 (show-paren-mode 1)
 (setq default-directory "~/")

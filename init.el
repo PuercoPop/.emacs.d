@@ -417,7 +417,4 @@
 (add-hook 'after-init-hook (lambda ()
                              (org-todo-list)
                              (delete-other-windows)))
-(put 'narrow-to-region 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
 
