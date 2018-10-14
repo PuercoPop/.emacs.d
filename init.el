@@ -43,12 +43,25 @@
 (case system-type
   (darwin (require 'mac))
   (gnu/linux (require 'linux)))
-(require 'midnight)
 
 (use-package dired
   :config (setq dired-dwim-target t))
 
-(require 'setup-dired+)
+(use-package dired+
+  :after (dired)
+  :init (toggle-diredp-find-file-reuse-dir 1))
+
+(use-package dired-x
+  :after (dired))
+;; (add-hook 'dired-mode-hook
+;;           (lambda ()
+;;             (local-set-key (kbd "M-o") 'other-window)
+;;             (local-set-key (kbd "C-x o") 'dired-omit-mode)))
+
+(use-package dired-toggle
+  :ensure t
+  :after (dired)
+  :bind (("<f5>" . direct-toggle)))
 
 (use-package ido
   :init (progn
@@ -298,6 +311,10 @@
                              (match-string-no-properties 1 line)
                              (match-string-no-properties 2 line)))))
 
+(defun my/call-in-rspec (fn)
+  (lambda (&rest args)
+    (apply fn args)))
+
 (defun my/maybe-inject-proccess-environment (orig-fun &rest args)
   (chruby-use-corresponding)
   (when-let ((default-directory (locate-dominating-file default-directory ".git/"))
@@ -318,7 +335,10 @@
          (dired-mode . rspec-dired-mode))
   :diminish rspec-mode
   :init (progn (advice-add 'rspec-compile :around #'my/maybe-inject-proccess-environment)
-               (advice-add 'recompile :around #'my/maybe-inject-proccess-environment)))
+               (advice-add 'recompile :around #'(my/call-in-rspec #'my/maybe-inject-proccess-environment))))
+
+(use-package inf-ruby
+  :ensure t)
 
 (use-package honcho
   :ensure t)
@@ -374,7 +394,8 @@
   :load-path "site-lisp/docean.el")
 
 (use-package eyebrowse
-  :ensure t)
+  :ensure t
+  :init (eyebrowse-mode t))
 
 ;; (require 'exwm)
 ;; (require 'exwm-config)

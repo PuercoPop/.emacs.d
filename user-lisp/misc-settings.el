@@ -3,8 +3,9 @@
 (show-paren-mode 1)
 (setq default-directory "~/")
 (blink-cursor-mode 0)
-(setq enable-recursive-minibuffers t)
-;; (minibuffer-depth-indicator-mode t)
+(setq enable-recursive-minibuffers t
+      minibuffer-depth-indicator-mode t)
+(setq scroll-preserve-screen-position 'always)
 
 (setq echo-keystrokes 0.1)
 
