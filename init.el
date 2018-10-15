@@ -312,9 +312,10 @@
                              (match-string-no-properties 2 line)))))
 
 (defun my/call-in-rspec (fn)
-  (lambda (&rest args)
-    (when (eq major-mode 'rspec-compilation-mode)
-      (apply fn args))))
+  (lambda (orig-fn &rest args)
+    (if (eq major-mode 'rspec-compilation-mode)
+        (apply fn orig-fn args)
+      (apply orig-fn args))))
 
 (defun my/maybe-inject-proccess-environment (orig-fun &rest args)
   (chruby-use-corresponding)
@@ -336,7 +337,7 @@
          (dired-mode . rspec-dired-mode))
   :diminish rspec-mode
   :init (progn (advice-add 'rspec-compile :around #'my/maybe-inject-proccess-environment)
-               (advice-add 'recompile :around (my/call-in-rspec #'my/maybe-inject-proccess-environment))))
+               (advice-add 'recompile :around (my/call-in-rspec #'my/maybe-inject-proccess-environment)) ))
 
 (use-package inf-ruby
   :ensure t)
@@ -393,6 +394,13 @@
 
 (use-package docean
   :load-path "site-lisp/docean.el")
+
+(use-package shackle
+  :ensure t
+  :config (setq shackle-rules
+                '((compilation-mode :noselect t)
+                  (sly-mrepl-mode :other t))
+                shackle-default-rule '(:select t)))
 
 (use-package eyebrowse
   :ensure t
