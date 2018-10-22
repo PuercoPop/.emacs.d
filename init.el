@@ -74,10 +74,12 @@
               (("C-w" . ido-delete-backward-updir))))
 
 (use-package ido-vertical-mode
+  :after (ido)
   :ensure t
   :init (ido-vertical-mode))
 
 (use-package ido-better-flex
+  :after (ido)
   :ensure t
   :init (ido-better-flex/enable))
 
@@ -149,7 +151,11 @@
          ("C-x t" . (lambda () (interactive) (ace-window 4)))))
 
 (require 'setup-rainbow-delimiters)
-(require 'setup-markdown-mode)
+
+(use-package markdown-mode
+  :ensure t
+  :mode (("\\.md" . markdown-mode)))
+
 (add-to-list 'auto-mode-alist '("\\.wiki\\'" . creole-mode))
 (add-to-list 'auto-mode-alist '("\\.vs\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
@@ -159,7 +165,6 @@
   :ensure t
   :bind (("C-=" . 'er/expand-region)))
 
-;; multiple-cursors
 (use-package multiple-cursors
   :ensure t
   :bind (("C-c C-a" . 'mc/mark-all-like-this-dwim)
