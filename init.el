@@ -61,7 +61,7 @@
 (use-package dired-toggle
   :ensure t
   :after (dired)
-  :bind (("<f5>" . direct-toggle)))
+  :bind (("<f5>" . dired-toggle)))
 
 (use-package ido
   :init (progn
@@ -226,6 +226,21 @@
   (prettier-js-command "npx")
   (prettier-js-args '("prettier")))
 
+(require 'virtualenvwrapper)
+(setq venv-location "~/.envs/")
+;; (require 'jedi)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (add-hook 'python-mode-hook
+;;          '(lambda ()
+;;             (setq fill-column 79)
+;;             (jedi:setup)
+;;             (jedi:ac-setup)))
+
+(eval-after-load "python"
+  '(progn (setq python-fill-docstring-style 'pep-257-nn)
+          (define-key python-mode-map "\C-cx" 'jedi-direx:pop-to-buffer)
+          (define-key python-mode-map (kbd "C-c t") 'python-test-test-function)))
+
 ;;; Irc Stuff
 ;; (require 'setup-erc)
 (require 'setup-rcirc)
@@ -238,9 +253,6 @@
 (password-vault+-register-secrets-file "passwords")
 
 ;; Lisp Stuff
-;; Racket
-(add-to-list 'auto-mode-alist '("\\.rkt$" . racket-mode))
-(setq racket-smart-open-bracket-enable t)
 
 (require 'setup-paredit)
 ;; (smartparens-global-mode)
@@ -260,12 +272,9 @@
 ;;   (kbd "C-<left_bracket>") 'sp-select-previous-thing)
 
 ;; Emacs Lisp
-(autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda ()
-                                  (elisp-slime-nav-mode t)
+                                  (turn-on-eldoc-mode)
                                   (setq tab-always-indent 'complete)))
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
 
 (use-package macrostep
   :ensure t
@@ -276,6 +285,37 @@
 
 (require 'setup-cl-mode)
 (require 'setup-sly)
+;; (use-package sly-mode
+;;   :load-path "site-lisp/sly"
+;;   :init (add-to-list 'Info-default-directory-list
+;;                      "/home/puercopop/.emacs.d/site-lisp/sly/doc/")
+;;   :config (progn
+;;             (setq sly-lisp-implementations
+;;                   '((ccl ("/home/puercopop/.apps/ccl/lx86cl64"))
+;;                     (sbcl ("/usr/local/bin/sbcl"))
+;;                     (sbcl-vanilla ("/opt/local/bin/sbcl"))
+;;                     (mezzano ("/opt/local/bin/sbcl-mezzano"))
+;;                     (sbcl-walk-forms ("/opt/local/sbcl-codewalker/bin/sbcl"))
+;;                     (sbcl-walk-forms-v2 ("/opt/local/sbcl-codewalker-v2/bin/sbcl"))
+;;                     (ecl ("/usr/local/bin/ecl"))
+;;                     (abcl ("/home/puercopop/Projects/abcl/abcl/abcl"))
+;;                     (abcl-git ("/home/puercopop/Projects/abcl-git/abcl"))
+;;                     (clisp ("/usr/bin/clisp"))
+;;                     (cmucl ("/home/puercopop/.apps/cmucl/bin/lisp")))
+;;                   sly-default-lisp 'sbcl)
+;;             (add-to-list 'sly-contribs 'sly-macrostep 'append)
+;;             (add-to-list 'sly-contribs 'sly-repl-ansi-color 'append)
+;;             (add-to-list 'sly-contribs 'sly-indendation 'append))
+;;   :bind (:map lisp-mode-map
+;;               ("M-i" . sly-inspect-defintion)
+;;          :map sly-doc-map
+;;               ("C-d" . sly-documentation)
+;;          :map sly--completion-transient-mode-map
+;;               ("C-s" . sly-next-completion)
+;;               ("C-r" . sly-prev-completion)))
+
+(use-package geiser
+  :ensure t)
 
 (use-package smtpmail
   :config (setq smtpmail-smtp-server "smtp.gmail.com"
@@ -300,13 +340,6 @@
 (setq prolog-system 'swi
       auto-mode-alist (append '(("\\.pl$" . prolog-mode))
                               auto-mode-alist))
-
-;; Save point position between sessions
-(use-package saveplace
-  :ensure t
-  :init (setq-default save-place t
-                      save-place-file (expand-file-name ".places"
-                                                        user-emacs-directory)))
 
 (defun my/read-env-file (env-file)
   (with-current-buffer (find-file-noselect env-file)
@@ -410,6 +443,9 @@
 (use-package eyebrowse
   :ensure t
   :init (eyebrowse-mode t))
+
+(use-package pivotal-tracker
+  :load-path "site-lisp/pivotal-tracker")
 
 ;; (require 'exwm)
 ;; (require 'exwm-config)
