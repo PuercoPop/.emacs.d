@@ -106,13 +106,16 @@
               (("C-s" . helm-next-line)
                ("C-r" . helm-previous-line))))
 
+(use-package minions
+  :ensure t
+  :config (minions-mode 1))
+
 (require 'setup-org-mode)
 (require 'setup-ibuffer-mode)
 (require 'setup-uniquify)
 
 (use-package undo-tree
   :ensure t
-  :diminish undo-tree
   :config (global-undo-tree-mode 1))
 
 (use-package info
@@ -127,7 +130,6 @@
 (whole-line-or-region-mode)
 
 (use-package flyspell
-  :diminish 'flyspell-mode
   :init (progn (add-hook 'flyspell-mode-hook
           (lambda ()
             (define-key flyspell-mode-map (kbd "C-.") nil))))
@@ -327,9 +329,25 @@
                 smtpmail-debug-info t
                 send-mail-function 'smtpmail-send-it))
 
-;;; Magit
-(require 'setup-magit)
-(fullframe magit-status magit-mode-quit-window)
+(use-package git-commit
+  :ensure t
+  :config (progn
+            (setq git-commit-fill-column 72)
+            (add-to-list 'git-commit-style-convention-checks
+                         'overlong-summary-line)))
+
+(use-package magit
+  :ensure t
+  :config (progn
+            (setq magit-auto-revert-mode nil
+                  magit-push-always-verify nil)
+            (magit-add-section-hook 'magit-status-sections-hook
+                          'magit-insert-branch-description
+                          nil t)
+            (fullframe magit-status magit-mode-quit-window))
+  :bind (("C-c s" . 'magit-status)
+         (:map magit-status-mode-map
+               ("W" . 'magit-toggle-whitespace))))
 
 ;; SQL
 (after-load 'sql
@@ -373,7 +391,6 @@
   :ensure t
   :hook ((ruby-mode . rspec-mode)
          (dired-mode . rspec-dired-mode))
-  :diminish rspec-mode
   :init (progn (advice-add 'rspec-compile :around #'my/maybe-inject-proccess-environment)
                (advice-add 'recompile :around (my/call-in-rspec #'my/maybe-inject-proccess-environment)) ))
 
