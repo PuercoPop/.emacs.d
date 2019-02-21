@@ -191,4 +191,13 @@ Including indent-buffer, which should not be called automatically on save."
       (move-beginning-of-line 0)
       (back-to-indentation))))
 
+(defun kill-filename ()
+  "Save in the KILL-RING the filename of the current buffer."
+  (interactive)
+  (if-let ((filename (buffer-file-name (current-buffer))))
+      (with-temp-buffer
+        (insert filename)
+        (kill-ring-save (point-min) (point-max)))
+      (message "Buffer %s has no associated file" (current-buffer))))
+
 (provide 'user-defuns)
