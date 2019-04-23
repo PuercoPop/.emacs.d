@@ -452,9 +452,9 @@
                     "http://planet.lisp.org/github.atom"
                     "http://250bpm.com/feed/pages/pagename/start/category/blog/t/250bpm-blogs/h/http%3A%2F%2Fwww.250bpm.com%2Fblog"))))
 
-(use-package darktooth-theme
+(use-package moe-theme
   :ensure t
-  :init (load-theme 'darktooth))
+  :config (load-theme 'moe-light))
 
 (use-package moody
   :ensure t
