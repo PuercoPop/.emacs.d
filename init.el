@@ -1,10 +1,10 @@
 (package-initialize)
-
-(setq message-log-max t)
 (server-start)
-(setq debug-on-error t)
-(setq load-prefer-newer t)
-(setq lexical-binding t)
+
+(setq message-log-max t
+      debug-on-error nil
+      load-prefer-newer t
+      lexical-binding t)
 
 ;; Stuff to run at the beginning
 (setq inhibit-startup-message t)
@@ -45,7 +45,8 @@
   (gnu/linux (require 'linux)))
 
 (use-package dired
-  :config (setq dired-dwim-target t))
+  :config (setq dired-dwim-target t
+                dired-listing-switches "-alh"))
 
 (use-package dired+
   :after (dired)
@@ -62,6 +63,11 @@
   :ensure t
   :after (dired)
   :bind (("<f5>" . dired-toggle)))
+
+(use-package recentf
+  :config (progn
+            (setq recentf-max-saved-items 50)
+            (recentf-mode 1)))
 
 (use-package ido
   :init (progn
@@ -91,7 +97,17 @@
   :ensure t
   :bind (("M-y" . counsel-yank-pop)
          ("C-h f" . counsel-describe-function)
-         ("C-h v" . counsel-describe-variable)))
+         ("C-h v" . counsel-describe-variable)
+         ("C-x C-r" . counsel-recentf)))
+
+(use-package transient
+  :ensure t
+  :config (define-transient-command my/counsel ()
+            "Entry point for assorted commands."
+            [("o" "Swipe file" swiper)
+             ("r" "Grep project" counsel-git-grep)
+             ("p" "Find File in Project" counsel-git)])
+  :bind (("C-c o" . my/counsel)))
 
 (use-package find-file-in-project
   :ensure t
