@@ -4,7 +4,8 @@
 (setq message-log-max t
       debug-on-error nil
       load-prefer-newer t
-      lexical-binding t)
+      lexical-binding t
+      require-final-newline t)
 
 ;; Stuff to run at the beginning
 (setq inhibit-startup-message t)
