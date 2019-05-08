@@ -178,10 +178,18 @@
   :ensure t
   :mode (("\\.md" . markdown-mode)))
 
-(add-to-list 'auto-mode-alist '("\\.wiki\\'" . creole-mode))
-(add-to-list 'auto-mode-alist '("\\.vs\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.ttl\\'" . ttl-mode))
+(use-package creole-mode
+  :ensure t
+  :mode (("\\.wiki\\'" . creole-mode)))
+
+(use-package glsl-mode
+  :ensure t
+  :mode (("\\.vs\\'" . glsl-mode)
+         ("\\.fs\\'" . glsl-mode)))
+
+(use-package ttl-mode
+  :ensure t
+  :mode (("\\.ttl\\'" . ttl-mode)))
 
 (use-package expand-region
   :ensure t
@@ -216,6 +224,7 @@
 ;; Javascript
 
 (use-package json-mode
+  :ensure t
   :mode (("\\.json$" . json-mode))
   :init (setq-default js-indent-level 2))
 
@@ -248,8 +257,10 @@
   (prettier-js-command "npx")
   (prettier-js-args '("prettier")))
 
-(require 'virtualenvwrapper)
-(setq venv-location "~/.envs/")
+(use-package virtualenvwrapper
+  :ensure t
+  :config (setq venv-location "~/.envs/"))
+
 ;; (require 'jedi)
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; (add-hook 'python-mode-hook
@@ -407,6 +418,8 @@
   :hook (ruby-mode . robe-mode)
   :init (advice-add 'inf-ruby-console-auto :around #'my/maybe-inject-proccess-environment))
 
+(setq compilation-scroll-output t)
+
 (use-package rspec-mode
   :ensure t
   :hook ((ruby-mode . rspec-mode)
@@ -416,6 +429,19 @@
 
 (use-package inf-ruby
   :ensure t)
+
+(use-package web-mode
+  :ensure t
+  :config (setq web-mode-markup-indent-offset 2)
+  :mode (("\\.erb\\'" . web-mode)))
+
+(use-package xterm-color
+  :ensure t
+  :init
+  (progn
+    (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+    (setq comint-output-filter-functions
+          (remove 'ansi-color-process-output comint-output-filter-functions))))
 
 (use-package honcho
   :ensure t)
