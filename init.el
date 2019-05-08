@@ -197,9 +197,10 @@
 
 (use-package multiple-cursors
   :ensure t
-  :bind (("C-c C-a" . 'mc/mark-all-like-this-dwim)
-         ("C->" . 'mc/mark-next-like-this)
-         ("C-<" . 'mc/mark-previous-like-this)))
+  :bind (("C-c C-a" . mc/mark-all-like-this-dwim)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("M-S-<mouse-1>" . mc/add-cursor-on-click)))
 
 
 ;; (require 'setup-mediawiki)
