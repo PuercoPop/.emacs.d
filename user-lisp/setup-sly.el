@@ -45,4 +45,19 @@
 
 ;; (require 'sly-macrostep-autoloads)
 
+
+(defun sly-load-asdf-system ()
+  (interactive)
+  (let* ((ql-system-names (sly-eval `(cl:mapcar 'ql-dist:name (ql:system-list))))
+         (local-projects (sly-eval `(ql:list-local-systems)))
+         (system-name (sly-completing-read "System name: "
+                                           (append local-projects
+                                                   ql-system-names))))
+    (sly-message "Loading %s system." system-name)
+    (sly-eval-async `(asdf:load-system ,system-name))))
+
+(setq sly-mrepl-shortcut-alist
+      (acons "load system" 'sly-load-asdf-system
+             sly-mrepl-shortcut-alist))
+
 (provide 'setup-sly)
