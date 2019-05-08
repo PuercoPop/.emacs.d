@@ -67,9 +67,10 @@
 ;; BackupStuff
 (setq backup-directory-alist `(("." . ,(expand-file-name
                                         (concat user-emacs-directory "backups")))))
-(setq make-backup-files t)
-(setq vc-make-backup-files t)
-(setq auto-save-default nil)
+(setq make-backup-files t
+      vc-make-backup-files t
+      auto-save-default nil
+      vc-handled-backends '(Git Hg))
 
 ;; (global-set-key (kbd "<escape>") 'god-mode-all)
 

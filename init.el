@@ -364,13 +364,21 @@
 
 (use-package git-commit
   :ensure t
-  :config (progn
-            (setq git-commit-fill-column 72)
-            (add-to-list 'git-commit-style-convention-checks
-                         'overlong-summary-line)))
+  :config (add-to-list 'git-commit-style-convention-checks
+                       'overlong-summary-line)
+  :hook ((git-comit . (lambda () (setq fill-column 72)))))
+
+
+(use-package vc-annotate)
+
+(defun my/show-commit ()
+  (interactive)
+  (let ((revision (car (vc-annotate-extract-revision-at-line))))
+    (magit-show-commit revision)))
 
 (use-package magit
   :ensure t
+  :after (vc-annotate)
   :config (progn
             (setq magit-auto-revert-mode nil
                   magit-push-always-verify nil)
@@ -378,9 +386,18 @@
                           'magit-insert-branch-description
                           nil t)
             (fullframe magit-status magit-mode-quit-window))
-  :bind (("C-c s" . 'magit-status)
+  :bind (("C-c s" . magit-status)
+         ("C-c g" . magit-file-dispatch)
+         (:map magit-mode-map
+               ("C-c C-o" . 'magit-browse-thing))
          (:map magit-status-mode-map
-               ("W" . 'magit-toggle-whitespace))))
+               ("W" . 'magit-toggle-whitespace))
+         (:map vc-annotate-mode-map
+               ("<return>" . my/show-commit))))
+
+(use-package forge
+  :after (magit)
+  :ensure t)
 
 ;; SQL
 (after-load 'sql

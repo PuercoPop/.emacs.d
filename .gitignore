@@ -1,6 +1,7 @@
 elnode/
 emms/
 elpa/
+site-lisp/
 \.cask/
 var/
 eshell/
@@ -15,5 +16,6 @@ tramp
 \.places
 ac-comphist.dat
 session\.*
-
+.sx/
+forge-database.sqlite
 *~
