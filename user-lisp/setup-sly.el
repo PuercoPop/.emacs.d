@@ -21,8 +21,6 @@
              "/home/puercopop/.emacs.d/site-lisp/sly/doc/")
 
 (add-to-list 'sly-contribs 'sly-macrostep 'append)
-(add-to-list 'sly-contribs 'sly-repl-ansi-color 'append)
-(add-to-list 'sly-contribs 'sly-repl-ansi-color 'append)
 
 (eval-after-load 'sly
   '(progn (define-key lisp-mode-map
