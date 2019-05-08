@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 (require 'sly-autoloads)
 
 (setq sly-lisp-implementations
@@ -43,18 +44,31 @@
 
 ;; (require 'sly-macrostep-autoloads)
 
+(defun sly-list-asdf-systems ()
+  (sly-eval `(cl:append (ql:list-local-systems)
+                        (cl:mapcar 'ql-dist:name (ql:system-list)))))
 
 (defun sly-load-asdf-system ()
   (interactive)
-  (let* ((ql-system-names (sly-eval `(cl:mapcar 'ql-dist:name (ql:system-list))))
-         (local-projects (sly-eval `(ql:list-local-systems)))
-         (system-name (sly-completing-read "System name: "
-                                           (append local-projects
-                                                   ql-system-names))))
+  (let* ((system-name (sly-completing-read "System name: "
+                                           (sly-list-asdf-systems))))
     (sly-message "Loading %s system." system-name)
-    (sly-eval-async `(asdf:load-system ,system-name))))
+    (sly-eval-async `(ql:quickload ,system-name)
+      (lambda (result)
+        (declare (ignore result))
+        (sly-message "System %s loaded." system-name)))))
+
+(defun sly-test-asdf-system ()
+  (interactive)
+  (let* ((system-name (sly-completing-read "System name: "
+                                           (sly-list-asdf-systems))))
+    (sly-message "Loading %s system." system-name)
+    (sly-eval-async `(asdf:test-system ,system-name))))
 
 (setq sly-mrepl-shortcut-alist
+      (acons "test system" 'sly-test-asdf-system
+             sly-mrepl-shortcut-alist)
+      sly-mrepl-shortcut-alist
       (acons "load system" 'sly-load-asdf-system
              sly-mrepl-shortcut-alist))
 
