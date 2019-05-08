@@ -168,7 +168,11 @@
          ("C-x o" . 'ace-window)
          ("C-x t" . (lambda () (interactive) (ace-window 4)))))
 
-(require 'setup-rainbow-delimiters)
+(use-package rainbow-delimiters
+  :ensure t
+  :hook ((clojure-mode . rainbow-delimiters-mode)
+         (emacs-lisp-mode . rainbow-delimiters-mode)
+         (lisp-mode . rainbow-delimiters-mode)))
 
 (use-package markdown-mode
   :ensure t
