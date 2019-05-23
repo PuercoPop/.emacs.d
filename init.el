@@ -12,6 +12,7 @@
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(fringe-mode 0) ;; Should it be 1 🤔
 
 ;; Set path to .emacs.d
 (setq user-emacs-directory
@@ -54,11 +55,10 @@
   :init (toggle-diredp-find-file-reuse-dir 1))
 
 (use-package dired-x
-  :after (dired))
-;; (add-hook 'dired-mode-hook
-;;           (lambda ()
-;;             (local-set-key (kbd "M-o") 'other-window)
-;;             (local-set-key (kbd "C-x o") 'dired-omit-mode)))
+  :after (dired)
+  :bind (:map dired-mode-map
+         ("M-o" . other-window)
+         ("C-x o" . dired-omit-mode)))
 
 (use-package dired-toggle
   :ensure t
@@ -206,8 +206,29 @@
 
 ;; (require 'setup-mediawiki)
 ;; (require 'mud)
-(require 'setup-html-templates)
-(require 'setup-css)
+
+(use-package handlebars-sgml-mode
+  :ensure t
+  :config (handlebars-use-mode 'global))
+
+(use-package closure-template-html-mode
+  :ensure t
+  :mode (("\\.tmpl\\'" . closure-template-html-mode)))
+
+(use-package jinja2-mode
+  :ensure t
+  :mode (("\\.djhtml\\'" . jinja2-mode)))
+
+(use-package css-mode
+  :config (setq css-indent-offset 2))
+
+(use-package less-css-mode
+  :ensure t)
+
+(use-package rainbow-mode
+  :ensure t
+  :hook ((css-mode . rainbow-mode)))
+
 ;; (require 'setup-mail)
 
 (setq c-default-style '((c-mode . "bsd")
@@ -306,10 +327,12 @@
 ;; (define-key smartparens-mode-map
 ;;   (kbd "C-<left_bracket>") 'sp-select-previous-thing)
 
-;; Emacs Lisp
-(add-hook 'emacs-lisp-mode-hook (lambda ()
-                                  (turn-on-eldoc-mode)
-                                  (setq tab-always-indent 'complete)))
+(defun my/emacs-lisp-mode-hook ()
+  (turn-on-eldoc-mode)
+  (setq tab-always-indent 'complete))
+
+(use-package emacs-lisp-mode
+  :hook ((emacs-lisp-mode . my/emacs-lisp-mode-hook)))
 
 (use-package macrostep
   :ensure t
@@ -361,12 +384,14 @@
                 smtpmail-stream-type 'ssl
                 smtpmail-debug-info t
                 send-mail-function 'smtpmail-send-it))
+(defun my/git-commit-setup-hook ()
+  (setq fill-column 72))
 
 (use-package git-commit
   :ensure t
   :config (add-to-list 'git-commit-style-convention-checks
                        'overlong-summary-line)
-  :hook ((git-comit . (lambda () (setq fill-column 72)))))
+  :hook ((git-commit-setup . my/git-commit-hook)))
 
 
 (use-package vc-annotate)
@@ -403,7 +428,6 @@
 (after-load 'sql
   (sql-set-product 'postgres)
   (require 'sql-indent))
-(add-hook 'sql-mode-hook 'edbi-minor-mode)
 
 (setq prolog-system 'swi
       auto-mode-alist (append '(("\\.pl$" . prolog-mode))
