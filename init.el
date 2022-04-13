@@ -12,19 +12,6 @@
 (load custom-file 'noerror)
 (put 'upcase-region 'disabled nil)
 
-
-;;; Setup Package.el
-(require 'package)
-
-(let ((gnu '("gnu" . "http://elpa.gnu.org/packages/"))
-      (melpa '("melpa" . "https://melpa.org/packages/"))
-      (non-gnu '("org" . "https://elpa.nongnu.org/nongnu/")))
-  (add-to-list 'package-archives melpa t)
-  (add-to-list 'package-archives non-gnu t))
-
-(package-initialize)
-(package-install-selected-packages)
-
 (require 'use-package)
 
 
@@ -35,10 +22,10 @@
 (setq my/server-name (or (daemonp) "none"))
 
 
-(setq session-save-file (concat user-emacs-directory system-name "-" my/server-name "-session"))
-(setq helm-c-adaptive-history-file (concat user-emacs-directory system-name "-" my/server-name "--helm-c-adaptive-history"))
-(setq desktop-base-file-name (concat system-name "-" my/server-name "-desktop-file"))
-(setq desktop-base-lock-name (concat system-name "-" my/server-name "-desktop-lock"))
+(setq session-save-file (concat user-emacs-directory (system-name) "-" my/server-name "-session"))
+(setq helm-c-adaptive-history-file (concat user-emacs-directory (system-name) "-" my/server-name "--helm-c-adaptive-history"))
+(setq desktop-base-file-name (concat (system-name) "-" my/server-name "-desktop-file"))
+(setq desktop-base-lock-name (concat (system-name) "-" my/server-name "-desktop-lock"))
 
 (setq frame-title-format '(multiple-frames ("%b - " invocation-name "@" my/server-name)
                                            ("" invocation-name "@" my/server-name)))
@@ -144,7 +131,7 @@ call KILL-REGION."
   :config (progn
             (setq
              recentf-max-saved-items 50
-             recentf-save-file (concat user-emacs-directory system-name "-" my/server-name "-recentf"))
+             recentf-save-file (concat user-emacs-directory (system-name) "-" my/server-name "-recentf"))
             (recentf-mode 1)
             ;; (when my/recentf-update-timer
             ;;   (cancel-timer my/recentf-update-timer))
@@ -161,7 +148,7 @@ call KILL-REGION."
   :custom (proced-auto-update-flag t))
 
 (setq bookmark-default-file
-      (concat user-emacs-directory system-name "-" my/server-name "-bookmarks"))
+      (concat user-emacs-directory (system-name) "-" my/server-name "-bookmarks"))
 (use-package bookmark
   :config (setq bookmark-save-flag 1))
 
@@ -308,7 +295,7 @@ parent frame."
   (cl-defmethod helm-setup-user-source ((source helm-source-ffiles))
     (helm-source-add-action-to-source-if "Magit status"
                                          (lambda (_candidate)
-                                           (magit-status helm-ff-default-directory))
+                                           (magit-status-setup-buffer helm-ff-default-directory))
                                          source
                                          (lambda (candidate)
                                            (and (not (string-match-p ffap-url-regexp candidate))
@@ -528,7 +515,7 @@ parent frame."
   :ensure t)
 
 (use-package epa-file
-  :config (setq epa-pinentry-mode 'loopback)
+  :config (setq epg-pinentry-mode 'loopback)
   ;; (load-library "~/.emacs.d/passwords.el.gpg")
   )
 
@@ -684,6 +671,7 @@ And update the branch as a suffix."
 
 
 (defun my/magit-worktree-branch (branch &optional start-point)
+  (declare (ignore start-point))
   (interactive (list (magit-read-string-ns "Branch name [for new worktree]")))
   (let* ((tld (magit-toplevel))
          (base (file-name-directory (directory-file-name tld)))
@@ -694,6 +682,12 @@ And update the branch as a suffix."
     (magit-worktree-branch wk-path branch starting-branch)
     (my/setup-worktree base tld branch)
     wk-path))
+
+(with-eval-after-load 'magit
+  (magit-add-section-hook 'magit-status-sections-hook
+                          'magit-insert-modules
+                          'magit-insert-stashes
+                          'append))
 
 (use-package magit
   :ensure t
@@ -1680,8 +1674,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package subword-mode
   :hook ((js-mode . subword-mode)
          (typescript-mode . subword-mode)
-         (ruby-mode . subword-mode)
-         (enh-ruby-mode . subword-mode)))
+         (ruby-mode . subword-mode)))
 
 ;; (use-package outline
 ;;   :bind (:map outline-minor-mode-map
@@ -1787,20 +1780,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :hook ((js-mode . jest-test-mode)
          (typescript-mode . jest-test-mode)))
 
-(defun my/setup-tide ()
-  (when-let ((file-name (buffer-file-name (current-buffer))))
-    (when (string-match "/home/puercopop/rlock/" file-name)
-      (tide-setup)
-      (tide-hl-identifier-mode))))
-
-;; (use-package tide
-;;   :ensure t
-;;   :hook ((js-mode . my/setup-tide)
-;;          (typescript-mode . my/setup-tide)))
-
-(use-package indium
-  :ensure t)
-
 (defun my/ruby-flymake-hook ()
   (let ((in-rlock-p (string-prefix-p "/home/puercopop/rlock/"
                                      (buffer-file-name (current-buffer)))))
@@ -1809,7 +1788,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package flymake
   :hook ((ruby-mode . my/ruby-flymake-hook)
-         (enh-ruby-mode . my/ruby-flymake-hook)
          (js-mode . my/ruby-flymake-hook)
          (typescript-mode . my/ruby-flymake-hook))
   ;; flymake-diagnostic-function -> ruby-flymake-auto
@@ -1926,8 +1904,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package robe
   :ensure t
   :config (global-robe-mode)
-  :hook ((ruby-mode . robe-mode)
-         (enh-ruby-mode . robe-mode))
+  :hook ((ruby-mode . robe-mode))
   :init (advice-add 'inf-ruby-console-auto :around #'my/maybe-inject-proccess-environment))
 
 ;; TODO: Hook/advice into rspec-spec-file-for to add mappings for connect backend
@@ -2018,7 +1995,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package qml-mode
   :ensure t)
-
 
 
 ;; SQL
@@ -2270,9 +2246,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; (use-package transmission
 ;;   :ensure t)
 
-(use-package datadog
-  :load-path "site-lisp/datadog.el")
-
 ;; Package hasn't been released yet
 ;; (use-package systemd
 ;;   :pin gnu
@@ -2307,7 +2280,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package axe
   :ensure t)
-
 
 (use-package dyalog-mode
   :load-path "site-lisp/dyalog-mode/")

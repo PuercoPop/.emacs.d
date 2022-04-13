@@ -1,13 +1,283 @@
+[submodule "ace-window"]
+	path = lib/ace-window
+	url = git@github.com:abo-abo/ace-window.git
+[submodule "alert"]
+	path = lib/alert
+	url = git@github.com:jwiegley/alert.git
+[submodule "anzu"]
+	path = lib/anzu
+	url = git@github.com:emacsorphanage/anzu.git
+[submodule "async"]
+	path = lib/async
+	url = git@github.com:jwiegley/emacs-async.git
+[submodule "avy"]
+	path = lib/avy
+	url = git@github.com:abo-abo/avy.git
+[submodule "axe"]
+	path = lib/axe
+	url = git@github.com:cniles/axe.git
 [submodule "borg"]
 	path = lib/borg
 	url = git@github.com:emacscollective/borg.git
+[submodule "bundler"]
+	path = lib/bundler
+	url = git@github.com:endofunky/bundler.el.git
+[submodule "chruby"]
+	path = lib/chruby
+	url = git@github.com:plexus/chruby.el.git
 [submodule "closql"]
 	path = lib/closql
 	url = git@github.com:emacscollective/closql.git
+[submodule "consult"]
+	path = lib/consult
+	url = git@github.com:minad/consult.git
+[submodule "darkroom"]
+	path = lib/darkroom
+	url = git@github.com:joaotavora/darkroom.git
+[submodule "dash"]
+	path = lib/dash
+	url = git@github.com:magnars/dash.el.git
+[submodule "dash-docs"]
+	path = lib/dash-docs
+	url = git@github.com:dash-docs-el/dash-docs.git
+[submodule "deferred"]
+	path = lib/deferred
+	url = git@github.com:kiwanami/emacs-deferred.git
+[submodule "devdocs"]
+	path = lib/devdocs
+	url = git@github.com:astoff/devdocs.el.git
+[submodule "easy-kill"]
+	path = lib/easy-kill
+	url = git@github.com:leoliu/easy-kill.git
+[submodule "ediprolog"]
+	path = lib/ediprolog
+	url = git@github.com:emacsmirror/ediprolog.git
+[submodule "eglot"]
+	path = lib/eglot
+	url = git@github.com:joaotavora/eglot.git
+[submodule "elfeed"]
+	path = lib/elfeed
+	url = git@github.com:skeeto/elfeed.git
+[submodule "elisp-refs"]
+	path = lib/elisp-refs
+	url = git@github.com:Wilfred/elisp-refs.git
+[submodule "elpher"]
+	path = lib/elpher
+	url = https://thelambdalab.xyz/git/elpher.git
 [submodule "emacsql"]
 	path = lib/emacsql
 	url = git@github.com:skeeto/emacsql.git
 	no-byte-compile = emacsql-pg.el
+[submodule "emaps"]
+	path = lib/emaps
+	url = git@github.com:GuiltyDolphin/emaps.git
 [submodule "epkg"]
 	path = lib/epkg
 	url = git@github.com:emacscollective/epkg.git
+[submodule "es-mode"]
+	path = lib/es-mode
+	url = git@github.com:dakrone/es-mode.git
+[submodule "expand-region"]
+	path = lib/expand-region
+	url = git@github.com:magnars/expand-region.el.git
+[submodule "f"]
+	path = lib/f
+	url = git@github.com:rejeep/f.el.git
+[submodule "forge"]
+	path = lib/forge
+	url = git@github.com:magit/forge.git
+[submodule "fuz"]
+	path = lib/fuz
+	url = git@github.com:rustify-emacs/fuz.el.git
+[submodule "ghub"]
+	path = lib/ghub
+	url = git@github.com:magit/ghub.git
+[submodule "go-mode"]
+	path = lib/go-mode
+	url = git@github.com:dominikh/go-mode.el.git
+[submodule "graphql-mode"]
+	path = lib/graphql-mode
+	url = git@github.com:davazp/graphql-mode.git
+[submodule "hcl-mode"]
+	path = lib/hcl-mode
+	url = git@github.com:purcell/emacs-hcl-mode.git
+[submodule "helm"]
+	path = lib/helm
+	url = git@github.com:emacs-helm/helm.git
+[submodule "helm-dash"]
+	path = lib/helm-dash
+	url = git@github.com:dash-docs-el/helm-dash.git
+[submodule "helm-descbinds"]
+	path = lib/helm-descbinds
+	url = git@github.com:emacs-helm/helm-descbinds.git
+[submodule "helm-ls-git"]
+	path = lib/helm-ls-git
+	url = git@github.com:emacs-helm/helm-ls-git.git
+[submodule "helm-org"]
+	path = lib/helm-org
+	url = git@github.com:emacs-helm/helm-org.git
+[submodule "helm-pages"]
+	path = lib/helm-pages
+	url = git@github.com:david-christiansen/helm-pages.git
+[submodule "helm-rage"]
+	path = lib/helm-rage
+	url = git@github.com:bomgar/helm-rage.git
+[submodule "helpful"]
+	path = lib/helpful
+	url = git@github.com:Wilfred/helpful.git
+[submodule "hmac"]
+	path = lib/hmac
+	url = git@github.com:grimnebulin/emacs-hmac.git
+[submodule "htmlize"]
+	path = lib/htmlize
+	url = git@github.com:hniksic/emacs-htmlize.git
+[submodule "ibuffer-vc"]
+	path = lib/ibuffer-vc
+	url = git@github.com:purcell/ibuffer-vc.git
+[submodule "inf-ruby"]
+	path = lib/inf-ruby
+	url = git@github.com:nonsequitur/inf-ruby.git
+[submodule "js2-mode"]
+	path = lib/js2-mode
+	url = git@github.com:mooz/js2-mode.git
+[submodule "libgit"]
+	path = lib/libgit
+	url = git@github.com:magit/libegit2.git
+[submodule "macrostep"]
+	path = lib/macrostep
+	url = git@github.com:joddie/macrostep.git
+[submodule "magit"]
+	path = lib/magit
+	url = git@github.com:magit/magit.git
+[submodule "markdown-mode"]
+	path = lib/markdown-mode
+	url = git@github.com:jrblevin/markdown-mode.git
+[submodule "mew"]
+	path = lib/mew
+	url = git@github.com:kazu-yamamoto/Mew.git
+[submodule "mimetypes"]
+	path = lib/mimetypes
+	url = git@github.com:cniles/emacs-mimetypes.git
+[submodule "minions"]
+	path = lib/minions
+	url = git@github.com:tarsius/minions.git
+[submodule "moe-theme"]
+	path = lib/moe-theme
+	url = git@github.com:kuanyui/moe-theme.el.git
+[submodule "moody"]
+	path = lib/moody
+	url = git@github.com:tarsius/moody.git
+[submodule "mu4e"]
+	path = lib/mu4e
+	url = git@github.com:djcb/mu.git
+[submodule "multiple-cursors"]
+	path = lib/multiple-cursors
+	url = git@github.com:magnars/multiple-cursors.el.git
+[submodule "ob-restclient"]
+	path = lib/ob-restclient
+	url = git@github.com:alf/ob-restclient.el.git
+[submodule "parchment-theme"]
+	path = lib/parchment-theme
+	url = git@github.com:ajgrf/parchment.git
+[submodule "paredit"]
+	path = lib/paredit
+	url = https://mumble.net/~campbell/git/paredit.git
+[submodule "pinentry"]
+	path = lib/pinentry
+	url = git@github.com:ueno/pinentry-el.git
+[submodule "prettier-js"]
+	path = lib/prettier-js
+	url = git@github.com:prettier/prettier-emacs.git
+[submodule "qml-mode"]
+	path = lib/qml-mode
+	url = git@github.com:coldnew/qml-mode.git
+[submodule "queue"]
+	path = lib/queue
+	url = git@github.com:emacsmirror/queue.git
+[submodule "rainbow-mode"]
+	path = lib/rainbow-mode
+	url = git@github.com:emacsmirror/rainbow-mode.git
+[submodule "request"]
+	path = lib/request
+	url = git@github.com:tkf/emacs-request.git
+[submodule "restclient"]
+	path = lib/restclient
+	url = git@github.com:pashky/restclient.el.git
+[submodule "rfc-mode"]
+	path = lib/rfc-mode
+	url = git@github.com:galdor/rfc-mode.git
+[submodule "robe"]
+	path = lib/robe
+	url = git@github.com:dgutov/robe.git
+[submodule "rspec-mode"]
+	path = lib/rspec-mode
+	url = git@github.com:pezra/rspec-mode.git
+[submodule "rust-mode"]
+	path = lib/rust-mode
+	url = git@github.com:rust-lang/rust-mode.git
+[submodule "s"]
+	path = lib/s
+	url = git@github.com:magnars/s.el.git
+[submodule "shackle"]
+	path = lib/shackle
+	url = https://depp.brause.cc/shackle.git
+[submodule "simple-httpd"]
+	path = lib/simple-httpd
+	url = git@github.com:skeeto/emacs-web-server.git
+[submodule "sly"]
+	path = lib/sly
+	url = git@github.com:joaotavora/sly.git
+[submodule "sly-macrostep"]
+	path = lib/sly-macrostep
+	url = git@github.com:joaotavora/sly-macrostep.git
+[submodule "spark"]
+	path = lib/spark
+	url = git@github.com:alvinfrancis/spark.git
+[submodule "terraform-mode"]
+	path = lib/terraform-mode
+	url = git@github.com:emacsorphanage/terraform-mode.git
+[submodule "tree-sitter"]
+	path = lib/tree-sitter
+	url = git@github.com:emacs-tree-sitter/elisp-tree-sitter.git
+[submodule "tree-sitter-langs"]
+	path = lib/tree-sitter-langs
+	url = git@github.com:emacs-tree-sitter/tree-sitter-langs.git
+[submodule "treepy"]
+	path = lib/treepy
+	url = git@github.com:volrath/treepy.el.git
+[submodule "typescript-mode"]
+	path = lib/typescript-mode
+	url = git@github.com:emacs-typescript/typescript.el.git
+[submodule "undo-tree"]
+	path = lib/undo-tree
+	url = git@gitlab.com:tsc25/undo-tree.git
+[submodule "use-package"]
+	path = lib/use-package
+	url = git@github.com:jwiegley/use-package.git
+[submodule "w3m"]
+	path = lib/w3m
+	url = git@github.com:emacs-w3m/emacs-w3m.git
+[submodule "web-mode"]
+	path = lib/web-mode
+	url = git@github.com:fxbois/web-mode.git
+[submodule "wgrep"]
+	path = lib/wgrep
+	url = git@github.com:mhayashi1120/Emacs-wgrep.git
+[submodule "with-editor"]
+	path = lib/with-editor
+	url = git@github.com:magit/with-editor.git
+[submodule "xmlgen"]
+	path = lib/xmlgen
+	url = git@github.com:philjackson/xmlgen.git
+[submodule "xref-js2"]
+	path = lib/xref-js2
+	url = git@github.com:js-emacs/xref-js2.git
+[submodule "xterm-color"]
+	path = lib/xterm-color
+	url = git@github.com:atomontage/xterm-color.git
+[submodule "yaml"]
+	path = lib/yaml
+	url = git@github.com:zkry/yaml.el.git
+[submodule "yaml-mode"]
+	path = lib/yaml-mode
+	url = git@github.com:yoshiki/yaml-mode.git
