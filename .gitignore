@@ -1,1 +1,13 @@
-.*recentf
+*-history
+*-recentf
+*-bookmarks
+/*org-clock-save.el
+/.cache/
+/.sx/
+/elpa/
+/devdocs/
+*.sqlite
+/autosaves/
+/auto-save-list/
+/backups/
+/abbrev_defs
