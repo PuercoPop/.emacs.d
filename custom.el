@@ -40,7 +40,6 @@
      (basic-save-buffer . helm-read-file-name-handler-1)
      (write-file . helm-read-file-name-handler-1)
      (write-region . helm-read-file-name-handler-1)))
- '(helm-completion-style 'emacs nil nil "Customized with use-package helm")
  '(helm-mode t)
  '(helm-source-names-using-follow '("imenu" "Grep"))
  '(highlight-tail-colors ((("#29323c" "#1f2921") . 0) (("#2c3242" "#212928") . 20)))
@@ -101,6 +100,7 @@
      (whitespace-line-column . 80)))
  '(save-abbrevs 'silently)
  '(sentence-end-double-space t)
+ '(use-short-answers t)
  '(vc-annotate-background "#1E1C31")
  '(vc-annotate-color-map
    (list

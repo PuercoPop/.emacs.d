@@ -1,6 +1,12 @@
+[submodule "a"]
+	path = lib/a
+	url = git@github.com:plexus/a.el.git
 [submodule "ace-window"]
 	path = lib/ace-window
 	url = git@github.com:abo-abo/ace-window.git
+[submodule "acme-theme"]
+	path = lib/acme-theme
+	url = git@github.com:ianyepan/acme-emacs-theme.git
 [submodule "alert"]
 	path = lib/alert
 	url = git@github.com:jwiegley/alert.git
@@ -10,6 +16,12 @@
 [submodule "async"]
 	path = lib/async
 	url = git@github.com:jwiegley/emacs-async.git
+[submodule "auto-compile"]
+	path = lib/auto-compile
+	url = git@github.com:emacscollective/auto-compile.git
+[submodule "autothemer"]
+	path = lib/autothemer
+	url = git@github.com:jasonm23/autothemer.git
 [submodule "avy"]
 	path = lib/avy
 	url = git@github.com:abo-abo/avy.git
@@ -28,9 +40,18 @@
 [submodule "closql"]
 	path = lib/closql
 	url = git@github.com:emacscollective/closql.git
+[submodule "code-review"]
+	path = lib/code-review
+	url = git@github.com:wandersoncferreira/code-review.git
+[submodule "color-theme"]
+	path = lib/color-theme
+	url = git@github.com:emacsattic/color-theme.git
 [submodule "consult"]
 	path = lib/consult
 	url = git@github.com:minad/consult.git
+[submodule "cyberpunk-theme"]
+	path = lib/cyberpunk-theme
+	url = git@github.com:n3mo/cyberpunk-theme.el.git
 [submodule "darkroom"]
 	path = lib/darkroom
 	url = git@github.com:joaotavora/darkroom.git
@@ -46,6 +67,9 @@
 [submodule "devdocs"]
 	path = lib/devdocs
 	url = git@github.com:astoff/devdocs.el.git
+[submodule "doom-themes"]
+	path = lib/doom-themes
+	url = git@github.com:doomemacs/themes.git
 [submodule "easy-kill"]
 	path = lib/easy-kill
 	url = git@github.com:leoliu/easy-kill.git
@@ -71,6 +95,9 @@
 [submodule "emaps"]
 	path = lib/emaps
 	url = git@github.com:GuiltyDolphin/emaps.git
+[submodule "emojify"]
+	path = lib/emojify
+	url = git@github.com:iqbalansari/emacs-emojify.git
 [submodule "epkg"]
 	path = lib/epkg
 	url = git@github.com:emacscollective/epkg.git
@@ -128,6 +155,9 @@
 [submodule "hmac"]
 	path = lib/hmac
 	url = git@github.com:grimnebulin/emacs-hmac.git
+[submodule "ht"]
+	path = lib/ht
+	url = git@github.com:Wilfred/ht.el.git
 [submodule "htmlize"]
 	path = lib/htmlize
 	url = git@github.com:hniksic/emacs-htmlize.git
@@ -137,6 +167,9 @@
 [submodule "inf-ruby"]
 	path = lib/inf-ruby
 	url = git@github.com:nonsequitur/inf-ruby.git
+[submodule "jest-test-mode"]
+	path = lib/jest-test-mode
+	url = git@github.com:rymndhng/jest-test-mode.git
 [submodule "js2-mode"]
 	path = lib/js2-mode
 	url = git@github.com:mooz/js2-mode.git
@@ -152,9 +185,6 @@
 [submodule "markdown-mode"]
 	path = lib/markdown-mode
 	url = git@github.com:jrblevin/markdown-mode.git
-[submodule "mew"]
-	path = lib/mew
-	url = git@github.com:kazu-yamamoto/Mew.git
 [submodule "mimetypes"]
 	path = lib/mimetypes
 	url = git@github.com:cniles/emacs-mimetypes.git
@@ -176,6 +206,9 @@
 [submodule "ob-restclient"]
 	path = lib/ob-restclient
 	url = git@github.com:alf/ob-restclient.el.git
+[submodule "packed"]
+	path = lib/packed
+	url = git@github.com:emacscollective/packed.git
 [submodule "parchment-theme"]
 	path = lib/parchment-theme
 	url = git@github.com:ajgrf/parchment.git
@@ -233,18 +266,27 @@
 [submodule "spark"]
 	path = lib/spark
 	url = git@github.com:alvinfrancis/spark.git
+[submodule "tangotango-theme"]
+	path = lib/tangotango-theme
+	url = git@github.com:juba/color-theme-tangotango.git
 [submodule "terraform-mode"]
 	path = lib/terraform-mode
 	url = git@github.com:emacsorphanage/terraform-mode.git
 [submodule "tree-sitter"]
 	path = lib/tree-sitter
 	url = git@github.com:emacs-tree-sitter/elisp-tree-sitter.git
+        load-path = core
+        load-path = lisp
+        load-path = langs
 [submodule "tree-sitter-langs"]
 	path = lib/tree-sitter-langs
 	url = git@github.com:emacs-tree-sitter/tree-sitter-langs.git
 [submodule "treepy"]
 	path = lib/treepy
 	url = git@github.com:volrath/treepy.el.git
+[submodule "tron-legacy-theme"]
+	path = lib/tron-legacy-theme
+	url = git@github.com:ianyepan/tron-legacy-emacs-theme.git
 [submodule "typescript-mode"]
 	path = lib/typescript-mode
 	url = git@github.com:emacs-typescript/typescript.el.git
@@ -254,9 +296,9 @@
 [submodule "use-package"]
 	path = lib/use-package
 	url = git@github.com:jwiegley/use-package.git
-[submodule "w3m"]
-	path = lib/w3m
-	url = git@github.com:emacs-w3m/emacs-w3m.git
+[submodule "uuidgen"]
+	path = lib/uuidgen
+	url = git@github.com:kanru/uuidgen-el.git
 [submodule "web-mode"]
 	path = lib/web-mode
 	url = git@github.com:fxbois/web-mode.git

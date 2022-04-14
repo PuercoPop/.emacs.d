@@ -14,6 +14,10 @@
 
 (require 'use-package)
 
+(require 'auto-compile)
+(auto-compile-on-load-mode)
+(auto-compile-on-save-mode)
+
 
 ;;; Daemon
 
@@ -77,7 +81,6 @@
 
 (set-default 'indent-tabs-mode nil)
 (set-default 'indicate-empty-lines t)
-(defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'list-buffers 'ibuffer)
 
 (global-set-key (kbd "M-j") 'delete-indentation)
@@ -670,8 +673,7 @@ And update the branch as a suffix."
          (my/setup-connect-web base-path tld branch))))
 
 
-(defun my/magit-worktree-branch (branch &optional start-point)
-  (declare (ignore start-point))
+(defun my/magit-worktree-branch (branch)
   (interactive (list (magit-read-string-ns "Branch name [for new worktree]")))
   (let* ((tld (magit-toplevel))
          (base (file-name-directory (directory-file-name tld)))
@@ -753,7 +755,7 @@ And update the branch as a suffix."
     kmap))
 
 (defun helm-magit-branches-delete (_candidate)
-  (magit-branch-delete (helm-marked-candidates)))
+  (call-interactively 'magit-branch-delete (helm-marked-candidates)))
 
 (defun helm-magit-branches ()
   "List all the git branches"
@@ -766,7 +768,7 @@ And update the branch as a suffix."
 
 
 (defun my/helm-bookmark-magit-status (candidate)
-  (magit-status (cdr (assoc 'filename
+  (magit-status-setup-buffer (cdr (assoc 'filename
                             (assoc candidate bookmark-alist)))))
 
 (defun my-command/magit-bookmark-magit-status ()
@@ -1382,8 +1384,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;;; Browser
 
-(use-package w3m
-  :ensure t)
+;; (use-package w3m
+;;   :ensure t)
 
 (when (string= my/server-name "personal")
   (setq browse-url-browser-function
@@ -1841,6 +1843,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 
 ;;; Ruby mode
+(require 'flymake)
 (defun my/enable-ruby-flymake ()
   (add-to-list 'flymake-diagonistic-function 'ruby-flymake-auto))
 
