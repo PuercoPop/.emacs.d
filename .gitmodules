@@ -170,6 +170,9 @@
 [submodule "inf-ruby"]
 	path = lib/inf-ruby
 	url = git@github.com:nonsequitur/inf-ruby.git
+[submodule "isearch-dabbrev"]
+	path = lib/isearch-dabbrev
+	url = git@github.com:Dewdrops/isearch-dabbrev.git
 [submodule "jest-test-mode"]
 	path = lib/jest-test-mode
 	url = git@github.com:rymndhng/jest-test-mode.git
@@ -209,6 +212,9 @@
 [submodule "mu4e"]
 	path = lib/mu4e
 	url = git@github.com:djcb/mu.git
+[submodule "mu4e-alert"]
+	path = lib/mu4e-alert
+	url = git@github.com:xzz53/mu4e-alert.git
 [submodule "multiple-cursors"]
 	path = lib/multiple-cursors
 	url = git@github.com:magnars/multiple-cursors.el.git
