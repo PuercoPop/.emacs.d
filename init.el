@@ -3,8 +3,8 @@
 (add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
 (require 'borg)
 (borg-initialize)
-;; (when (native-comp-available-p)
-;;   (setq borg-compile-function #'native-compile))
+(when (native-comp-available-p)
+  (setq borg-compile-function #'native-compile))
 
 (require 'cl-lib)
 
@@ -949,6 +949,35 @@ And update the branch as a suffix."
 ;;; Org-mode
 ;; TODO: Add https://github.com/alphapapa/org-ql
 ;; To helm-mini/f5
+
+(defun my/org-clock-dwim ()
+  "If the clock is active, jump to the current task. Otherwise
+present the list of recent tasks to choose which one to clock
+in."
+  (interactive)
+  (if (org-clocking-p)
+      (org-clock-jump-to-current-clock)
+    (org-clock-in '(4))))
+
+;; (defvar my-local-agenda-file nil)
+(defun my/org-agenda-list (&optional arg)
+  (interactive "P")
+  (cl-flet ((find-hacking-file ()
+                               (let* ((tld (or (locate-dominating-file default-directory ".git/")
+                                               (locate-dominating-file default-directory "HACKING.org")
+                                               default-directory))
+                                      (hacking-file (concat tld "HACKING.org")))
+                                 (and (file-exists-p hacking-file)
+                                      hacking-file))))
+    (let ((local-agenda-file (find-hacking-file)))
+      (if local-agenda-file
+          (let* ((lexical-binding nil)
+                 (org-agenda-files (list local-agenda-file)))
+            ;; (org-agenda-list)
+            (org-todo-list))
+        ;; (org-agenda-list)
+        (org-agenda arg "w")))))
+
 (use-package org
   :pin gnu
   :bind (("C-c a" . org-agenda)
@@ -1161,15 +1190,6 @@ will be built under the headline at point."
   (helm-org-goto-marker marker)
   (org-clock-in))
 
-(defun my/org-clock-dwim ()
-  "If the clock is active, jump to the current task. Otherwise
-present the list of recent tasks to choose which one to clock
-in."
-  (interactive)
-  (if (org-clocking-p)
-      (org-clock-jump-to-current-clock)
-    (org-clock-in '(4))))
-
 ;; I want to be able to capture to the same entry to two places. The daily recap and the weekly retro.
 (defun my/org-find-daily-recap ()
   "To be used from org-capture. Finds the headline with the title Recap and "
@@ -1180,25 +1200,6 @@ in."
     ;; (org-up-heading-safe
     ;; (org-demote-subtrree
     ))
-
-
-;; (defvar my-local-agenda-file nil)
-(defun my/org-agenda-list (&optional arg)
-  (interactive "P")
-  (cl-flet ((find-hacking-file ()
-                            (let* ((tld (or (locate-dominating-file default-directory ".git/")
-                                            (locate-dominating-file default-directory "HACKING.org")))
-                                   (hacking-file (concat  default-directory "HACKING.org")))
-                              (and (file-exists-p hacking-file)
-                                   hacking-file))))
-    (let ((local-agenda-file (find-hacking-file)))
-      (if local-agenda-file
-          (let* ((lexical-binding nil)
-                 (org-agenda-files (list local-agenda-file)))
-            ;; (org-agenda-list)
-            (org-todo-list))
-        ;; (org-agenda-list)
-        (org-agenda arg "w")))))
 
 (defun my/org-agenda-skip-all-siblings-but-first ()
   "Skip all but the first non-done entry."
@@ -1476,7 +1477,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("C-j " . isearch-exit))))
 
 (advice-add 'isearch-exit :after
-            (lambda (&rest ignore)
+            (lambda (&rest _ignore)
               (when (and isearch-forward
                          isearch-success
                          isearch-other-end)
@@ -1533,12 +1534,12 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (setq paredit-space-for-delimiter-predicates
       (list
        ;; #'my/at-feature-expression
-       (lambda (endp delimiter)
+       (lambda (endp _delimiter)
          (if endp
              t ; Check if this makes sense
            (let ((text-before (buffer-substring-no-properties (- (point) 2) (point))))
              (not (string-equal "#+" text-before)))))
-       (lambda (endp delimiter)
+       (lambda (endp _delimiter)
          (if endp
              t ; Check if this makes sense
            (let ((text-before (buffer-substring-no-properties (- (point) 2) (point))))
@@ -1675,7 +1676,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; ~~Implement something like highlight-symbol-next~~. M-* is already
 ;; bound to isearch-forward-symbol-at-point
 
-(use-package subword-mode
+(use-package subword
   :hook ((js-mode . subword-mode)
          (typescript-mode . subword-mode)
          (ruby-mode . subword-mode)))
@@ -1743,7 +1744,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package json-mode
   :ensure t
-  :config (setq json-reformat:indent-width 2)
   :mode ("\\.json\\'"))
 
 (use-package js
