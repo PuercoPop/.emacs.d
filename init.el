@@ -3,6 +3,8 @@
 (add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
 (require 'borg)
 (borg-initialize)
+;; (when (native-comp-available-p)
+;;   (setq borg-compile-function #'native-compile))
 
 (require 'cl-lib)
 
@@ -2050,10 +2052,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package rust-mode
   :ensure t)
 
-(use-package prolog-mode
-  :config (setq prolog-system 'swi
-                prolog-electric-if-then-else-flag t)
-  :mode "\\.pl$")
+;; TODO(javier): Pull from gnu elpa
+;; (use-package prolog-mode
+;;   :config (setq prolog-system 'swi
+;;                 prolog-electric-if-then-else-flag t)
+;;   :mode "\\.pl$")
 
 (use-package ediprolog
   :ensure t)
