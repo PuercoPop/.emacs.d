@@ -1,5 +1,6 @@
+*.elc
 *-history
-*-recentf
+*recentf
 *-bookmarks
 /*org-clock-save.el
 /.cache/
