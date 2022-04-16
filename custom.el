@@ -100,6 +100,7 @@
      (whitespace-line-column . 80)))
  '(save-abbrevs 'silently)
  '(sentence-end-double-space t)
+ '(undo-tree-auto-save-history nil)
  '(use-short-answers t)
  '(vc-annotate-background "#1E1C31")
  '(vc-annotate-color-map

@@ -3,7 +3,7 @@
 (add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
 (require 'borg)
 (borg-initialize)
-(when (native-comp-available-p)
+(when (and (native-comp-available-p) (getenv "ELN"))
   (setq borg-compile-function #'native-compile))
 
 (require 'cl-lib)
@@ -52,7 +52,6 @@
       x-stretch-cursor t
       scroll-preserve-screen-position t
       scroll-margin 2
-      enable-recursive-minibuffers t
       backup-directory-alist `(("." . ,(expand-file-name
                                         (concat user-emacs-directory "backups"))))
       make-backup-files nil
@@ -1046,6 +1045,7 @@ in."
                 org-clock-persist 'history)
   (org-clock-persistence-insinuate)
 
+  (require 'org-datetree)
   ;; Adapted from org-datetree-find-iso-week-create
   (defun my/org-weekly-datetree (d &optional keep-restriction)
   "Find or create an ISO week entry for date D.
@@ -1123,7 +1123,7 @@ will be built under the headline at point."
             (widen)
             (org-end-of-subtree t t)
             (org-paste-subtree level tree-text))))))
-
+  (require 'org-archive)
   (defun my/org-archive-subtree-advice (orig-fn &rest args)
     (let* ((fix-archive-p (and (not current-prefix-arg)
                                (not (use-region-p))))
@@ -1338,6 +1338,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
           )))
 
 (when (string= my/server-name "social")
+  (require 'org-feed)
   (setq org-feed-alist '(("Hiper Derecho" "https://hiperderecho.org/feed/"
                           "~/org/feeds.org" "Hiper Derecho")
                          ("Libre Lounge" "https://librelounge.org/rss-feed.rss"
@@ -1419,8 +1420,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     :custom (mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
     ;; (mu4e-split-view 'single-window)
     (mu4e-index-lazy-check t)
-    :config (setq mu4e-maildir "~/Maildir/remotelock"
-                  mu4e-sent-folder "/Sent Mail"
+    :config (setq mu4e-sent-folder "/Sent Mail"
                   mu4e-trash-folder "/Trash"
                   ;; `(,(make-mu4e-bookmark
                   ;;                    :name "Boring Lists"
@@ -1847,7 +1847,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;; Ruby mode
 (require 'flymake)
 (defun my/enable-ruby-flymake ()
-  (add-to-list 'flymake-diagonistic-function 'ruby-flymake-auto))
+  (add-to-list 'flymake-diagnostic-functions 'ruby-flymake-auto))
 
 (defun my/set-ruby-docsets ()
   (interactive)
@@ -2183,10 +2183,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;; Chat et other recreational activities
 (when (string= "social" my/server-name)
   (use-package elpher
-    :ensure t
-    :config (setq elpher-bookmarks-file
-                  (locate-user-emacs-file
-                   (format "%s:elpher-bookmarks" my/server-name))))
+    :ensure t)
 
 
   (use-package elfeed
@@ -2257,14 +2254,14 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;   :pin gnu
 ;;   :ensure t)
 
-(setq display-time-world-list '(("America/Lima" "Lima")
-                                ("America/Denver" "Denver")
-                                ;; Kassel
-                                ("Europe/Kassel" "Kassel")
-                                ("Europe/Madrid" "Madrid")
-                                ("Asia/Damascus" "Hamah")
-                                ("Europe/Bucharest" "Bucharest")
-                                ("Asia/Tokyo" "Tokyo")))
+(setq world-clock-list '(("America/Lima" "Lima")
+                         ("America/Denver" "Denver")
+                         ;; Kassel
+                         ("Europe/Kassel" "Kassel")
+                         ("Europe/Madrid" "Madrid")
+                         ("Asia/Damascus" "Hamah")
+                         ("Europe/Bucharest" "Bucharest")
+                         ("Asia/Tokyo" "Tokyo")))
 
 ;; TODO: merge with helm-rage
 ;; TODO: Add glasses
