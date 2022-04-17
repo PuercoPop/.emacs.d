@@ -1989,7 +1989,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :bind ((:map go-mode-map
                ("C-c C-d" . godoc-at-point-function)))
   :hook ((godoc-mode . help-mode)
-         (go-mode . my/go-mode-hook)))
+         (go-mode . gofmt-mode)))
 ;; go-eldoc
 ;; go-autocomplete
 ;; company-go
