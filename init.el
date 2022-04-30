@@ -84,7 +84,7 @@
 (set-default 'indicate-empty-lines t)
 (defalias 'list-buffers 'ibuffer)
 
-(global-set-key (kbd "M-j") 'delete-indentation)
+;; (global-set-key (kbd "M-j") 'delete-indentation)
 (global-set-key (kbd "M-c") 'capitalize-dwim)
 (global-set-key (kbd "M-l") 'downcase-dwim)
 (global-set-key (kbd "M-u") 'upcase-dwim)
@@ -119,7 +119,7 @@ call KILL-REGION."
     (call-interactively fn)))
 
 ;; Maybe remap kill-region instead?
-;; (global-set-key (kbd "C-w") 'my/backward-kill-word-or-region)
+(global-set-key (kbd "C-w") #'my/backward-kill-word-or-region)
 ;; Use M-<BACKSPACE> instead
 
 (define-key minibuffer-local-completion-map
@@ -869,11 +869,11 @@ And update the branch as a suffix."
   (when (string= "social" (daemonp))
     (load-theme 'doom-1337 t))
   ;; (set-face-attribute 'default nil :family "Go Mono" :height 170)
-  (set-frame-font "IBM Plex Mono-22"))
-;;(set-frame-font "IBM Plex Mono-18")
+  (set-frame-font "IBM Plex Mono-18"))
+;;(set-frame-font "IBM Plex Mono-22")
 ;;(set-frame-font "Go Mono-18")
 (add-to-list 'default-frame-alist
-	     (cons 'font "IBM Plex Mono-22"))
+	     (cons 'font "IBM Plex Mono-18"))
 ;; (add-hook 'after-init-hook 'my/set-theme)
 (add-hook 'after-make-frame-functions 'my/set-theme)
 ;; (add-hook 'server-after-make-frame-functions 'my/set-theme)
@@ -978,7 +978,6 @@ in."
         (org-agenda arg "w")))))
 
 (use-package org
-  :pin gnu
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c C-x C-x" . org-clock-in-last)
@@ -1333,6 +1332,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (setq org-capture-templates
         '(("t" "Task" entry (file+headline "~/org/all.org" "Miscellaneous Captures")
            "* TODO %?\n %i\n %a")
+          ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?"  :empty-lines 1)
           ("n" "Add Note to Current Task" plain (clock))
           ;; TODO: Add a template to capture a new note under the currently clocked template
           )))
@@ -1344,6 +1344,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                          ("Libre Lounge" "https://librelounge.org/rss-feed.rss"
                           "~/org/feeds.org" "Libre Lounge"))))
 
+
+(require 'org-pomodoro)
+(with-eval-after-load 'org-agenda
+  (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro))
 ;; (use-package org-jira
 ;;   :load-path "site-lisp/org-jira"
 ;;   :config (setq jiralib-url "https://remotelock.atlassian.net/"
@@ -1391,10 +1395,15 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; (use-package w3m
 ;;   :ensure t)
 
+;; Warning (browse-url): Having ‘browse-url-browser-function’ set to an
+;; alist is deprecated.  Use ‘browse-url-handlers’ instead. Disable showing Disable logging
 (when (string= my/server-name "personal")
-  (setq browse-url-browser-function
-        '(("\\(?:^http://www\\.lispworks\\.com/reference/HyperSpec.*\\)" . eww-browse-url)
-          ("." . browse-url-firefox))))
+  (setq browse-url-default-handlers
+        '(("\\`mailto:" . browse-url--mailto)
+         ("\\`man:" . browse-url--man)
+         (browse-url--non-html-file-url-p . browse-url-emacs)
+         ("\\(?:^http://www\\.lispworks\\.com/reference/HyperSpec.*\\)" . eww-browse-url)
+         ("." . browse-url-firefox))))
 
 (when (string= my/server-name "work")
 
@@ -1494,11 +1503,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package dired
   :config
-  (progn
-    (put 'dired-find-alternate-file 'disabled nil)
-    (setq dired-dwim-target t
-          dired-isearch-filenames t
-          dired-listing-switches "-alh"))
+      (setq dired-dwim-target t
+            dired-listing-switches "-alh")
   :hook ((dired-mode . dired-hide-details-mode)))
 
 (use-package dired-x
@@ -1883,7 +1889,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package chruby
   :ensure t
-  :config (chruby-use "ruby-2.6.6"))
+  ;; :config (chruby-use "ruby-2.6.6")
+  )
 
 (defun my/read-env-file (env-file)
   (with-current-buffer (find-file-noselect env-file)
@@ -1990,6 +1997,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("C-c C-d" . godoc-at-point-function)))
   :hook ((godoc-mode . help-mode)
          (go-mode . gofmt-mode)))
+
+(require 'go-dlv)
 ;; go-eldoc
 ;; go-autocomplete
 ;; company-go
@@ -1997,6 +2006,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; go-errcheck
 ;; gotest
 ;; go-guru
+
+
 
 (use-package qml-mode
   :ensure t)
@@ -2185,6 +2196,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (use-package elpher
     :ensure t)
 
+  (require 'mastodon)
+  (setq mastodon-instance-url "https://mastodon.social"
+        mastodon-active-user "PuercoPop")
 
   (use-package elfeed
     :ensure t
@@ -2212,11 +2226,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     :config (setq rcirc-debug-flag nil ; (load "rcirc-sasl")
                   rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
                   rcirc-log-directory nil
-                  rcirc-server-alist '(("irc.libera.chat" :channels ("#go-nuts" "#stumpwm" "#endoli" "#sbcl" "#sicl" "#emacs" "#podman")
-                                        :nick "PuercoPop"
-                                        :user-name "PuercoPop"
-                                        :port "6697"
-                                        :encryption tls))
+
                   ;; rcirc-authinfo `(("freenode" nickserv "PuercoPop" ,(auth-source-pick-first-password :host "irc.freenode.net" :login "PuercoPop")))
                   )
     :hook ((rcirc-mode . my/rcirc-mode-hook))))

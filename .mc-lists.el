@@ -9,6 +9,7 @@
         delete-horizontal-space
         delete-indentation
         downcase-dwim
+        easy-kill
         electric-newline-and-maybe-indent
         electric-pair-delete-pair
         forward-sexp
