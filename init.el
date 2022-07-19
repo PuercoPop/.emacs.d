@@ -75,11 +75,9 @@
 (minibuffer-depth-indicate-mode 1)
 (global-auto-revert-mode t)
 (delete-selection-mode t)
-(use-package savehist
-  :config
-  (setq savehist-file (locate-user-emacs-file (format "%s-history" my/server-name)))
-  (savehist-mode 1))
-
+(require 'savehist)
+(setq savehist-file (locate-user-emacs-file (format "%s-history" my/server-name)))
+(savehist-mode 1)
 (set-default 'indent-tabs-mode nil)
 (set-default 'indicate-empty-lines t)
 (defalias 'list-buffers 'ibuffer)
@@ -102,9 +100,8 @@
 ;; Relevant Faces
 ;; - show-paren-match
 ;; - show-paren-mismatch
-(use-package paren
-  ;; :custom (show-paren-style 'expression)
-  :config (show-paren-mode t))
+;; :custom (show-paren-style 'expression)
+(show-paren-mode t)
 
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -125,36 +122,27 @@ call KILL-REGION."
 (define-key minibuffer-local-completion-map
   (kbd "C-w") 'backward-kill-word)
 
-(use-package minions
-  :ensure t
-  :config (minions-mode 1))
+(minions-mode 1)
 
-;; (defvar my/recentf-update-timer nil)
-
-(use-package recentf
-  :config (progn
-            (setq
-             recentf-max-saved-items 50
-             recentf-save-file (concat user-emacs-directory (system-name) "-" my/server-name "-recentf"))
-            (recentf-mode 1)
-            ;; (when my/recentf-update-timer
-            ;;   (cancel-timer my/recentf-update-timer))
-            ;; (setq my/recentf-update-timer
-            ;;       (run-at-time nil (* 5 60) 'recentf-save-list))
-            ))
+(defvar my/recentf-update-timer nil)
+(when my/recentf-update-timer
+  (cancel-timer my/recentf-update-timer))
+(setq my/recentf-update-timer
+      ;; TODO: Should I use run-with-idle-timer instead?
+      (run-at-time nil (* 5 60) 'recentf-save-list))
+(setq recentf-save-file
+      (locate-user-emacs-file (concat (system-name) "-" my/server-name "-recentf")))
+(recentf-mode 1)
 
 (use-package minibuffer
   ;; :custom (completion-styles '(flex))
   ;; :custom (completion-styles '(basic partial-completion substring flex))
   :custom (completion-styles '(substring partial-completion flex)))
 
-(use-package proced
-  :custom (proced-auto-update-flag t))
+(require 'proced)
 
 (setq bookmark-default-file
       (concat user-emacs-directory (system-name) "-" my/server-name "-bookmarks"))
-(use-package bookmark
-  :config (setq bookmark-save-flag 1))
 
 
 (defun bookmark-jump-other-tab (bookmark)
@@ -190,23 +178,15 @@ call KILL-REGION."
 (use-package project
   :bind-keymap (("C-c p" . project-prefix-map)))
 
-(use-package anzu
-  :ensure t
-  :config
-  ;; We still need to update the query-replace face
-  (global-anzu-mode +1)
-  (global-set-key [remap query-replace] 'anzu-query-replace)
-  (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp))
+(global-anzu-mode +1)
+(global-set-key [remap query-replace] 'anzu-query-replace)
+(global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+;; We still need to update the query-replace face
+(global-set-key [remap kill-ring-save] 'easy-kill)
 
-(use-package easy-kill
-  :ensure t
-  :config (global-set-key [remap kill-ring-save] 'easy-kill))
 
 
 ;;; Consult
-
-(use-package consult
-  :ensure t)
 (define-key global-map [remap goto-line] 'consult-goto-line)
 ;; (define-key global-map [remap switch-to-buffer] 'consult-buffer)
 ;; (define-key global-map [remap switch-to-buffer-other-window] 'consult-buffer-other-window)
@@ -861,8 +841,10 @@ And update the branch as a suffix."
   ;; (load-theme 'parchment t)
   (when (string= "personal" (daemonp))
     (if (display-graphic-p frame)
-        (load-theme 'exotica t)
-      ;; (disable-theme 'exotica)
+        ;; (load-theme 'exotica t)
+        (load-theme 'doom-opera t)
+        ;; (disable-theme 'exotica)
+        ;; (load-theme 'parchment t)
       ))
   (when (string= "work" (daemonp))
     (load-theme 'doom-xcode t))
@@ -1167,6 +1149,13 @@ will be built under the headline at point."
 ;; (use-package org-contrib
 ;;   :ensure t)
 
+(defun org-scratch ()
+  (interactive)
+  (pop-to-buffer
+   (with-current-buffer (get-buffer-create "*org-scratch*")
+     (org-mode)
+     (current-buffer))))
+
 ;; (require 'helm-org)
 (use-package helm-org
   :ensure t
@@ -1332,6 +1321,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (setq org-capture-templates
         '(("t" "Task" entry (file+headline "~/org/all.org" "Miscellaneous Captures")
            "* TODO %?\n %i\n %a")
+          ;; Deprecated date/weektree capture templates changed to ‘file+olp+datetree’.
           ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?"  :empty-lines 1)
           ("n" "Add Note to Current Task" plain (clock))
           ;; TODO: Add a template to capture a new note under the currently clocked template
@@ -1497,6 +1487,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :bind (:map isearch-mode-map
               ("<tab>" . isearch-dabbrev-expand)
               ("M-/" . isearch-dabbrev-expand)))
+
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 (use-package imenu
   :bind (("M-i" . imenu)))
@@ -2051,11 +2043,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (when (eq 'postgres sql-product)
     (setq-local sqlformat-command 'pgformatter)))
 
-;; (use-package sqlformat
-;;   :ensure t
-;;   :config (setq sqlformat-command 'pgformatter
-;;                 sqlformat-args '("-s2" "-g"))
-;;   :hook ((sql-mode . sqlformat-on-save-mode)))
+(require 'sqlformat)
+(setq sqlformat-command 'pgformatter
+      sqlformat-args '("-s2" "-g"))
+(add-hook 'sql-mode-hook
+          'sqlformat-on-save-mode)
 
 
 ;;; Other languages
@@ -2232,16 +2224,15 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     :hook ((rcirc-mode . my/rcirc-mode-hook))))
 
 
-(use-package alert
-  :ensure t
-  :config (setq alert-user-configuration
-                '((((:category . "slack")) ignore nil)
-                  (((:title . "\\(eng\\)")
-                    (:category . "slack"))
-                   libnotify nil)
-                  (((:message . "@javier\\|Javier")
-                    (:category . "slack"))
-                   libnotify nil))))
+(require 'alert)
+(setq alert-user-configuration
+      '((((:category . "slack")) ignore nil)
+        (((:title . "\\(eng\\)")
+          (:category . "slack"))
+         libnotify nil)
+        (((:message . "@javier\\|Javier")
+          (:category . "slack"))
+         libnotify nil)))
 
 (use-package j-mode
   :load-path "site-lisp/j-mode")
@@ -2252,9 +2243,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; (use-package q
 ;;   :load-path "site-lisp/q.el")
 ;; (load "/home/puercopop/.emacs.d/site-lisp/q.el/q.el")
-
-(use-package rfc-mode
-  :ensure t)
 
 ;; (use-package transmission
 ;;   :ensure t)
@@ -2294,8 +2282,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package axe
   :ensure t)
 
-(use-package dyalog-mode
-  :load-path "site-lisp/dyalog-mode/")
+;; (require 'dyalog-mode)
+;; (use-package dyalog-mode
+;;   :load-path "site-lisp/dyalog-mode/")
 
 (defun my/vim-it ()
   (interactive)

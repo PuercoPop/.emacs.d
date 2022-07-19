@@ -7,6 +7,9 @@
 [submodule "acme-theme"]
 	path = lib/acme-theme
 	url = git@github.com:ianyepan/acme-emacs-theme.git
+[submodule "aio"]
+	path = lib/aio
+	url = git@github.com:skeeto/emacs-aio.git
 [submodule "alert"]
 	path = lib/alert
 	url = git@github.com:jwiegley/alert.git
@@ -79,6 +82,9 @@
 [submodule "devdocs"]
 	path = lib/devdocs
 	url = git@github.com:astoff/devdocs.el.git
+[submodule "docker"]
+	path = lib/docker
+	url = git@github.com:Silex/docker.el.git
 [submodule "doom-themes"]
 	path = lib/doom-themes
 	url = git@github.com:doomemacs/themes.git
@@ -88,6 +94,9 @@
 [submodule "ediprolog"]
 	path = lib/ediprolog
 	url = git@github.com:emacsmirror/ediprolog.git
+[submodule "edit-indirect"]
+	path = lib/edit-indirect
+	url = git@github.com:Fanael/edit-indirect.git
 [submodule "eglot"]
 	path = lib/eglot
 	url = git@github.com:joaotavora/eglot.git
@@ -209,6 +218,9 @@
 [submodule "magit"]
 	path = lib/magit
 	url = git@github.com:magit/magit.git
+[submodule "map"]
+	path = lib/map
+	url = git@github.com:emacsmirror/map.git
 [submodule "markdown-mode"]
 	path = lib/markdown-mode
 	url = git@github.com:jrblevin/markdown-mode.git
@@ -279,6 +291,9 @@
 [submodule "rainbow-mode"]
 	path = lib/rainbow-mode
 	url = git@github.com:emacsmirror/rainbow-mode.git
+[submodule "reformatter"]
+	path = lib/reformatter
+	url = git@github.com:purcell/emacs-reformatter.git
 [submodule "request"]
 	path = lib/request
 	url = git@github.com:tkf/emacs-request.git
@@ -309,6 +324,9 @@
 [submodule "simple-httpd"]
 	path = lib/simple-httpd
 	url = git@github.com:skeeto/emacs-web-server.git
+[submodule "skewer-mode"]
+	path = lib/skewer-mode
+	url = git@github.com:skeeto/skewer-mode.git
 [submodule "sly"]
 	path = lib/sly
 	url = git@github.com:joaotavora/sly.git
@@ -321,6 +339,12 @@
 [submodule "spinner"]
 	path = lib/spinner
 	url = git@github.com:Malabarba/spinner.el.git
+[submodule "sqlformat"]
+	path = lib/sqlformat
+	url = git@github.com:purcell/sqlformat.git
+[submodule "tablist"]
+	path = lib/tablist
+	url = git@github.com:politza/tablist.git
 [submodule "tangotango-theme"]
 	path = lib/tangotango-theme
 	url = git@github.com:juba/color-theme-tangotango.git
