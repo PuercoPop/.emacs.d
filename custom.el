@@ -97,7 +97,11 @@
  '(rustic-ansi-faces
    ["#1E1C31" "#FF8080" "#95FFA4" "#FFE9AA" "#91DDFF" "#C991E1" "#AAFFE4" "#CBE3E7"])
  '(safe-local-variable-values
-   '((eval when
+   '((rspec-docker-file-name . "/home/puercopop/hcp/decision-engine/docker-compose.yml")
+     (rspec-docker-container . "audiencies-api")
+     (rspec-use-docker-when-possible . t)
+     (rspec-use-chruby)
+     (eval when
            (fboundp 'rainbow-mode)
            (rainbow-mode 1))
      (git-commit-major-mode . git-commit-elisp-text-mode)
