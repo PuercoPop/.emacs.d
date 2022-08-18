@@ -175,8 +175,23 @@ call KILL-REGION."
                ("j" . bookmark-jump-other-tab)))))
 
 (require 'project)
-(use-package project
-  :bind-keymap (("C-c p" . project-prefix-map)))
+(global-set-key (kbd "C-c p") project-prefix-map)
+
+(defun my/project-try-gem (dir)
+  (when-let (root (locate-dominating-file dir "Gemfile"))
+    (cons 'ruby root)))
+(cl-defmethod project-root ((project (head ruby)))
+  (cdr project))
+
+(cl-defmethod project-files ((project (head ruby)) &optional dir)
+  (mapcan #'(lambda (dir)
+              ;; TODO: We shouldn't hard-code Git as the backend
+              (project--vc-list-files dir 'Git nil))
+          (or dir
+              (list (project-root project)))))
+;; TODO: We want to add helm-file type actions to the candidates
+(setq project-find-functions (list #'my/project-try-gem #'project-try-vc))
+
 
 (global-anzu-mode +1)
 (global-set-key [remap query-replace] 'anzu-query-replace)
@@ -683,6 +698,7 @@ And update the branch as a suffix."
   (magit-delete-by-moving-to-trash nil)
   ;; (magit-list-refs-sortby "-creatordate")
   :bind (("C-x g" . magit-status)
+         ("C-x C-g" . magit-status)
          ("C-c g" . magit-file-dispatch)
          ("C-c M-g" . magit-file-dispatch)
          ("C-c l" . magit-list-repositories)
@@ -711,15 +727,7 @@ And update the branch as a suffix."
 
 (when (string= "work" (daemonp))
   (setq magit-repository-directories
-        '(("/home/puercopop/rlock/connect-backend/" . 1)
-          ("/home/puercopop/rlock/connect-web/" . 1)
-          ("/home/puercopop/rlock/ayla/". 0)
-          ("/home/puercopop/rlock/august/". 0)
-          ("/home/puercopop/rlock/mercury/". 0)
-          ("/home/puercopop/rlock/ohs/". 0)
-          ("/home/puercopop/rlock/mios/". 0)
-          ("/home/puercopop/rlock/schlage-home/". 0)
-          ("/home/puercopop/rlock/ops/". 0))))
+        '(("/home/puercopop/hcp/" . 1))))
 
 (when (not (string= "work" (daemonp)))
   (setq magit-repository-directories
@@ -738,13 +746,19 @@ And update the branch as a suffix."
 (defun helm-magit-branches-delete (_candidate)
   (call-interactively 'magit-branch-delete (helm-marked-candidates)))
 
+(defun helm-magit-switch-branch (candidate)
+  (call-interactively 'magit-branch-checkout candidate))
+
 (defun helm-magit-branches ()
   "List all the git branches"
   (interactive)
   (helm :sources (helm-build-sync-source "Magit branches"
                    :candidates (magit-list-branch-names)
                    :keymap helm-magit-branches-map
-                   :action (helm-make-actions "Delete branch(es)" 'helm-magit-branches-delete))
+                   :action (helm-make-actions "Delete branch(es)" 'helm-magit-branches-delete
+                                              "Switch to branch" 'helm-magit-switch-branch
+                                              ;; TODO: "Fetch branch
+                                              ))
         :buffer "*helm list git branches*"))
 
 
@@ -1356,8 +1370,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package bug-reference
   :config
-  (setq bug-reference-bug-regexp "\\(\\)RL-\\([0-9]+\\)"
-        bug-reference-url-format "https://remotelock.atlassian.net/browse/RL-%s"))
+  (setq bug-reference-bug-regexp "\\(\\)GROW-\\([0-9]+\\)"
+        bug-reference-url-format "https://housecall.atlassian.net/browse/GROW-%s"))
 
 ;; (use-package org-gcal
 ;;   :load-path "site-lisp/org-gcal.el"
@@ -1783,7 +1797,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (typescript-mode . jest-test-mode)))
 
 (defun my/ruby-flymake-hook ()
-  (let ((in-rlock-p (string-prefix-p "/home/puercopop/rlock/"
+  (let ((in-rlock-p (string-prefix-p "/home/puercopop/hcp/"
                                      (buffer-file-name (current-buffer)))))
     (when in-rlock-p
       (flymake-mode))))
@@ -1964,8 +1978,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
           ;; (advice-add 'recompile :around (my/call-in-rspec-mode  #'my/maybe-inject-proccess-environment))
           (advice-add 'rspec-spec-file-for :around #'my/advice-rspec-spec-file-for)
           (advice-add 'rspec-target-file-for :around #'my/advice-rspec-target-file-for)
-          (add-hook 'after-init-hook 'inf-ruby-switch-setup))
-  :bind (:map rspec-mode-map ("C-x g" . recompile)))
+          (add-hook 'after-init-hook 'inf-ruby-switch-setup)))
 
 (fset 'my/rails-open-backtrace
       (kmacro-lambda-form [?o ?p ?e ?n ?\( ?\' ?s ?c ?r ?a ?t ?c ?h ?. ?h ?t ?m ?l ?\' ?, ?  ?\' ?w ?\' ?\) ?  ?\{ ?  ?| ?f ?| ?  ?f ?. ?w ?r ?i ?t ?e ?\( ?r ?e ?s ?p ?o ?n ?s ?e ?_ ?b ?o ?d ?y ?\) ?  ?\} ?\C-m ?\M-: ?\( ?f ?i ?n ?d ?- ?f ?i ?l ?e ?  ?\" ?s ?c ?r ?a ?t ?c ?h ?. ?h ?t ?m ?l ?\" ?\) ?\C-m ?\M-x ?s ?h ?r ?- ?r ?e ?n ?d ?e ?r ?- ?b ?u ?f ?f ?e ?r ?\C-m] 0 "%d"))

@@ -54,6 +54,7 @@
         wdired-exit
         wgrep-exit
         wgrep-finish-edit
+        yaml-electric-dash-and-dot
         ))
 
 (setq mc/cmds-to-run-once

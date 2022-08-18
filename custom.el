@@ -9,6 +9,18 @@
  '(auth-sources '("~/.authinfo.gpg" "~/.authinfo" "secrets:Login"))
  '(auto-revert-avoid-polling t)
  '(bookmark-save-flag 1)
+ '(browse-at-remote-remote-type-regexps
+   '(("^github\\.com$" . "github")
+     ("^bitbucket\\.org$" . "bitbucket")
+     ("^gitlab\\.com$" . "gitlab")
+     ("^git\\.savannah\\.gnu\\.org$" . "gnu")
+     ("^gist\\.github\\.com$" . "gist")
+     ("^git\\.sr\\.ht$" . "sourcehut")
+     ("^.*\\.visualstudio\\.com$" . "ado")
+     ("^pagure\\.io$" . "pagure")
+     ("^.*\\.fedoraproject\\.org$" . "pagure")
+     ("^.*\\.googlesource\\.com$" . "gitiles")
+     ("^gitlab\\.housecalldev\\.com$" . "gitlab")))
  '(c-default-style
    '((c-mode . "bsd")
      (java-mode . "java")
