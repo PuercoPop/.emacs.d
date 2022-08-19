@@ -116,6 +116,9 @@
 [submodule "emaps"]
 	path = lib/emaps
 	url = git@github.com:GuiltyDolphin/emaps.git
+[submodule "embark"]
+	path = lib/embark
+	url = git@github.com:oantolin/embark.git
 [submodule "emojify"]
 	path = lib/emojify
 	url = git@github.com:iqbalansari/emacs-emojify.git
