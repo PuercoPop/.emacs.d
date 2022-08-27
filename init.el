@@ -1370,7 +1370,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package bug-reference
   :config
-  (setq bug-reference-bug-regexp "\\(\\)GROW-\\([0-9]+\\)"
+  (setq bug-reference-bug-regexp "\\(GROW-\\([0-9]+\\)\\)"
         bug-reference-url-format "https://housecall.atlassian.net/browse/GROW-%s"))
 
 ;; (use-package org-gcal
