@@ -856,12 +856,14 @@ And update the branch as a suffix."
   (when (string= "personal" (daemonp))
     (if (display-graphic-p frame)
         ;; (load-theme 'exotica t)
-        (load-theme 'doom-opera t)
+        ;; (load-theme 'doom-opera t)
+        (load-theme 'ef-day t)
         ;; (disable-theme 'exotica)
         ;; (load-theme 'parchment t)
       ))
   (when (string= "work" (daemonp))
-    (load-theme 'doom-xcode t))
+    ;; (load-theme 'doom-xcode t)
+    (load-theme 'ef-spring t))
   (when (string= "social" (daemonp))
     (load-theme 'doom-1337 t))
   ;; (set-face-attribute 'default nil :family "Go Mono" :height 170)
@@ -2294,6 +2296,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package axe
   :ensure t)
+
+(require 'kubel)
 
 ;; (require 'dyalog-mode)
 ;; (use-package dyalog-mode
