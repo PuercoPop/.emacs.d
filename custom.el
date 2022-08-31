@@ -82,12 +82,15 @@
  '(jdee-db-active-breakpoint-face-colors (cons "#100E23" "#906CFF"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#100E23" "#95FFA4"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#100E23" "#565575"))
+ '(kubectl-kubectl
+   "/opt/rancher-desktop/resources/resources/linux/bin/kubectl")
  '(kubel-use-namespace-list 'on)
  '(objed-cursor-color "#FF8080")
  '(org-drill-done-count-color "#663311")
  '(org-drill-failed-count-color "#880000")
  '(org-drill-mature-count-color "#005500")
  '(org-drill-new-count-color "#004488")
+ '(org-edit-src-content-indentation 0)
  '(package-selected-packages
    '(qml-mode code-review axe consult rfc-mode helm-fuz fuz helm-fuzzy flx helm-pages tree-sitter-hl tree-sitter-query tree-sitter-debug tree-sitter tree-sitter-langs emaps darkroom github-review gnorb transmission devdocs ligature isearch-dabbrev jest-test-mode mu4e-icalendar mu4e-alert indium smudge sqlformat ace-window helm-system-packages restclient-helm helm-rage org-rifle org-file xref-js2 wgrep-help wgrep-helm easy-kill mini-frame emacs-mini-frame annotate doom-themes sx compile-eslint bundler hyperbole helm-rg org-static browse-at-remote org org-contrib undo-tree smartparens helm-org tangotango-theme rails-log-mode anzu es-mode espresso-theme ob-restclient org-drill cider nofrils-acme-theme helm-slack ediprolog evil-markdown terraform-mode restclient tron-legacy-theme elfeed enh-ruby-mode exotica-theme fish-mode helm-ls-git elpher helm-dash acme-theme parchment-theme protobuf-mode helm-flyspell-correct go-mode dart-mode helpful matrix-client clojure-mode debbugs rust-mode w3m helm-descbinds vterm request-deferred sly-macrostep macrostep shackle rainbow-delimiters graphql-mode eglot typescript-mode xterm-color moody material-theme cyberpunk-theme moe-theme nhexl-mode htmlize gnu-apl-mode prolog-mode insert-kaomoji expand-region systemd paredit robe json-mode pinentry elisp-refs company company-mode edit-indirect markdown-mode multiple-cursors rainbow-mode sql-indent prettier-js js2-mode yaml-mode web-mode rspec-mode chruby ibuffer-vc wgrep minions use-package forge magit))
  '(pdf-view-midnight-colors (cons "#CBE3E7" "#1E1C31"))
@@ -152,6 +155,8 @@
      (whitespace-line-column . 80)))
  '(save-abbrevs 'silently)
  '(sentence-end-double-space t)
+ '(tab-bar-new-tab-choice 'bookmark-bmenu-get-buffer)
+ '(tab-bar-tab-name-function 'tab-bar-tab-name-truncated)
  '(undo-tree-auto-save-history nil)
  '(use-short-answers t)
  '(vc-annotate-background "#1E1C31")
@@ -175,7 +180,8 @@
     (cons 320 "#805f77")
     (cons 340 "#858FA5")
     (cons 360 "#858FA5")))
- '(vc-annotate-very-old-color nil))
+ '(vc-annotate-very-old-color nil)
+ '(vterm-clear-scrollback-when-clearing t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

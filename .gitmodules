@@ -152,6 +152,9 @@
 [submodule "ghub"]
 	path = lib/ghub
 	url = git@github.com:magit/ghub.git
+[submodule "gitlab-pipeline"]
+	path = lib/gitlab-pipeline
+	url = git@github.com:TxGVNN/gitlab-pipeline.git
 [submodule "go-dlv"]
 	path = lib/go-dlv
 	url = git@github.com:benma/go-dlv.el.git
@@ -399,6 +402,9 @@
 [submodule "visual-fill-column"]
 	path = lib/visual-fill-column
 	url = https://codeberg.org/joostkremers/visual-fill-column.git
+[submodule "vterm"]
+	path = lib/vterm
+	url = git@github.com:akermu/emacs-libvterm.git
 [submodule "web-mode"]
 	path = lib/web-mode
 	url = git@github.com:fxbois/web-mode.git

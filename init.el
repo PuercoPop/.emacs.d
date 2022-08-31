@@ -1230,8 +1230,8 @@ will be built under the headline at point."
         (concat user-emacs-directory my/server-name "-org-clock-save.el")))
 
 (when (string= my/server-name "work")
-  (setq org-agenda-files '("~/org/remotelock.org")
-        org-refile-targets '(("~/org/remotelock.org" :maxlevel . 1))
+  (setq org-agenda-files '("~/hcp/inbox.org")
+        org-refile-targets '(("~/hcp/inbox.org" :maxlevel . 1))
         org-todo-keywords '(
                             ;; Story flow ; To we want a NEXT/Current header?
                             ;; The code Review flow only involves TODO WAITING and DONE
@@ -1239,7 +1239,7 @@ will be built under the headline at point."
         org-agenda-custom-commands '(("o" "At the Office" tags-todo "@office"
                                       ((org-agenda-overriding-header "Office")
                                        (org-agenda-skip-function 'my/org-agenda-skip-all-siblings-but-first)))
-                                     ("w" "RemoteLock"
+                                     ("w" "HousecallPro"
                                       ;; First meetings
                                       ((tags-todo "meeting"
                                                   ((org-agenda-overriding-header "Meetings for today")
@@ -1322,7 +1322,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
           ;; TODO: Add a capture for the JIRA ticket
           ;; javascript:location.href'org-protocol://capture?template=wJ&title='+encodeURIComponent(document.title)+'&issue_url='+encodeURIComponent(window.location.href)
           ("J" "Jira Ticket" entry
-           (file+headline "~/org/remotelock.org" "Tasks")
+           (file+headline "~/hcp/inbox.org" "Tasks")
            "* TODO %?%:title
 :PROPERTIES:
 :JIRA-URL: %:link
@@ -1370,8 +1370,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; (use-package ejira
 ;;   :load-path "site-lisp/ejira")
 
-(use-package bug-reference
-  :config
+(require 'bug-reference)
+(when (string= "work" (daemonp))
   (setq bug-reference-bug-regexp "\\(GROW-\\([0-9]+\\)\\)"
         bug-reference-url-format "https://housecall.atlassian.net/browse/GROW-%s"))
 
@@ -1422,7 +1422,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;;; Mail
 (if (string= my/server-name "work")
-    (setq user-mail-address "javier.olaechea@remotelock.com")
+    (setq user-mail-address "javier.olaechea@housecallpro.com")
   (setq user-mail-address "pirata@gmail.com"))
 
 (use-package notmuch
@@ -2286,13 +2286,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;   :bind (("C-x 8 k" . insert-kaomoji)))
 
 (setq term-prompt-regexp "^\\$ ")
-(use-package vterm
-  :load-path "site-lisp/emacs-libvterm"
-  :commands (vterm)
-  :custom (vterm-clear-scrollback-when-clearing t)
-  :bind ((:map vterm-mode-map
-               ("M-p" . vterm-send-C-p)
-               ("M-n" . vterm-send-C-n))))
+(require 'vterm)
+(eval-after-load 'vterm
+  (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
+  (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n))
 
 (use-package axe
   :ensure t)
