@@ -1272,17 +1272,17 @@ will be built under the headline at point."
   (setq org-capture-templates
         '(
           ("n" "Add Note to Current Task" plain (clock))
-          ("t" "Work task" entry (file+headline "~/org/remotelock.org" "Tasks")
+          ("t" "Work task" entry (file+headline "~/hcp/inbox.org" "Tasks")
            "* TODO %?
 SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"
            :prepend t)
-          ("f" "Mail follow-up" entry (file+headline "~/org/remotelock.org" "Tasks")
+          ("f" "Mail follow-up" entry (file+headline "~/hcp/inbox.org" "Tasks")
            "* TODO Reply to email from %:fromname
 :PROPERTIES:
 :MAIL-SOURCE: %a
 :END:
 ")
-          ("d" "Daily Journal" entry (file+olp+datetree "~/org/remotelock.org" "Daily Recaps & Planning")
+          ("d" "Daily Journal" entry (file+olp+datetree "~/hcp/inbox.org" "Journal")
            "* %t %?
 #+BEGIN: clocktable maxlevel: 5 :block %(format-time-string \"%Y-%m-%d\" (current-time)) :scope file-with-archives :link t
 #+CAPTION:
@@ -1291,28 +1291,28 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"
 
           ;; TODO: I could leverage org-dblock-write:clocktable
           ;; org-clocktable-steps to generate the table
-          ("w" "Weekly Reports" entry
-           (file+olp+datetree "~/org/remotelock.org" "Weekly Reports")
-           "* Recap %?
-#+BEGIN: clocktable maxlevel: 5 :block %(format-time-string \"%G-W%V\" (current-time)) :scope file-with-archives :emphasize t
-#+CAPTION:
-#+END: clocktable
-\n" :tree-type week :prepend t :time-prompt t)
+          ;; ("w" "Weekly Reports" entry
+;;            (file+olp+datetree "~/org/remotelock.org" "Weekly Reports")
+;;            "* Recap %?
+;; #+BEGIN: clocktable maxlevel: 5 :block %(format-time-string \"%G-W%V\" (current-time)) :scope file-with-archives :emphasize t
+;; #+CAPTION:
+;; #+END: clocktable
+;; \n" :tree-type week :prepend t :time-prompt t)
 
-          ("r" "Monthly Report" entry
-           (file+olp+datetree "~/org/remotelock.org" "Monthly Reports")
-           "* Recap
-#+BEGIN: clocktable maxlevel: 5 :block %(format-time-string \"%Y-%m\" (current-time)) :scope file-with-archives :emphasize t
-#+CAPTION:
-#+END: clocktable
-\n" :tree-type month :prepend t :time-prompt t)
+;;           ("r" "Monthly Report" entry
+;;            (file+olp+datetree "~/org/remotelock.org" "Monthly Reports")
+;;            "* Recap
+;; #+BEGIN: clocktable maxlevel: 5 :block %(format-time-string \"%Y-%m\" (current-time)) :scope file-with-archives :emphasize t
+;; #+CAPTION:
+;; #+END: clocktable
+;; \n" :tree-type month :prepend t :time-prompt t)
 
-          ("m" "Meeting" entry (file+headline "~/org/remotelock.org" "Meetings")
+          ("m" "Meeting" entry (file+headline "~/hcp/inbox.org" "Meetings")
            "* %?\n %T\n" :prompt t :prepend t)
           ;; Accompanying Bookmarklet
           ;; javascript:location.href'org-protocol://capture?template=wr&title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(window.location.href)
           ("R" "Code Review" entry
-           (file+headline "~/org/remotelock.org" "Code Reviews")
+           (file+headline "~/hcp/inbox.org" "Code Reviews")
            "* TODO Review %?%:title
 SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 :PROPERTIES:

@@ -155,6 +155,8 @@
      (whitespace-line-column . 80)))
  '(save-abbrevs 'silently)
  '(sentence-end-double-space t)
+ '(switch-to-buffer-in-dedicated-window 'pop)
+ '(switch-to-buffer-obey-display-actions t)
  '(tab-bar-new-tab-choice 'bookmark-bmenu-get-buffer)
  '(tab-bar-tab-name-function 'tab-bar-tab-name-truncated)
  '(undo-tree-auto-save-history nil)
