@@ -215,6 +215,9 @@
 [submodule "jest-test-mode"]
 	path = lib/jest-test-mode
 	url = git@github.com:rymndhng/jest-test-mode.git
+[submodule "jira"]
+	path = lib/jira
+	url = git@github.com:PuercoPop/jira.el.git
 [submodule "js2-mode"]
 	path = lib/js2-mode
 	url = git@github.com:mooz/js2-mode.git
