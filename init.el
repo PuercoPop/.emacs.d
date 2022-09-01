@@ -1354,6 +1354,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (require 'org-pomodoro)
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro))
+
+;; (require 'jira)
 ;; (use-package org-jira
 ;;   :load-path "site-lisp/org-jira"
 ;;   :config (setq jiralib-url "https://remotelock.atlassian.net/"
@@ -2288,8 +2290,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (setq term-prompt-regexp "^\\$ ")
 (require 'vterm)
 (eval-after-load 'vterm
-  (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
-  (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n))
+  (progn
+    (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
+    (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n)))
 
 (use-package axe
   :ensure t)
