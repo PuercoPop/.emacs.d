@@ -5,6 +5,7 @@
       '(
         backward-sexp
         c-electric-delete-forward
+        capitalize-dwim
         comint-delchar-or-maybe-eof
         delete-horizontal-space
         delete-indentation
@@ -41,6 +42,7 @@
         paredit-forward-delete
         paredit-forward-kill-word
         paredit-forward-slurp-sexp
+        paredit-kill
         paredit-open-round
         paredit-open-square
         paredit-semicolon
@@ -59,10 +61,12 @@
 
 (setq mc/cmds-to-run-once
       '(
+        beginning-of-buffer
         end-of-buffer
         goto-line
         helm-browse-project
         helm-find-files
+        magit-status
         mouse-set-region
         rspec-verify
         ))

@@ -55,6 +55,9 @@
 [submodule "closql"]
 	path = lib/closql
 	url = git@github.com:emacscollective/closql.git
+[submodule "cmake-mode"]
+	path = lib/cmake-mode
+	url = git@github.com:emacsmirror/cmake-mode.git
 [submodule "code-review"]
 	path = lib/code-review
 	url = git@github.com:wandersoncferreira/code-review.git
@@ -269,6 +272,9 @@
 [submodule "multiple-cursors"]
 	path = lib/multiple-cursors
 	url = git@github.com:magnars/multiple-cursors.el.git
+[submodule "ndyalog"]
+	path = lib/ndyalog
+	url = git@github.com:PuercoPop/ndyalog.git
 [submodule "ob-restclient"]
 	path = lib/ob-restclient
 	url = git@github.com:alf/ob-restclient.el.git
@@ -294,15 +300,15 @@
 [submodule "parseedn"]
 	path = lib/parseedn
 	url = git@github.com:clojure-emacs/parseedn.git
+[submodule "persist"]
+	path = lib/persist
+	url = git@github.com:emacsmirror/persist.git
 [submodule "pinentry"]
 	path = lib/pinentry
 	url = git@github.com:ueno/pinentry-el.git
 [submodule "prettier-js"]
 	path = lib/prettier-js
 	url = git@github.com:prettier/prettier-emacs.git
-[submodule "qml-mode"]
-	path = lib/qml-mode
-	url = git@github.com:coldnew/qml-mode.git
 [submodule "queue"]
 	path = lib/queue
 	url = git@github.com:emacsmirror/queue.git
@@ -390,6 +396,9 @@
 [submodule "tron-legacy-theme"]
 	path = lib/tron-legacy-theme
 	url = git@github.com:ianyepan/tron-legacy-emacs-theme.git
+[submodule "ts"]
+	path = lib/ts
+	url = https://github.com/alphapapa/ts.el
 [submodule "typescript-mode"]
 	path = lib/typescript-mode
 	url = git@github.com:emacs-typescript/typescript.el.git

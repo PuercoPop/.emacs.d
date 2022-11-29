@@ -209,6 +209,9 @@ call KILL-REGION."
 
 ;; TODO C-x b consults buffers in the same project. C-u C-x b all buffers.
 
+(global-set-key (kbd "C-.") 'embark-act)
+(global-set-key (kbd "C-;") 'embark-dwim)
+
 
 ;;; Helm
 ;; (setq helm-display-function 'my/helm-display-frame-center)
@@ -857,9 +860,9 @@ And update the branch as a suffix."
     (if (display-graphic-p frame)
         ;; (load-theme 'exotica t)
         ;; (load-theme 'doom-opera t)
-        (load-theme 'ef-day t)
+        ;; (load-theme 'ef-day t)
         ;; (disable-theme 'exotica)
-        ;; (load-theme 'parchment t)
+        (load-theme 'parchment t)
       ))
   (when (string= "work" (daemonp))
     ;; (load-theme 'doom-xcode t)
@@ -867,11 +870,12 @@ And update the branch as a suffix."
   (when (string= "social" (daemonp))
     (load-theme 'doom-1337 t))
   ;; (set-face-attribute 'default nil :family "Go Mono" :height 170)
-  (set-frame-font "IBM Plex Mono-18"))
+  (set-frame-font "IBM Plex Mono-18" nil t))
 ;;(set-frame-font "IBM Plex Mono-22")
-;;(set-frame-font "Go Mono-18")
+;;(set-frame-font "Go Mono-14")
 (add-to-list 'default-frame-alist
 	     (cons 'font "IBM Plex Mono-18"))
+;; (set-frame-font "IBM Plex Mono-18" nil t)
 ;; (add-hook 'after-init-hook 'my/set-theme)
 (add-hook 'after-make-frame-functions 'my/set-theme)
 ;; (add-hook 'server-after-make-frame-functions 'my/set-theme)
@@ -1014,7 +1018,7 @@ in."
   (org-archive-subtree-add-inherited-tags t)
   :config (setq org-confirm-babel-evaluate nil
                 org-use-speed-commands t
-                org-catch-invisible-edits 'error
+                org-fold-catch-invisible-edits 'error
                 org-ctrl-k-protect-subtree t
                 org-special-ctrl-a/e t
                 org-special-ctrl-k t
@@ -1608,6 +1612,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
       (when (string= name frame-name)
         name))))
 
+(defun my/make-display-buffer-matcher-function (major-modes)
+  (lambda (buffer-name _action)
+    (with-current-buffer buffer-name (apply #'derived-mode-p major-modes))))
+
 (setq display-buffer-alist
       `(
         ;; Display Help on its own frame
@@ -1635,6 +1643,13 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (frame-predicate . ,(frame-named-p "mu4e"))
          (pop-up-frame-parameters . ((name . "mu4e"))))
 
+
+        ;; (,(my/make-display-buffer-matcher-function '(org-mode org-agenda-mode))
+        ;;  (display-buffer-in-tab display-buffer-in-direction)
+        ;;  (ignore-current-tab . t)
+        ;;  (direction . right)
+        ;;  (tab-name . "🚀 ORG")
+        ;;  (tab-group . "Org"))
         ;; https://github.com/joaotavora/sly/pull/189#issuecomment-426295098
         ;; ("\\*sly-mrepl for.*"
         ;;  (display-buffer-window nil))
@@ -2016,11 +2031,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; gotest
 ;; go-guru
 
-
-
-(use-package qml-mode
-  :ensure t)
-
 
 ;; SQL
 
@@ -2206,8 +2216,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     :ensure t)
 
   (require 'mastodon)
-  (setq mastodon-instance-url "https://mastodon.social"
-        mastodon-active-user "PuercoPop")
 
   (use-package elfeed
     :ensure t
@@ -2293,11 +2301,19 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (progn
     (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
     (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n)))
+(defun project-vterm ()
+  (declare (interactive-only shell-command))
+  (interactive)
+  ;; TODO(javier): Error out if we are not in a project.
+  (let ((default-directory (cdr (project-current))))
+    (vterm (format "*vterm: %s*" default-directory))))
+(define-key project-prefix-map (kbd "v") 'project-vterm)
 
 (use-package axe
   :ensure t)
 
 (require 'kubel)
+(kubel-vterm-setup)
 
 ;; (require 'dyalog-mode)
 ;; (use-package dyalog-mode
