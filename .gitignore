@@ -2,6 +2,7 @@
 *-history
 *recentf
 *-bookmarks
+*-projects
 /*org-clock-save.el
 /.cache/
 /.sx/
