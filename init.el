@@ -265,7 +265,6 @@ parent frame."
     (helm-log-run-hook 'helm-window-configuration-hook)))
 
 (use-package helm
-  :ensure t
   :custom
   (helm-echo-input-in-header-line t)
 
@@ -329,7 +328,6 @@ parent frame."
 (set-face-inverse-video 'helm-selection t)
 
 ;; (use-package flx
-;;   :ensure t
 ;;   :after (helm))
 
 (require 'fuz)
@@ -441,14 +439,11 @@ parent frame."
          ;; Enable this after I fix the rg
          ))
 
-(use-package helm-pages
-  :ensure t)
+(use-package helm-pages)
 
-(use-package wgrep-helm
-  :ensure t)
+(use-package wgrep-helm)
 
 (use-package helm-ls-git
-  :ensure t
   :after (helm)
   :config (setq helm-ls-git-fuzzy-match t
                 helm-ls-git-status-command 'magit-status-setup-buffer)
@@ -459,11 +454,9 @@ parent frame."
          ("C-x r p" . helm-browse-project-history)))
 
 (use-package helm-descbinds
-  :ensure t
   :config (helm-descbinds-mode))
 
 (use-package helm-dash
-  :ensure t
   :config (setq helm-dash-browser-func 'eww
                 dash-docs-common-docsets '("Ruby on Rails" "Ruby")))
 
@@ -474,7 +467,6 @@ parent frame."
   (setq-local devdocs-current-docs '("react")))
 
 (use-package devdocs
-  :ensure t
   :hook ((ruby-mode . my/set-ruby-devdocs)
          (js-mode . my/set-js-devdocs)
          (typescript-mode . my/set-js-devdocs)))
@@ -491,30 +483,25 @@ parent frame."
     (helpful-symbol help-topic)))
 
 (use-package helpful
-  :ensure t
   :custom (helpful-max-buffers 1)
   :bind ((:map help-mode-map
                (("H" . my/helpful-at-buffer)))))
 ;; XXX: C-h F Info-goto-emacs-command-node
 
-(use-package darkroom
-  :ensure t)
+(use-package darkroom)
 
 (use-package emaps
-  :ensure t
   ;; Consider C-h K
   :bind (("C-h M-k" . emaps-describe-keymap-bindings)))
 
-(use-package transient
-  :ensure t)
+(use-package transient)
 ;; (define-transient-command my/counsel ()
 ;;             "Entry point for assorted counsel commands."
 ;;             [("o" "Swipe file" swiper)
 ;;              ("r" "Grep Project" counsel-git-grep) ; pass flags to it like -ni
 ;;              ("p" "Find file in Project" counsel-git)])
 
-(use-package pinentry
-  :ensure t)
+(use-package pinentry)
 
 (use-package epa-file
   :config (setq epg-pinentry-mode 'loopback)
@@ -539,12 +526,10 @@ parent frame."
     (goto-char point)))
 
 (use-package wgrep
-  :ensure t
   :config (setq wgrep-auto-save-buffer t
                 wgrep-enable-key "\C-x\C-q"))
 
 (use-package ace-window
-  :ensure t
   :bind (("M-o" . 'other-window)
          ("M-0" . 'delete-window)
          ("M-1" . 'delete-other-windows)
@@ -560,7 +545,6 @@ parent frame."
                ("M-o" . other-window))))
 
 (use-package expand-region
-  :ensure t
   :bind (("C-=" . er/expand-region)))
 
 ;; TODO: Check hippie expand
@@ -624,7 +608,6 @@ be global."
   (setq fill-column 72))
 
 (use-package git-commit
-  :ensure t
   :config (add-to-list 'git-commit-style-convention-checks
                        'overlong-summary-line)
   :hook ((git-commit . my/git-commit-hook))
@@ -691,7 +674,6 @@ And update the branch as a suffix."
                           'append))
 
 (use-package magit
-  :ensure t
   :after (vc-annotate)
   :commands (magit-status magit-dispatch)
   :custom
@@ -779,7 +761,6 @@ And update the branch as a suffix."
 ;;   ;; Maybe branch
 ;;   '("o" "Browse repository" forge-browse-remote))
 (use-package forge
-  :ensure t
   ;; :load-path "/home/puercopop/code/forge"
   :after (magit)
   :custom-face (forge-topic-closed ((t (:inherit magit-dimmed :strike-through t)))))
@@ -788,7 +769,6 @@ And update the branch as a suffix."
   :load-path "site-lisp/gh-notify")
 
 ;; (use-package github-review
-;;   :ensure t
 ;;   :bind ((:map magit-mode-map
 ;;                (("C-c r" . github-review-forge-pr-at-point))))
 ;;   ;; Two mappings:
@@ -797,14 +777,12 @@ And update the branch as a suffix."
 ;;   )
 
 (use-package code-review
-  :ensure t
   :config (setq code-review-fill-column 80)
   :bind ((:map magit-mode-map
                (("C-c r" . code-review-forge-pr-at-point)))))
 
 (use-package browse-at-remote
   :after (magit)
-  :ensure t
   :config
   ;; Maybe this should be under the remote transient?
   (transient-append-suffix 'magit-file-dispatch "m"
@@ -817,27 +795,21 @@ And update the branch as a suffix."
 
 ;; TODO: Evaluate helm-hunks as an alternative to diff-hl
 
-(use-package moe-theme
-  :ensure t)
+(use-package moe-theme)
 
 (use-package cyberpunk-theme
-  :ensure t
   :load-path "site-lisp/cyberpunk-theme/")
 
 ;; plan9-theme
 
-(use-package parchment-theme
-  :ensure t)
+(use-package parchment-theme)
 
-(use-package acme-theme
-  :ensure t)
+(use-package acme-theme)
 
 (use-package exotica-theme
-  :ensure t
   :load-path "site-lisp/exotica-theme/")
 
 (use-package tangotango-theme
-  :ensure t
   :config
   ;; :custom-face
   ;; (show-paren-match ((t (:underline t :bold t :background nil))))
@@ -847,12 +819,10 @@ And update the branch as a suffix."
   )
 
 (use-package tron-legacy-theme
-  :ensure t
   :config (setq tron-legacy-theme-vivid-cursor t
                 tron-legacy-theme-softer-bg t))
 
-(use-package doom-themes
-  :ensure t)
+(use-package doom-themes)
 
 (defun my/set-theme (frame)
   ;; (load-theme 'parchment t)
@@ -883,7 +853,6 @@ And update the branch as a suffix."
 ;; (add-hook 'server-after-make-frame-functions 'my/set-theme)
 
 (use-package moody
-  :ensure t
   :config
   (setq x-underline-at-descent-line t)
   (moody-replace-mode-line-buffer-identification))
@@ -901,7 +870,6 @@ And update the branch as a suffix."
                ("p" . compilation-previous-error))))
 
 (use-package xterm-color
-  :ensure t
   :after (compile)
   :init
   (progn
@@ -916,31 +884,25 @@ And update the branch as a suffix."
                                     (funcall 'compilation-filter proc
                                              (xterm-color-filter string)))))))))
 
-(use-package htmlize
-  :ensure t)
+(use-package htmlize)
 
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
 (use-package markdown-mode
-  :ensure t
   :custom (markdown-reference-location 'end)
   :hook ((markdown-mode . auto-fill-mode)))
 
 (use-package restclient
-  :ensure t
   :bind (:map restclient-mode-map
               ("C-c C-f" . json-mode-beautify)))
 
 ;; C-c C-g
-(use-package restclient-helm
-  :ensure t)
+(use-package restclient-helm)
 
-(use-package ob-restclient
-  :ensure t)
+(use-package ob-restclient)
 
 ;; This provides elasticsearch language to org-babel
-(use-package es-mode
-  :ensure t)
+(use-package es-mode)
 
 (use-package calendar
   :config (setq diary-file (locate-user-emacs-file (format "%s-diary" my/server-name))))
@@ -1168,8 +1130,7 @@ will be built under the headline at point."
 ;; (require 'org-tempo)
 (require 'org-protocol)
 
-;; (use-package org-contrib
-;;   :ensure t)
+;; (use-package org-contrib)
 
 (defun org-scratch ()
   (interactive)
@@ -1180,7 +1141,6 @@ will be built under the headline at point."
 
 ;; (require 'helm-org)
 (use-package helm-org
-  :ensure t
   :demand t
   :custom
   (helm-org-headings-fontify t)
@@ -1394,20 +1354,17 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; org-gcal-autoarchive y notify-p
 
 ;; (use-package annotate
-;;   :ensure t
 ;;   :hook ((prog-mode . annotate-mode)))
 
 ;; (use-package org-annotate
 ;;   :load-path "site-lisp/org-annotate")
 
-;; (use-package hyperbole
-;;   :ensure t)
+;; (use-package hyperbole)
 
 
 ;;; Browser
 
-;; (use-package w3m
-;;   :ensure t)
+;; (use-package w3m)
 
 ;; Warning (browse-url): Having ‘browse-url-browser-function’ set to an
 ;; alist is deprecated.  Use ‘browse-url-handlers’ instead. Disable showing Disable logging
@@ -1468,7 +1425,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   ;; TODO: Configure mu4e-alert
   (require 'mu4e-org)
   (use-package mu4e-alert
-    :ensure t
     :after (mu4e))
 
   ;; (require 'mu4e-icalendar)
@@ -1488,7 +1444,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; mu4e-view-attachment-actions
 
 (use-package undo-tree
-  :ensure t
   :config (global-undo-tree-mode 1)
   :bind (("C-x u" . undo-tree-visualize)))
 
@@ -1507,7 +1462,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                (goto-char isearch-other-end))))
 
 (use-package isearch-dabbrev
-  :ensure t
   :bind (:map isearch-mode-map
               ("<tab>" . isearch-dabbrev-expand)
               ("M-/" . isearch-dabbrev-expand)))
@@ -1532,7 +1486,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     (ibuffer-do-sort-by-alphabetic)))
 
 (use-package ibuffer-vc
-  :ensure t
   :hook ((ibuffer . my/ibuffer-vc-hook)))
 
 (use-package xref
@@ -1545,7 +1498,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package paredit
   :after (sly)
-  :ensure t
   :bind ((:map paredit-mode-map
                (("M-?" . nil)
                 ("M-s" . nil)
@@ -1580,7 +1532,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;          (typescript-mode . smartparens-mode)))
 
 ;; (use-package smartparens
-;;   :ensure t
 ;;   :config
 ;;   (smartparens-strict-mode)
 ;;   (sp-pair "${" "}")
@@ -1720,7 +1671,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;                ("C-c <down>" . outline-forward-same-level))))
 
 ;; (use-package bicycle
-;;   :ensure t
 ;;   :after outline
 ;;   :bind (:map outline-minor-mode-map
 ;;               ([C-tab] . bicycle-cycle)
@@ -1737,7 +1687,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; (add-hook c-mode-hook 'my/c-mode-hook)
 
 (use-package web-mode
-  :ensure t
   :mode "\\.erb\\'"
   :bind (:map web-mode-map
                ("C-c C-j" . nil)
@@ -1750,18 +1699,15 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package css-mode
   :custom (css-indent-offset 2))
 
-(use-package yaml-mode
-  :ensure t)
+(use-package yaml-mode)
 
 ;; (add-to-list 'load-path "/home/puercopop/.emacs.d/site-lisp/emacs-tree-sitter/core")
 ;; (add-to-list 'load-path "/home/puercopop/.emacs.d/site-lisp/emacs-tree-sitter/lisp")
 ;; (add-to-list 'load-path "/home/puercopop/.emacs.d/site-lisp/emacs-tree-sitter/langs")
 
-(use-package tree-sitter
-  :ensure t)
+(use-package tree-sitter)
 
-(use-package tree-sitter-langs
-  :ensure t)
+(use-package tree-sitter-langs)
 
 (use-package tree-sitter-hl
   :hook ((ruby-mode . tree-sitter-hl-mode)
@@ -1776,7 +1722,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;; JavaScript, JSON and TypeScript
 
 (use-package json-mode
-  :ensure t
   :mode ("\\.json\\'"))
 
 (use-package js
@@ -1786,11 +1731,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package js2-mode
   :after (js-mode)
-  :ensure t
   :hook ((js-mode . js2-minor-mode)))
 
 (use-package xref-js2
-  :ensure t
   :config (define-key js2-mode-map (kbd "M-.") nil)
   (setq xref-js2-search-program 'rg)
   (add-hook 'js2-mode-hook
@@ -1798,12 +1741,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
               (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
 
 (use-package typescript-mode
-  :ensure t
   :custom (typescript-indent-level 2)
   :mode ("\\.tsx\\'" "\\.ts\\'"))
 
 (use-package prettier-js
-  :ensure t
   :config ;; (setq prettier-js-command "npx"
           ;;       prettier-js-args '("prettier"))
   :hook ((js-mode . prettier-js-mode)
@@ -1811,7 +1752,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (typescript-mode . prettier-js-mode)))
 
 (use-package jest-test-mode
-  :ensure t
   :defer t
   :commands jest-test-mode
   :hook ((js-mode . jest-test-mode)
@@ -1844,7 +1784,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 
 ;; (use-package company
-;;   :ensure t
 ;;   :init (global-company-mode)
 ;;   :config (progn
 ;;             (bind-key [remap completion-at-point] #'company-complete company-mode-map)
@@ -1862,7 +1801,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; https://www.reddit.com/r/emacs/comments/ijbvwv/eglot_sqls_sql_client/
 ;; setup SQL LSP action for switching databases;
 (use-package eglot
-  :ensure t
   :config (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
   (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
   ;; :hook ((ruby-mode . eglot-ensure)
@@ -1897,7 +1835,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          ))
 
 ;; (use-package enh-ruby-mode
-;;   :ensure t
 ;;   :mode "\\.rb$"
 ;;   :hook ((enh-ruby-mody . my/enable-ruby-flymake)))
 
@@ -1915,7 +1852,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (after-init . inf-ruby-switch-setup)))
 
 (use-package chruby
-  :ensure t
   ;; :config (chruby-use "ruby-2.6.6")
   )
 
@@ -1941,7 +1877,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     (apply orig-fun args)))
 
 (use-package robe
-  :ensure t
   :config (global-robe-mode)
   :hook ((ruby-mode . robe-mode))
   :init (advice-add 'inf-ruby-console-auto :around #'my/maybe-inject-proccess-environment))
@@ -1991,7 +1926,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     (funcall orig-fn a-file-name)))
 
 (use-package rspec-mode
-  :ensure t
   :hook ((dired-mode . rspec-dired-mode))
   :custom (rspec-use-spring-when-possible nil)
   :init (progn
@@ -2005,11 +1939,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
       (kmacro-lambda-form [?o ?p ?e ?n ?\( ?\' ?s ?c ?r ?a ?t ?c ?h ?. ?h ?t ?m ?l ?\' ?, ?  ?\' ?w ?\' ?\) ?  ?\{ ?  ?| ?f ?| ?  ?f ?. ?w ?r ?i ?t ?e ?\( ?r ?e ?s ?p ?o ?n ?s ?e ?_ ?b ?o ?d ?y ?\) ?  ?\} ?\C-m ?\M-: ?\( ?f ?i ?n ?d ?- ?f ?i ?l ?e ?  ?\" ?s ?c ?r ?a ?t ?c ?h ?. ?h ?t ?m ?l ?\" ?\) ?\C-m ?\M-x ?s ?h ?r ?- ?r ?e ?n ?d ?e ?r ?- ?b ?u ?f ?f ?e ?r ?\C-m] 0 "%d"))
 
 (use-package rails-log-mode
-  :ensure t
   :load-path "site-lisp/rails-log-mode")
 
-(use-package bundler
-  :ensure t)
+(use-package bundler)
 
 ;; Go
 
@@ -2018,7 +1950,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (add-hook 'before-save-hook 'gofmt-before-save nil 'local))
 
 (use-package go-mode
-  :ensure t
   :bind ((:map go-mode-map
                ("C-c C-d" . godoc-at-point-function)))
   :hook ((godoc-mode . help-mode)
@@ -2081,8 +2012,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;;; Other languages
 
-(use-package rust-mode
-  :ensure t)
+(use-package rust-mode)
 
 ;; TODO(javier): Pull from gnu elpa
 ;; (use-package prolog-mode
@@ -2090,24 +2020,19 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;                 prolog-electric-if-then-else-flag t)
 ;;   :mode "\\.pl$")
 
-(use-package ediprolog
-  :ensure t)
+(use-package ediprolog)
 
-(use-package graphql-mode
-  :ensure t)
+(use-package graphql-mode)
 
-(use-package terraform-mode
-  :ensure t)
+(use-package terraform-mode)
 
 
 
 (use-package rainbow-mode
-  :ensure t
   :config (setq rainbow-x-colors nil)
   :hook ((css-mode . rainbow-mode)))
 
 (use-package multiple-cursors
-  :ensure t
   :config (setq mc/cmds-to-run-for-all '(paredit-forward-slurp-sexp))
   :bind (("M-RET" . mc/edit-lines)
          ("C->" . mc/mark-next-like-this)
@@ -2115,13 +2040,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          ("C-c C-<" . mc/mark-all-like-this)))
 
 (use-package shackle
-  :ensure t
   :config (setq shackle-rules '((compilation-mode :noselect t :align 'right))
                 ;; shackle-default-rule '(:select t)
                 ))
 
 (use-package macrostep
-  :ensure t
   :bind ((:map emacs-lisp-mode-map
                ("C-c M-e" . macrostep-expand))
          (:map lisp-interaction-mode-map
@@ -2140,8 +2063,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("C-c C-r" . nil))))
 
 (use-package sly-macrostep
-  :after macrostep
-  :ensure t)
+  :after macrostep)
 
 
 (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name)))
@@ -2197,7 +2119,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; (use-package nntwitter
 ;;   :after (gnus)
-;;   :ensure t
 ;;   :config (add-to-list 'gnus-secondary-select-methods '(nntwitter "")))
 
 ;; This are the rules I want to apply
@@ -2206,7 +2127,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;         ("[Gmail]/All Mail" "^Subject: Sentry")))
 
 ;; (use-package nnreddit
-;;   :ensure t
 ;;   :custom (nnreddit-python-command "python3")
 ;;   :config (add-to-list 'gnus-secondary-select-methods '(nnreddit "")))
 ;;  "python"
@@ -2214,13 +2134,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;;; Chat et other recreational activities
 (when (string= "social" my/server-name)
-  (use-package elpher
-    :ensure t)
+  (use-package elpher)
 
   (require 'mastodon)
 
   (use-package elfeed
-    :ensure t
     :config
     (setq elfeed-feeds
           '("https://tychoish.com/post/index.xml"
@@ -2271,13 +2189,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;   :load-path "site-lisp/q.el")
 ;; (load "/home/puercopop/.emacs.d/site-lisp/q.el/q.el")
 
-;; (use-package transmission
-;;   :ensure t)
+;; (use-package transmission)
 
 ;; Package hasn't been released yet
 ;; (use-package systemd
-;;   :pin gnu
-;;   :ensure t)
+;;   :pin gnu)
 
 (setq world-clock-list '(("America/Lima" "Lima")
                          ("America/Denver" "Denver")
@@ -2291,10 +2207,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; TODO: merge with helm-rage
 ;; TODO: Add glasses
 (use-package helm-rage
-  :ensure t
   :bind (("C-x 8 k" . helm-rage)))
 ;; (use-package insert-kaomoji
-;;   :ensure t
 ;;   :bind (("C-x 8 k" . insert-kaomoji)))
 
 (setq term-prompt-regexp "^\\$ ")
@@ -2311,8 +2225,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     (vterm (format "*vterm: %s*" default-directory))))
 (define-key project-prefix-map (kbd "v") 'project-vterm)
 
-(use-package axe
-  :ensure t)
+(use-package axe)
 
 (require 'kubel)
 (kubel-vterm-setup)
