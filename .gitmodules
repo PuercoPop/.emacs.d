@@ -155,9 +155,6 @@
 [submodule "ghub"]
 	path = lib/ghub
 	url = git@github.com:magit/ghub.git
-[submodule "gitlab-pipeline"]
-	path = lib/gitlab-pipeline
-	url = git@github.com:TxGVNN/gitlab-pipeline.git
 [submodule "go-dlv"]
 	path = lib/go-dlv
 	url = git@github.com:benma/go-dlv.el.git
