@@ -282,6 +282,9 @@
 	path = lib/org
 	url = git@github.com:emacsmirror/org.git
         recursive-byte-compile = true
+[submodule "org-gcal"]
+	path = lib/org-gcal
+	url = https://github.com/kidd/org-gcal.el
 [submodule "org-pomodoro"]
 	path = lib/org-pomodoro
 	url = git@github.com:marcinkoziej/org-pomodoro.git
@@ -375,9 +378,6 @@
 [submodule "tangotango-theme"]
 	path = lib/tangotango-theme
 	url = git@github.com:juba/color-theme-tangotango.git
-[submodule "telega"]
-	path = lib/telega
-	url = git@github.com:zevlg/telega.el.git
 [submodule "terraform-mode"]
 	path = lib/terraform-mode
 	url = git@github.com:emacsorphanage/terraform-mode.git
