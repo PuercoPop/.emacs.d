@@ -93,6 +93,8 @@
  '(org-drill-mature-count-color "#005500")
  '(org-drill-new-count-color "#004488")
  '(org-edit-src-content-indentation 0)
+ '(org-goto-interface 'outline-path-completion)
+ '(org-goto-max-level 3)
  '(package-selected-packages
    '(qml-mode code-review axe consult rfc-mode helm-fuz fuz helm-fuzzy flx helm-pages tree-sitter-hl tree-sitter-query tree-sitter-debug tree-sitter tree-sitter-langs emaps darkroom github-review gnorb transmission devdocs ligature isearch-dabbrev jest-test-mode mu4e-icalendar mu4e-alert indium smudge sqlformat ace-window helm-system-packages restclient-helm helm-rage org-rifle org-file xref-js2 wgrep-help wgrep-helm easy-kill mini-frame emacs-mini-frame annotate doom-themes sx compile-eslint bundler hyperbole helm-rg org-static browse-at-remote org org-contrib undo-tree smartparens helm-org tangotango-theme rails-log-mode anzu es-mode espresso-theme ob-restclient org-drill cider nofrils-acme-theme helm-slack ediprolog evil-markdown terraform-mode restclient tron-legacy-theme elfeed enh-ruby-mode exotica-theme fish-mode helm-ls-git elpher helm-dash acme-theme parchment-theme protobuf-mode helm-flyspell-correct go-mode dart-mode helpful matrix-client clojure-mode debbugs rust-mode w3m helm-descbinds vterm request-deferred sly-macrostep macrostep shackle rainbow-delimiters graphql-mode eglot typescript-mode xterm-color moody material-theme cyberpunk-theme moe-theme nhexl-mode htmlize gnu-apl-mode prolog-mode insert-kaomoji expand-region systemd paredit robe json-mode pinentry elisp-refs company company-mode edit-indirect markdown-mode multiple-cursors rainbow-mode sql-indent prettier-js js2-mode yaml-mode web-mode rspec-mode chruby ibuffer-vc wgrep minions use-package forge magit))
  '(pdf-view-midnight-colors (cons "#CBE3E7" "#1E1C31"))
@@ -115,7 +117,11 @@
  '(rustic-ansi-faces
    ["#1E1C31" "#FF8080" "#95FFA4" "#FFE9AA" "#91DDFF" "#C991E1" "#AAFFE4" "#CBE3E7"])
  '(safe-local-variable-values
-   '((rspec-docker-file-name . "/home/puercopop/hcp/decision-engine/docker-compose.yml")
+   '((vc-prepare-patches-separately)
+     (diff-add-log-use-relative-names . t)
+     (vc-git-annotate-switches . "-w")
+     (magit-todos-exclude-globs)
+     (rspec-docker-file-name . "/home/puercopop/hcp/decision-engine/docker-compose.yml")
      (rspec-docker-container . "audiencies-api")
      (rspec-use-docker-when-possible . t)
      (rspec-use-chruby)

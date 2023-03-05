@@ -5,6 +5,7 @@
       '(
         backward-sexp
         c-electric-delete-forward
+        c-electric-slash
         capitalize-dwim
         comint-delchar-or-maybe-eof
         delete-horizontal-space
@@ -51,6 +52,7 @@
         rjsx-delete-creates-full-tag
         shell-command-on-region
         sly-quit-completing
+        split-line
         sql-magic-go
         upcase-dwim
         wdired-exit
@@ -69,4 +71,5 @@
         magit-status
         mouse-set-region
         rspec-verify
+        toggle-input-method
         ))

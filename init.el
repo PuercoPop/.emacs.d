@@ -16,9 +16,9 @@
 
 (require 'use-package)
 
-(require 'auto-compile)
-(auto-compile-on-load-mode)
-(auto-compile-on-save-mode)
+;; (require 'auto-compile)
+;; (auto-compile-on-load-mode)
+;; (auto-compile-on-save-mode)
 
 
 ;;; Daemon
@@ -176,6 +176,11 @@ call KILL-REGION."
 
 (require 'project)
 (global-set-key (kbd "C-c p") project-prefix-map)
+(defun my/helm-git-grep (arg)
+  (interactive "P")
+  (let ((default-directory (project-root (project-current))))
+    (helm-grep-git-1 default-directory arg nil (thing-at-point 'word))))
+(define-key project-prefix-map (kbd "g") 'my/helm-git-grep)
 
 (defun my/project-try-gem (dir)
   (when-let (root (locate-dominating-file dir "Gemfile"))
@@ -450,7 +455,7 @@ parent frame."
   :custom (helm-ls-git-default-sources '(helm-source-ls-git-buffers
                                          helm-source-ls-git
                                          helm-source-ls-git-status))
-  :bind (("C-x p" . helm-browse-project)
+  :bind (;; ("C-x p" . helm-browse-project)
          ("C-x r p" . helm-browse-project-history)))
 
 (use-package helm-descbinds
@@ -1480,6 +1485,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package dired-x
   :after (dired))
 
+(require 'ibuf-ext)
 (defun my/ibuffer-vc-hook ()
   (ibuffer-vc-set-filter-groups-by-vc-root)
   (unless (eq ibuffer-sorting-mode 'alphabetic)
@@ -1701,23 +1707,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package yaml-mode)
 
-;; (add-to-list 'load-path "/home/puercopop/.emacs.d/site-lisp/emacs-tree-sitter/core")
-;; (add-to-list 'load-path "/home/puercopop/.emacs.d/site-lisp/emacs-tree-sitter/lisp")
-;; (add-to-list 'load-path "/home/puercopop/.emacs.d/site-lisp/emacs-tree-sitter/langs")
-
-(use-package tree-sitter)
-
-(use-package tree-sitter-langs)
-
-(use-package tree-sitter-hl
-  :hook ((ruby-mode . tree-sitter-hl-mode)
-         ;; (js-mode . tree-sitter-hl-mode)
-         (typescript-mode . tree-sitter-hl-mode)))
-
-(use-package tree-sitter-debug)
-
-(use-package tree-sitter-query)
-
 
 ;;; JavaScript, JSON and TypeScript
 
@@ -1800,19 +1789,16 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; TODO:
 ;; https://www.reddit.com/r/emacs/comments/ijbvwv/eglot_sqls_sql_client/
 ;; setup SQL LSP action for switching databases;
-(use-package eglot
-  :config (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-  (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
-  ;; :hook ((ruby-mode . eglot-ensure)
-  ;;        ;; Until eglot supports multiple major modes per project we
-  ;;        ;; need to disable the hook for JS
-  ;;        (js-mode . eglot-ensure)
-  ;;        (typescript-mode . eglot-ensure))
-  :bind ((:map eglot-mode-map
-               ("M-." . 'xref-find-definitions)
-               ;; replace this with eldoc-buffer
-               ;; ("C-c h" . 'eldoc-buffer)
-               )))
+(require 'eglot)
+(eval-after-load 'eglot
+  (progn
+    (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+    (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
+    (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer")))
+    (define-key eglot-mode-map (kbd "M-.") 'xref-find-definitions)
+  ;; replace this with eldoc-buffer
+  ;; ("C-c h" . 'eldoc-buffer)
+    ))
 
 
 ;;; Ruby mode
@@ -1998,21 +1984,24 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
         ;; '("puercopop" "" "connect_development" "localhost")
         ))
 
-(defun my/setup-sqlformat ()
-  ;; the sql-product is set too late
-  (when (eq 'postgres sql-product)
-    (setq-local sqlformat-command 'pgformatter)))
+;; TODO(javier): Remove
+;; (defun my/setup-sqlformat ()
+;;   ;; the sql-product is set too late
+;;   (when (eq 'postgres sql-product)
+;;     (setq-local sqlformat-command 'pgformatter)))
 
-(require 'sqlformat)
-(setq sqlformat-command 'pgformatter
-      sqlformat-args '("-s2" "-g"))
-(add-hook 'sql-mode-hook
-          'sqlformat-on-save-mode)
+;; (require 'sqlformat)
+;; (setq sqlformat-command 'pgformatter
+;;       sqlformat-args '("-s2" "-g"))
+:;; (add-hook 'sql-mode-hook
+;;           'sqlformat-on-save-mode)
 
 
 ;;; Other languages
 
-(use-package rust-mode)
+(require 'rust-mode)
+(require 'cargo)
+(add-hook 'rust-mode-hook 'cargo-minor-mode)
 
 ;; TODO(javier): Pull from gnu elpa
 ;; (use-package prolog-mode
@@ -2032,12 +2021,13 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :config (setq rainbow-x-colors nil)
   :hook ((css-mode . rainbow-mode)))
 
-(use-package multiple-cursors
-  :config (setq mc/cmds-to-run-for-all '(paredit-forward-slurp-sexp))
-  :bind (("M-RET" . mc/edit-lines)
-         ("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-c C-<" . mc/mark-all-like-this)))
+(require 'multiple-cursors)
+(setq mc/cmds-to-run-for-all '(paredit-forward-slurp-sexp))
+(global-set-key (kbd "M-RET") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
 
 (use-package shackle
   :config (setq shackle-rules '((compilation-mode :noselect t :align 'right))
@@ -2224,6 +2214,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (let ((default-directory (cdr (project-current))))
     (vterm (format "*vterm: %s*" default-directory))))
 (define-key project-prefix-map (kbd "v") 'project-vterm)
+
+(detached-init)
 
 (use-package axe)
 
