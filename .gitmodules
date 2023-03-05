@@ -40,6 +40,9 @@
 [submodule "bundler"]
 	path = lib/bundler
 	url = git@github.com:endofunky/bundler.el.git
+[submodule "cargo"]
+	path = lib/cargo
+	url = https://github.com/kwrooijen/cargo.el
 [submodule "chruby"]
 	path = lib/chruby
 	url = git@github.com:plexus/chruby.el.git
@@ -85,6 +88,9 @@
 [submodule "deferred"]
 	path = lib/deferred
 	url = git@github.com:kiwanami/emacs-deferred.git
+[submodule "detached"]
+	path = lib/detached
+	url = git@github.com:emacsmirror/detached.git
 [submodule "devdocs"]
 	path = lib/devdocs
 	url = git@github.com:astoff/devdocs.el.git
@@ -233,6 +239,9 @@
 [submodule "libgit"]
 	path = lib/libgit
 	url = git@github.com:magit/libegit2.git
+[submodule "llama"]
+	path = lib/llama
+	url = https://git.sr.ht/~tarsius/llama
 [submodule "macrostep"]
 	path = lib/macrostep
 	url = git@github.com:joddie/macrostep.git
@@ -375,15 +384,6 @@
 [submodule "terraform-mode"]
 	path = lib/terraform-mode
 	url = git@github.com:emacsorphanage/terraform-mode.git
-[submodule "tree-sitter"]
-	path = lib/tree-sitter
-	url = git@github.com:emacs-tree-sitter/elisp-tree-sitter.git
-        load-path = core
-        load-path = lisp
-        load-path = langs
-[submodule "tree-sitter-langs"]
-	path = lib/tree-sitter-langs
-	url = git@github.com:emacs-tree-sitter/tree-sitter-langs.git
 [submodule "treepy"]
 	path = lib/treepy
 	url = git@github.com:volrath/treepy.el.git
@@ -438,6 +438,3 @@
 [submodule "yaml-mode"]
 	path = lib/yaml-mode
 	url = git@github.com:yoshiki/yaml-mode.git
-[submodule "llama"]
-	path = lib/llama
-	url = https://git.sr.ht/~tarsius/llama
