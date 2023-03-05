@@ -1789,16 +1789,15 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; TODO:
 ;; https://www.reddit.com/r/emacs/comments/ijbvwv/eglot_sqls_sql_client/
 ;; setup SQL LSP action for switching databases;
+(require 'xref)
 (require 'eglot)
-(eval-after-load 'eglot
-  (progn
-    (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
-    (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
-    (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer")))
-    (define-key eglot-mode-map (kbd "M-.") 'xref-find-definitions)
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
+  ;; (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer")))
+  (define-key eglot-mode-map (kbd "M-.") #'xref-find-definitions)
   ;; replace this with eldoc-buffer
   ;; ("C-c h" . 'eldoc-buffer)
-    ))
+  )
 
 
 ;;; Ruby mode
