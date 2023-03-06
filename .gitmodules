@@ -109,6 +109,9 @@
 [submodule "ef-themes"]
 	path = lib/ef-themes
 	url = git@github.com:emacsmirror/ef-themes.git
+[submodule "ekg"]
+	path = lib/ekg
+	url = https://github.com/ahyatt/ekg
 [submodule "elfeed"]
 	path = lib/elfeed
 	url = git@github.com:skeeto/elfeed.git
@@ -378,6 +381,9 @@
 [submodule "treepy"]
 	path = lib/treepy
 	url = git@github.com:volrath/treepy.el.git
+[submodule "triples"]
+	path = lib/triples
+	url = https://github.com/ahyatt/triples
 [submodule "tron-legacy-theme"]
 	path = lib/tron-legacy-theme
 	url = git@github.com:ianyepan/tron-legacy-emacs-theme.git
