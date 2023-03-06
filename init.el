@@ -765,10 +765,10 @@ And update the branch as a suffix."
 ;; (transient-insert-suffix 'forge-dispatch "Remote"
 ;;   ;; Maybe branch
 ;;   '("o" "Browse repository" forge-browse-remote))
-(use-package forge
-  ;; :load-path "/home/puercopop/code/forge"
-  :after (magit)
-  :custom-face (forge-topic-closed ((t (:inherit magit-dimmed :strike-through t)))))
+;; (use-package forge
+;;   ;; :load-path "/home/puercopop/code/forge"
+;;   :after (magit)
+;;   :custom-face (forge-topic-closed ((t (:inherit magit-dimmed :strike-through t)))))
 
 (use-package gh-notify
   :load-path "site-lisp/gh-notify")
@@ -1448,9 +1448,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; mu4e-view-actions
 ;; mu4e-view-attachment-actions
 
-(use-package undo-tree
-  :config (global-undo-tree-mode 1)
-  :bind (("C-x u" . undo-tree-visualize)))
+;; (use-package undo-tree
+;;   :config (global-undo-tree-mode 1)
+;;   :bind (("C-x u" . undo-tree-visualize)))
 
 ;; TODO: Bind M-w to copy selection and exit
 (use-package isearch
@@ -2027,11 +2027,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-
-(use-package shackle
-  :config (setq shackle-rules '((compilation-mode :noselect t :align 'right))
-                ;; shackle-default-rule '(:select t)
-                ))
 
 (use-package macrostep
   :bind ((:map emacs-lisp-mode-map
