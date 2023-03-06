@@ -76,9 +76,6 @@
 [submodule "cyberpunk-theme"]
 	path = lib/cyberpunk-theme
 	url = git@github.com:n3mo/cyberpunk-theme.el.git
-[submodule "darkroom"]
-	path = lib/darkroom
-	url = git@github.com:joaotavora/darkroom.git
 [submodule "dash"]
 	path = lib/dash
 	url = git@github.com:magnars/dash.el.git
@@ -112,9 +109,6 @@
 [submodule "ef-themes"]
 	path = lib/ef-themes
 	url = git@github.com:emacsmirror/ef-themes.git
-[submodule "eglot"]
-	path = lib/eglot
-	url = git@github.com:joaotavora/eglot.git
 [submodule "elfeed"]
 	path = lib/elfeed
 	url = git@github.com:skeeto/elfeed.git

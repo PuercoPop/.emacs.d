@@ -493,8 +493,6 @@ parent frame."
                (("H" . my/helpful-at-buffer)))))
 ;; XXX: C-h F Info-goto-emacs-command-node
 
-(use-package darkroom)
-
 (use-package emaps
   ;; Consider C-h K
   :bind (("C-h M-k" . emaps-describe-keymap-bindings)))
