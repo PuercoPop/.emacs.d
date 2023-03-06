@@ -49,9 +49,6 @@
 [submodule "cider"]
 	path = lib/cider
 	url = git@github.com:clojure-emacs/cider.git
-[submodule "circe"]
-	path = lib/circe
-	url = git@github.com:emacs-circe/circe.git
 [submodule "clojure-mode"]
 	path = lib/clojure-mode
 	url = git@github.com:clojure-emacs/clojure-mode.git
@@ -244,7 +241,7 @@
 	url = git@github.com:joddie/macrostep.git
 [submodule "magit"]
 	path = lib/magit
-	url = git@github.com:magit/magit.git
+	url = https://github.com/magit/magit
 [submodule "markdown-mode"]
 	path = lib/markdown-mode
 	url = git@github.com:jrblevin/markdown-mode.git

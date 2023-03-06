@@ -7,6 +7,7 @@
   (setq borg-compile-function #'native-compile))
 
 (require 'cl-lib)
+(require 'compat)
 
 
 ;;; Customize
