@@ -199,6 +199,7 @@ call KILL-REGION."
 (setq project-find-functions (list #'my/project-try-gem #'project-try-vc))
 
 
+(require 'anzu)
 (global-anzu-mode +1)
 (global-set-key [remap query-replace] 'anzu-query-replace)
 (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
@@ -920,6 +921,9 @@ And update the branch as a suffix."
 ;; To helm-mini/f5
 
 (require 'ekg)
+(global-set-key (kbd "C-c C-n") #'ekg-capture)
+(with-eval-after-load 'ekg
+  (define-key ekg-notes-mode-map "e" #'ekg-notes-open))
 
 (defun my/org-clock-dwim ()
   "If the clock is active, jump to the current task. Otherwise
