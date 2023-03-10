@@ -2057,6 +2057,16 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          ;; ("C-c s" . project-search)
          ))
 
+(require 'docker)
+(setq docker-container-columns
+      '((:name "Id" :width 16 :template "{{ json .ID }}" :sort nil :format nil)
+        (:name "Names" :width 23 :template "{{ json .Names }}" :sort nil :format nil)
+        (:name "Image" :width 15 :template "{{ json .Image }}" :sort nil :format nil)
+        (:name "Command" :width 30 :template "{{ json .Command }}" :sort nil :format nil)
+        (:name "Created" :width 19 :template "{{ json .CreatedAt }}" :sort nil :format (lambda (x) (format-time-string "%F %T" (date-to-time x))))
+        (:name "Status" :width 20 :template "{{ json .Status }}" :sort nil :format nil)
+        (:name "Ports" :width 10 :template "{{ json .Ports }}" :sort nil :format nil)))
+
 (use-package honcho
   :load-path "site-lisp/honcho.el"
   :config
