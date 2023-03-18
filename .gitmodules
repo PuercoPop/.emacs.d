@@ -368,7 +368,7 @@
 	url = git@github.com:purcell/sqlformat.git
 [submodule "tablist"]
 	path = lib/tablist
-	url = git@github.com:politza/tablist.git
+	url = git@github.com:emacsorphanage/tablist.git
 [submodule "tangotango-theme"]
 	path = lib/tangotango-theme
 	url = git@github.com:juba/color-theme-tangotango.git

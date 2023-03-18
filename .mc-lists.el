@@ -8,6 +8,7 @@
         c-electric-slash
         capitalize-dwim
         comint-delchar-or-maybe-eof
+        cycle-spacing
         delete-horizontal-space
         delete-indentation
         downcase-dwim

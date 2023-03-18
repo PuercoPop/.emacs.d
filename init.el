@@ -319,7 +319,7 @@ parent frame."
          ;; ("C-h w" . helm-where-is)
          ("M-x" . helm-M-x)
          ("<insert>" . execute-extended-command) ;; FN-x
-         ;; ("C-x b" . helm-mini)
+         ("C-x b" . helm-mini)
 
          ([remap switch-to-buffer] . helm-buffers-list)
          ("C-*" . helm-occur)
@@ -327,11 +327,7 @@ parent frame."
          ("M-y" . helm-show-kill-ring)
          ;; ("C-x C-x" . helm-all-mark-rings)
          (:map helm-map
-               (("C-w" . backward-kill-word)))
-         (:map isearch-mode-map
-               (("M-s o" . helm-occur)))
-         (:map search-map
-               (("o" . helm-occur)))))
+               (("C-w" . backward-kill-word)))))
 (set-face-inverse-video 'helm-selection t)
 
 ;; (use-package flx
@@ -920,11 +916,16 @@ And update the branch as a suffix."
 ;; TODO: Add https://github.com/alphapapa/org-ql
 ;; To helm-mini/f5
 
-(require 'ekg)
+(use-package ekg
+  :init
+  (when (string= "personal" (daemonp))
+    (setq ekg-db-file "personal.db")))
+
 (global-set-key (kbd "C-c C-n") #'ekg-capture)
 (with-eval-after-load 'ekg
   (define-key ekg-notes-mode-map "e" #'ekg-notes-open))
 
+(require 'org-clock)
 (defun my/org-clock-dwim ()
   "If the clock is active, jump to the current task. Otherwise
 present the list of recent tasks to choose which one to clock
@@ -2224,7 +2225,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     (vterm (format "*vterm: %s*" default-directory))))
 (define-key project-prefix-map (kbd "v") 'project-vterm)
 
-(detached-init)
+(use-package detached
+  :init (detached-init)
+  :bind (([remap async-shell-command] . detached-shell-command)))
 
 (use-package axe)
 
