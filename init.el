@@ -226,7 +226,7 @@ call KILL-REGION."
 ;; TODO C-x b consults buffers in the same project. C-u C-x b all buffers.
 
 (use-package embark
-  :bind (("C-." . embark-act)
+  :bind (("C-'" . embark-act)
          ("C-;" . embark-dwim)
          :map embark-file-map
          ("!" . async-shell-command)
@@ -1478,7 +1478,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("M-p" . 'flymake-goto-prev-error))))
 
 (use-package eslint-flymake
-  :load-path "site-lisp/eslint-flymake"
   :config (setq eslint-flymake-command '("npx" "eslint" "--no-color" "--stdin"))
   :hook ((typescript-mode . eslint-flymake-setup-backend)))
 

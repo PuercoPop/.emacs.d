@@ -140,6 +140,9 @@
 [submodule "es-mode"]
 	path = lib/es-mode
 	url = git@github.com:dakrone/es-mode.git
+[submodule "eslint-flymake"]
+	path = lib/eslint-flymake
+	url = git@github.com:emacs-pe/eslint-flymake.git
 [submodule "evil"]
 	path = lib/evil
 	url = git@github.com:emacs-evil/evil.git
