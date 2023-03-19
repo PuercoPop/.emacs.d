@@ -135,6 +135,7 @@ call KILL-REGION."
 (setq recentf-save-file
       (locate-user-emacs-file (concat (system-name) "-" my/server-name "-recentf")))
 (recentf-mode 1)
+(global-set-key (kbd "C-x C-r") 'recentf-open)
 
 (use-package minibuffer
   ;; :custom (completion-styles '(flex))
