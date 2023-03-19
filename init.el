@@ -1484,9 +1484,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package compile-eslint
   :after (compile)
-  :load-path "site-lisp/compile-eslint"
   :init (push 'eslint compilation-error-regexp-alist))
-
 
 ;; (use-package company
 ;;   :init (global-company-mode)
