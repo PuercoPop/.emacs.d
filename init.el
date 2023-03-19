@@ -2195,13 +2195,12 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; (use-package systemd
 ;;   :pin gnu)
 
+(require 'time)
+;; TODO: Add Leon and fix the other two
 (setq world-clock-list '(("America/Lima" "Lima")
-                         ("America/Denver" "Denver")
-                         ;; Kassel
-                         ("Europe/Kassel" "Kassel")
-                         ("Europe/Madrid" "Madrid")
-                         ("Asia/Damascus" "Hamah")
-                         ("Europe/Bucharest" "Bucharest")
+                         ("America/Arkansas" "Fayettevile")
+                         ("America/Virginia" "Virginia")
+                         ("America/Fortaleza" "Fortaleza")
                          ("Asia/Tokyo" "Tokyo")))
 
 ;; TODO: merge with helm-rage
