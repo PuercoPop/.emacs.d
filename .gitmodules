@@ -149,9 +149,6 @@
 [submodule "forge"]
 	path = lib/forge
 	url = git@github.com:magit/forge.git
-[submodule "fuz"]
-	path = lib/fuz
-	url = git@github.com:rustify-emacs/fuz.el.git
 [submodule "ghub"]
 	path = lib/ghub
 	url = git@github.com:magit/ghub.git
@@ -173,6 +170,9 @@
 [submodule "hmac"]
 	path = lib/hmac
 	url = git@github.com:grimnebulin/emacs-hmac.git
+[submodule "hotfuzz"]
+	path = lib/hotfuzz
+	url = https://github.com/axelf4/hotfuzz
 [submodule "ht"]
 	path = lib/ht
 	url = git@github.com:Wilfred/ht.el.git

@@ -15,6 +15,8 @@
 (load custom-file 'noerror)
 (put 'upcase-region 'disabled nil)
 
+(setq use-package-always-defer t
+      use-package-enable-imenu-support t)
 (require 'use-package)
 
 ;; (require 'auto-compile)
@@ -137,7 +139,11 @@ call KILL-REGION."
 (use-package minibuffer
   ;; :custom (completion-styles '(flex))
   ;; :custom (completion-styles '(basic partial-completion substring flex))
-  :custom (completion-styles '(substring partial-completion flex)))
+  ;; :custom (completion-styles '(substring partial-completion flex)))
+(fido-vertical-mode t)
+(use-package simple
+  :bind ((:map completion-list-mode-map)) )
+
 
 (require 'proced)
 
@@ -203,21 +209,34 @@ call KILL-REGION."
 
 
 ;;; Consult
-(define-key global-map [remap goto-line] 'consult-goto-line)
-;; (define-key global-map [remap switch-to-buffer] 'consult-buffer)
-;; (define-key global-map [remap switch-to-buffer-other-window] 'consult-buffer-other-window)
-;; (define-key global-map [remap switch-to-buffer-other-window] 'consult-buffer-other-frame)
+(use-package consult
+  :bind (([remap yank-pop] . consult-yank-replace)
+         ([remap goto-line] . consult-goto-line)
+         ([remap switch-to-buffer] . consult-buffer)
+         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+         ([remap switch-to-buffer-other-window] . consult-buffer-other-frame)
+         ([remap project-find-regexp] . consult-ripgrep)
+         :map minibuffer-local-map
+         ("M-r" . consult-history))
+  :config
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref))
 
 ;; TODO C-x b consults buffers in the same project. C-u C-x b all buffers.
 
-(global-set-key (kbd "C-.") 'embark-act)
-(global-set-key (kbd "C-;") 'embark-dwim)
+(use-package embark
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)
+         :map embark-file-map
+         ("!" . async-shell-command)
+         :map embark-bookmarp-map
+         ("!" . async-shell-command)))
 
 
-
-(require 'fuz)
-(unless (require 'fuz-core nil t)
-  (fuz-build-and-load-dymod))
+(require 'hotfuzz)
+(setq completion-styles '(hotfuzz))
+(add-hook 'icomplete-minibuffer-setup-hook
+          (lambda () (setq-local completion-styles '(hotfuzz))))
 
 (defun my/set-ruby-devdocs ()
   (setq-local devdocs-current-docs '("ruby~2.6" "rails~5.2")))
