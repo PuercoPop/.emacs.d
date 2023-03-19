@@ -30,7 +30,6 @@
 
 
 (setq session-save-file (concat user-emacs-directory (system-name) "-" my/server-name "-session"))
-(setq helm-c-adaptive-history-file (concat user-emacs-directory (system-name) "-" my/server-name "--helm-c-adaptive-history"))
 (setq desktop-base-file-name (concat (system-name) "-" my/server-name "-desktop-file"))
 (setq desktop-base-lock-name (concat (system-name) "-" my/server-name "-desktop-lock"))
 
@@ -177,11 +176,6 @@ call KILL-REGION."
 
 (require 'project)
 (global-set-key (kbd "C-c p") project-prefix-map)
-(defun my/helm-git-grep (arg)
-  (interactive "P")
-  (let ((default-directory (project-root (project-current))))
-    (helm-grep-git-1 default-directory arg nil (thing-at-point 'word))))
-(define-key project-prefix-map (kbd "g") 'my/helm-git-grep)
 
 (defun my/project-try-gem (dir)
   (when-let (root (locate-dominating-file dir "Gemfile"))
@@ -195,7 +189,7 @@ call KILL-REGION."
               (project--vc-list-files dir 'Git nil))
           (or dir
               (list (project-root project)))))
-;; TODO: We want to add helm-file type actions to the candidates
+
 (setq project-find-functions (list #'my/project-try-gem #'project-try-vc))
 
 
@@ -220,248 +214,10 @@ call KILL-REGION."
 (global-set-key (kbd "C-;") 'embark-dwim)
 
 
-;;; Helm
-;; (setq helm-display-function 'my/helm-display-frame-center)
-;; (setq ;; helm-display-function 'helm-display-buffer-in-own-frame
-;;       helm-display-buffer-reuse-frame t
-;;       helm-use-undecorated-frame-option t
-;;       helm-display-buffer-width 150)
-
-(defun my/helm-display-frame-center (buffer &optional resume)
-  "Display `helm-buffer' in a separate frame which centered in
-parent frame."
-  (if (not (display-graphic-p))
-      ;; Fallback to default when frames are not usable.
-      (helm-default-display-buffer buffer)
-    (setq helm--buffer-in-new-frame-p t)
-    (let* ((parent (selected-frame))
-           (frame-pos (frame-position parent))
-           (parent-left (car frame-pos))
-           (parent-top (cdr frame-pos))
-           (width (/ (frame-width parent) 1))
-           (height (/ (frame-height parent) 3))
-           tab-bar-mode
-           (default-frame-alist
-             (if resume
-                 (buffer-local-value 'helm--last-frame-parameters
-                                     (get-buffer buffer))
-               `((parent . ,parent)
-                 (width . ,width)
-                 (height . ,height)
-                 (undecorated . ,helm-use-undecorated-frame-option)
-                 (left-fringe . 0)
-                 (right-fringe . 0)
-                 (tool-bar-lines . 0)
-                 (line-spacing . 0)
-                 (desktop-dont-save . t)
-                 (no-special-glyphs . t)
-                 (inhibit-double-buffering . t)
-                 (tool-bar-lines . 0)
-                 (left . ,(+ parent-left (/ (* (frame-char-width parent) (frame-width parent)) 4)))
-                 (top . ,(+ parent-top (/ (* (frame-char-width parent) (frame-height parent)) 6)))
-                 (title . "Helm")
-                 (vertical-scroll-bars . nil)
-                 (menu-bar-lines . 0)
-                 (fullscreen . nil)
-                 (visible . ,(null helm-display-buffer-reuse-frame))
-                 ;; (internal-border-width . ,(if IS-MAC 1 0))
-                 )))
-           display-buffer-alist)
-      (set-face-background 'internal-border (face-foreground 'default))
-      (helm-display-buffer-popup-frame buffer default-frame-alist))
-    (helm-log-run-hook 'helm-window-configuration-hook)))
-
-(use-package helm
-  :custom
-  (helm-echo-input-in-header-line t)
-
-  ;; (helm-source-names-using-follow '("RG" "Grep"))
-  ;; (helm-follow-mode-persistent t)
-  (helm-split-window-default-side 'below)
-  (helm-split-window-in-side-p t)
-  (helm-full-frame nil)
-  (helm-ff-skip-boring-files nil)
-  (helm-etags-fuzzy-match t)
-  (helm-locate-fuzzy-match t)
-  (helm-move-to-line-cycle-in-source t)
-  ;; (helm-completion-style 'helm-fuzzy) ; emacs
-  (helm-completion-style 'emacs)
-  ;; TODO: Enable helm ADAPTIVE scoring
-  :config (helm-mode 1)
-  (setq helm-recentf-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-buffer-max-length 40
-        helm-apropos-fuzzy-match t
-        helm-imenu-fuzzy-match t
-        helm-lisp-fuzzy-completion t
-        helm-session-fuzzy-match t
-        helm-follow-mode-persistent t
-        helm-always-two-windows t)
-  ;; (setq helm-display-function 'my/helm-display-frame-center)
-  (helm-adaptive-mode 1)
-
-  (cl-defmethod helm-setup-user-source ((source helm-source-ffiles))
-    (helm-source-add-action-to-source-if "Magit status"
-                                         (lambda (_candidate)
-                                           (magit-status-setup-buffer helm-ff-default-directory))
-                                         source
-                                         (lambda (candidate)
-                                           (and (not (string-match-p ffap-url-regexp candidate))
-                                                helm-ff-default-directory
-                                                (locate-dominating-file helm-ff-default-directory ".git")))
-                                         1))
-
-  :bind (("C-x r l" . helm-filtered-bookmarks)
-         ("C-c C-r" . helm-resume)
-         ("C-x C-r" . helm-recentf)
-         ("C-h a" . helm-apropos)
-         ;; ("C-h b" . helm-descbinds)
-         ;; ("C-h w" . helm-where-is)
-         ("M-x" . helm-M-x)
-         ("<insert>" . execute-extended-command) ;; FN-x
-         ("C-x b" . helm-mini)
-
-         ([remap switch-to-buffer] . helm-buffers-list)
-         ("C-*" . helm-occur)
-         ("C-x C-f" . helm-find-files)
-         ("M-y" . helm-show-kill-ring)
-         ;; ("C-x C-x" . helm-all-mark-rings)
-         (:map helm-map
-               (("C-w" . backward-kill-word)))))
-(set-face-inverse-video 'helm-selection t)
-
-;; (use-package flx
-;;   :after (helm))
 
 (require 'fuz)
 (unless (require 'fuz-core nil t)
   (fuz-build-and-load-dymod))
-
-(with-eval-after-load 'helm
-  (require 'helm-fuz)
-  (helm-fuz-mode))
-
-(defvar helm-http-status-source
-  '((name . "HTTP STATUS")
-    (candidates . (("100 Continue")
-                   ("101 Switching Protocols")
-                   ("102 Processing")
-                   ("200 OK")
-                   ("201 Created")
-                   ("202 Accepted")
-                   ("203 Non-Authoritative Information")
-                   ("204 No Content")
-                   ("205 Reset Content")
-                   ("206 Partial Content")
-                   ("207 Multi-Status")
-                   ("208 Already Reported")
-                   ("300 Multiple Choices")
-                   ("301 Moved Permanently")
-                   ("302 Found")
-                   ("303 See Other")
-                   ("304 Not Modified")
-                   ("305 Use Proxy")
-                   ("307 Temporary Redirect")
-                   ("400 Bad Request")
-                   ("401 Unauthorized")
-                   ("402 Payment Required")
-                   ("403 Forbidden")
-                   ("404 Not Found")
-                   ("405 Method Not Allowed")
-                   ("406 Not Acceptable")
-                   ("407 Proxy Authentication Required")
-                   ("408 Request Timeout")
-                   ("409 Conflict") ("410 Gone")
-                   ("411 Length Required")
-                   ("412 Precondition Failed")
-                   ("413 Request Entity Too Large")
-                   ("414 Request-URI Too Large")
-                   ("415 Unsupported Media Type")
-                   ("416 Request Range Not Satisfiable")
-                   ("417 Expectation Failed")
-                   ("418 I'm a teapot")
-                   ("421 Misdirected Request")
-                   ("422 Unprocessable Entity")
-                   ("423 Locked")
-                   ("424 Failed Dependency")
-                   ("425 No code")
-                   ("426 Upgrade Required")
-                   ("428 Precondition Required")
-                   ("429 Too Many Requests")
-                   ("431 Request Header Fields Too Large")
-                   ("449 Retry with")
-                   ("500 Internal Server Error")
-                   ("501 Not Implemented")
-                   ("502 Bad Gateway")
-                   ("503 Service Unavailable")
-                   ("504 Gateway Timeout")
-                   ("505 HTTP Version Not Supported")
-                   ("506 Variant Also Negotiates")
-                   ("507 Insufficient Storage")
-                   ("509 Bandwidth Limit Exceeded")
-                   ("510 Not Extended")
-                   ("511 Network Authentication Required")))
-    (action . message)))
-
-(defun helm-http-status ()
-  (interactive)
-  (helm-other-buffer '(helm-http-status-source) "*helm HTTP status*"))
-
-(use-package helm-bookmark
-  :after (helm)
-  :config (progn (define-key helm-bookmark-map
-                   (kbd "C-c s") 'my-command/magit-bookmark-magit-status)
-                 (define-key helm-bookmark-map
-                   (kbd "C-c g") 'my-command/magit-bookmark-magit-status))
-  :custom (helm-type-bookmark-actions '(("Jump to bookmark" . helm-bookmark-jump)
-                                        ("Open Magit Status" . my/helm-bookmark-magit-status)
-                                        ("Jump to BM other window" . helm-bookmark-jump-other-window)
-                                        ("Rename bookmark" . helm-bookmark-rename)
-                                        ("Jump to BM other frame" . helm-bookmark-jump-other-frame)
-                                        ("Bookmark edit annotation" . bookmark-edit-annotation)
-                                        ("Bookmark show annotation" . bookmark-show-annotation)
-                                        ("Delete bookmark(s)" . helm-delete-marked-bookmarks)
-                                        ("Edit Bookmark" . helm-bookmark-edit-bookmark)
-                                        ("Relocate bookmark" . bookmark-relocate))))
-
-(defun helm-do-grep-ag-project-root (arg)
-  (interactive "P")
-  (helm-grep-ag (expand-file-name (or (vc-find-root default-directory ".git")
-                                      default-directory))
-                arg))
-
-(use-package helm-grep
-  :after (helm)
-  :custom
-  (helm-grep-file-path-style 'relative)
-  :config (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s"
-           helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
-  ;; helm-ag2-project-root
-  ;; https://github.com/syohex/emacs-helm-ag2
-  :bind (("<f6>" . helm-do-grep-ag-project-root)
-         ;; Enable this after I fix the rg
-         ))
-
-(use-package helm-pages)
-
-(use-package wgrep-helm)
-
-(use-package helm-ls-git
-  :after (helm)
-  :config (setq helm-ls-git-fuzzy-match t
-                helm-ls-git-status-command 'magit-status-setup-buffer)
-  :custom (helm-ls-git-default-sources '(helm-source-ls-git-buffers
-                                         helm-source-ls-git
-                                         helm-source-ls-git-status))
-  :bind (;; ("C-x p" . helm-browse-project)
-         ("C-x r p" . helm-browse-project-history)))
-
-(use-package helm-descbinds
-  :config (helm-descbinds-mode))
-
-(use-package helm-dash
-  :config (setq helm-dash-browser-func 'eww
-                dash-docs-common-docsets '("Ruby on Rails" "Ruby")))
 
 (defun my/set-ruby-devdocs ()
   (setq-local devdocs-current-docs '("ruby~2.6" "rails~5.2")))
@@ -721,42 +477,6 @@ And update the branch as a suffix."
           ("/home/puercopop/quicklisp/local-projects/tsuru/" . 0)
           ("/home/puercopop/quicklisp/local-projects/tenahu/" . 0))))
 
-;; TODO add more actions than delete
-;; TODO: Add remote information
-(defvar helm-magit-branches-map
-  (let ((kmap (make-sparse-keymap)))
-    (set-keymap-parent kmap helm-map)
-    (define-key kmap (kbd "M-D") #'helm-magit-branches-delete)
-    kmap))
-
-(defun helm-magit-branches-delete (_candidate)
-  (call-interactively 'magit-branch-delete (helm-marked-candidates)))
-
-(defun helm-magit-switch-branch (candidate)
-  (call-interactively 'magit-branch-checkout candidate))
-
-(defun helm-magit-branches ()
-  "List all the git branches"
-  (interactive)
-  (helm :sources (helm-build-sync-source "Magit branches"
-                   :candidates (magit-list-branch-names)
-                   :keymap helm-magit-branches-map
-                   :action (helm-make-actions "Delete branch(es)" 'helm-magit-branches-delete
-                                              "Switch to branch" 'helm-magit-switch-branch
-                                              ;; TODO: "Fetch branch
-                                              ))
-        :buffer "*helm list git branches*"))
-
-
-(defun my/helm-bookmark-magit-status (candidate)
-  (magit-status-setup-buffer (cdr (assoc 'filename
-                            (assoc candidate bookmark-alist)))))
-
-(defun my-command/magit-bookmark-magit-status ()
-  (interactive)
-  (with-helm-alive-p
-    (helm-exit-and-execute-action 'my/helm-bookmark-magit-status)))
-
 ;; TODO:
 ;; (transient-insert-suffix 'forge-dispatch "Remote"
 ;;   ;; Maybe branch
@@ -794,8 +514,6 @@ And update the branch as a suffix."
          (:map magit-log-mode-map
                (("C-c o" . browse-at-remote)))))
 
-;; TODO: Evaluate helm-hunks as an alternative to diff-hl
-
 (use-package moe-theme)
 
 (use-package cyberpunk-theme
@@ -814,9 +532,6 @@ And update the branch as a suffix."
   :config
   ;; :custom-face
   ;; (show-paren-match ((t (:underline t :bold t :background nil))))
-  ;; (helm-selection ((t (:extend t :foreground "#2e3436" :background "#f57900" :distant-foreground "black" :underline t :bold t))))
-  ;; ;; helm-ff-extension had :foreground "magenta"
-  ;; (helm-ff-file-extension ((t (extend t))))
   )
 
 (use-package tron-legacy-theme
@@ -897,9 +612,6 @@ And update the branch as a suffix."
   :bind (:map restclient-mode-map
               ("C-c C-f" . json-mode-beautify)))
 
-;; C-c C-g
-(use-package restclient-helm)
-
 (use-package ob-restclient)
 
 ;; This provides elasticsearch language to org-babel
@@ -914,7 +626,6 @@ And update the branch as a suffix."
 
 ;;; Org-mode
 ;; TODO: Add https://github.com/alphapapa/org-ql
-;; To helm-mini/f5
 
 (use-package ekg
   :init
@@ -1149,27 +860,6 @@ will be built under the headline at point."
    (with-current-buffer (get-buffer-create "*org-scratch*")
      (org-mode)
      (current-buffer))))
-
-;; (require 'helm-org)
-(use-package helm-org
-  :demand t
-  :custom
-  (helm-org-headings-fontify t)
-  :config
-  ;; TODO: Add clock-in as a custom action
-  (setq helm-org-headings-actions
-      '(("Go to heading" . helm-org-goto-marker)
-        ("Clock-in heading" . my/helm-org-clock-in)
-        ("Open in indirect buffer `C-c i'" . helm-org--open-heading-in-indirect-buffer)
-        ("Refile heading(s) (marked-to-selected|current-to-selected) `C-c w`" . helm-org--refile-heading-to)
-        ("Insert link to this heading `C-c l`" . helm-org-insert-link-to-heading-at-marker)))
-
-  (add-to-list 'helm-completing-read-handlers-alist '(org-capture . helm-org-completing-read-tags))
-  (add-to-list 'helm-completing-read-handlers-alist '(org-set-tags-command . helm-org-completing-read-tags)))
-
-(defun my/helm-org-clock-in (marker)
-  (helm-org-goto-marker marker)
-  (org-clock-in))
 
 ;; I want to be able to capture to the same entry to two places. The daily recap and the weekly retro.
 (defun my/org-find-daily-recap ()
@@ -1641,10 +1331,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
         ;;  (window-height . 0.25)
         ;;  (side . bottom)
         ;;  (slot . 1))
-        ("\\*helm-mode-imenu\\*"
-         (display-buffer-in-side-window)
-         (side . left)
-         (window-height . 0.2))))
+        ))
 
 
 
@@ -2202,13 +1889,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                          ("America/Virginia" "Virginia")
                          ("America/Fortaleza" "Fortaleza")
                          ("Asia/Tokyo" "Tokyo")))
-
-;; TODO: merge with helm-rage
-;; TODO: Add glasses
-(use-package helm-rage
-  :bind (("C-x 8 k" . helm-rage)))
-;; (use-package insert-kaomoji
-;;   :bind (("C-x 8 k" . insert-kaomoji)))
 
 (setq term-prompt-regexp "^\\$ ")
 (require 'vterm)

@@ -167,30 +167,6 @@
 [submodule "hcl-mode"]
 	path = lib/hcl-mode
 	url = git@github.com:purcell/emacs-hcl-mode.git
-[submodule "helm"]
-	path = lib/helm
-	url = git@github.com:emacs-helm/helm.git
-[submodule "helm-dash"]
-	path = lib/helm-dash
-	url = git@github.com:dash-docs-el/helm-dash.git
-[submodule "helm-descbinds"]
-	path = lib/helm-descbinds
-	url = git@github.com:emacs-helm/helm-descbinds.git
-[submodule "helm-hunks"]
-	path = lib/helm-hunks
-	url = git@github.com:torgeir/helm-hunks.el.git
-[submodule "helm-ls-git"]
-	path = lib/helm-ls-git
-	url = git@github.com:emacs-helm/helm-ls-git.git
-[submodule "helm-org"]
-	path = lib/helm-org
-	url = git@github.com:emacs-helm/helm-org.git
-[submodule "helm-pages"]
-	path = lib/helm-pages
-	url = git@github.com:david-christiansen/helm-pages.git
-[submodule "helm-rage"]
-	path = lib/helm-rage
-	url = git@github.com:bomgar/helm-rage.git
 [submodule "helpful"]
 	path = lib/helpful
 	url = git@github.com:Wilfred/helpful.git
