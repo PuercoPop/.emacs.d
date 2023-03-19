@@ -173,6 +173,8 @@
 [submodule "hotfuzz"]
 	path = lib/hotfuzz
 	url = https://github.com/axelf4/hotfuzz
+        build-step = mkdir -p build
+        build-step = cd build && cmake -DCMAKE_C_FLAGS='-O3 -march=native' .. && cmake --build .
 [submodule "ht"]
 	path = lib/ht
 	url = git@github.com:Wilfred/ht.el.git

@@ -234,6 +234,7 @@ call KILL-REGION."
 
 
 (require 'hotfuzz)
+(require 'hotfuzz-module)
 (setq completion-styles '(hotfuzz))
 (add-hook 'icomplete-minibuffer-setup-hook
           (lambda () (setq-local completion-styles '(hotfuzz))))
