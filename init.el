@@ -140,9 +140,10 @@ call KILL-REGION."
   ;; :custom (completion-styles '(flex))
   ;; :custom (completion-styles '(basic partial-completion substring flex))
   ;; :custom (completion-styles '(substring partial-completion flex)))
+  )
 (fido-vertical-mode t)
-(use-package simple
-  :bind ((:map completion-list-mode-map)) )
+;; (use-package simple
+;;   :bind ((:map completion-list-mode-map)) )
 
 
 (require 'proced)
@@ -229,8 +230,9 @@ call KILL-REGION."
          ("C-;" . embark-dwim)
          :map embark-file-map
          ("!" . async-shell-command)
-         :map embark-bookmarp-map
-         ("!" . async-shell-command)))
+         ;; :map embark-bookmarp-map
+         ;; ("!" . async-shell-command)
+         ))
 
 
 (require 'hotfuzz)
@@ -285,9 +287,9 @@ call KILL-REGION."
   ;; (load-library "~/.emacs.d/passwords.el.gpg")
   )
 
-(use-package password-vault+
-  :load-path "site-lisp/password-vault+"
-  :config (password-vault+-register-secrets-file (substitute-in-file-name "$HOME/.emacs.d/passwords.el.gpg")))
+;; (use-package password-vault+
+;;   :load-path "site-lisp/password-vault+"
+;;   :config (password-vault+-register-secrets-file (substitute-in-file-name "$HOME/.emacs.d/passwords.el.gpg")))
 
 (use-package tramp
   :config (setq tramp-default-method "ssh"))
@@ -1779,18 +1781,18 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
         (:name "Status" :width 20 :template "{{ json .Status }}" :sort nil :format nil)
         (:name "Ports" :width 10 :template "{{ json .Ports }}" :sort nil :format nil)))
 
-(use-package honcho
-  :load-path "site-lisp/honcho.el"
-  :config
-  (setq honcho-procfile-env-suffix-p nil))
+;; (use-package honcho
+;;   :load-path "site-lisp/honcho.el"
+;;   :config
+;;   (setq honcho-procfile-env-suffix-p nil))
 
-(honcho-define-service connect-backend
-  :cwd "/home/puercopop/rlock/connect-backend/master/"
-  :command ("foreman" "start"))
+;; (honcho-define-service connect-backend
+;;   :cwd "/home/puercopop/rlock/connect-backend/master/"
+;;   :command ("foreman" "start"))
 
-(honcho-define-service connect-web
-  :cwd "/home/puercopop/rlock/connect-web/"
-  :command ("yarn" "start"))
+;; (honcho-define-service connect-web
+;;   :cwd "/home/puercopop/rlock/connect-web/"
+;;   :command ("yarn" "start"))
 
 ;; '(nnimap "gmail-rlock"
 ;;          (nnimap-address "imap.gmail.com")
@@ -1947,10 +1949,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; Fortune Cookies
 
-(use-package oblique
-  :load-path "site-lisp/oblique-strategies")
+;; (use-package oblique
+;;   :load-path "site-lisp/oblique-strategies")
 
-(setq initial-scratch-message (format ";; %s\n"(oblique-strategy)))
+;; (setq initial-scratch-message (format ";; %s\n"(oblique-strategy)))
 
 
 

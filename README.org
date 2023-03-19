@@ -102,6 +102,10 @@ Open the MDN definitions. With marginalia notes
   (helm-other-buffer '(helm-http-status-source) "*helm HTTP status*"))
 
 #+end_src
+
+** TODO Install oblique strategies through borg
+
+** TODO Port password-vault+ to consult
 * What are the options for scoring completion candidates
 ** Flx
 ** fuz
