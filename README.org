@@ -1,8 +1,36 @@
 #+TITLE: The Emacs is step in
 
-* TODO Evaluate helm-hunks as an alternative to diff-hl
+* Overview
 
-* TODO Port HTTP status to consult
+I normally have 3 emacs instances running, one for each context. I got the idea from https://tychoish.com/post/running-emacs/ I
+
+#+begin_src systemd
+[Unit]
+Description=Emacs text editor
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+[Service]
+Type=forking
+ExecStart=/usr/local/bin/emacs --daemon=%i --chdir %h
+ExecStop=/usr/local/bin/emacsclient --server-file=hud --eval "(kill-emacs)"
+# Environment=EMACS_SERVER_FILE=%h/.emacs.d/%i
+# The location of the SSH auth socket varies by distribution, and some
+# set it from PAM, so don't override by default.
+# Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+# Restart=on-failure
+Restart=always
+TimeoutStartSec=0
+Environment=PATH="/home/puercopop/go/bin:/home/puercopop/q/l64:/home/puercopop/.cargo/bin:/home/puercopop/code/fuchsia/.jiri_root/bin:/home/puercopop/.local/bin:/home/puercopop/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/usr/local/go/bin:/home/puercopop/src/flutter/bin:/home/puercopop/.mozbuild/moz-phab:/home/puercopop/.mozbuild/arcanist/bin:/usr/lib/dart/bin/:/home/puercopop/.pub-cache/bin:/home/puercopop/code/emsdk:/home/puercopop/code/emsdk/fastcomp/emscripten:/home/puercopop/code/emsdk/node/12.9.1_64bit/bin:/home/puercopop/Android/Sdk/tools:/home/puercopop/Android/Sdk/emulator:/home/puercopop/Android/Sdk/platform-tools:/home/puercopop/Android/Sdk/tools/bin:/home/puercopop/src/plan9/bin:/opt/rancher-desktop/resources/resources/linux/bin/"
+
+[Install]
+WantedBy=default.target
+#+end_src
+
+* Ideas
+
+** TODO Evaluate helm-hunks as an alternative to diff-hl
+
+** TODO Port HTTP status to consult
 
 Open the MDN definitions. With marginalia notes
 
