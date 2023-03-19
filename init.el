@@ -1948,11 +1948,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; Fortune Cookies
 
-;; (use-package oblique
-;;   :load-path "site-lisp/oblique-strategies")
-
-;; (setq initial-scratch-message (format ";; %s\n"(oblique-strategy)))
-
+(require 'oblique)
+(setq initial-scratch-message (format ";; %s\n"(oblique-strategy)))
 
 
 ;; My config
