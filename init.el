@@ -124,7 +124,8 @@ call KILL-REGION."
 (define-key minibuffer-local-completion-map
   (kbd "C-w") 'backward-kill-word)
 
-(minions-mode 1)
+(use-package minions
+  :config (minions-mode 1))
 
 (defvar my/recentf-update-timer nil)
 (when my/recentf-update-timer
@@ -140,8 +141,9 @@ call KILL-REGION."
 (use-package minibuffer
   ;; :custom (completion-styles '(flex))
   ;; :custom (completion-styles '(basic partial-completion substring flex))
-  ;; :custom (completion-styles '(substring partial-completion flex)))
-  )
+  :custom (completion-styles '(substring partial-completion flex)))
+
+(setq completion-styles '(basic partial-completion substring flex))
 (fido-vertical-mode t)
 ;; (use-package simple
 ;;   :bind ((:map completion-list-mode-map)) )
@@ -234,10 +236,10 @@ call KILL-REGION."
 
 
 (require 'hotfuzz)
-(require 'hotfuzz-module)
-(setq completion-styles '(hotfuzz))
-(add-hook 'icomplete-minibuffer-setup-hook
-          (lambda () (setq-local completion-styles '(hotfuzz))))
+;; (require 'hotfuzz-module)
+;; (setq completion-styles '(hotfuzz))
+;; (add-hook 'icomplete-minibuffer-setup-hook
+;;           (lambda () (setq-local completion-styles '(hotfuzz))))
 
 (defun my/set-ruby-devdocs ()
   (setq-local devdocs-current-docs '("ruby~2.6" "rails~5.2")))

@@ -106,6 +106,9 @@ Open the MDN definitions. With marginalia notes
 ** TODO Install oblique strategies through borg
 
 ** TODO Port password-vault+ to consult
+
+** TODO debug hotfuzz
+
 * What are the options for scoring completion candidates
 ** Flx
 ** fuz
