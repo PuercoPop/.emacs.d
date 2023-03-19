@@ -213,9 +213,6 @@ call KILL-REGION."
 (use-package consult
   :bind (([remap yank-pop] . consult-yank-replace)
          ([remap goto-line] . consult-goto-line)
-         ([remap switch-to-buffer] . consult-buffer)
-         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-         ([remap switch-to-buffer-other-window] . consult-buffer-other-frame)
          ([remap project-find-regexp] . consult-ripgrep)
          :map minibuffer-local-map
          ("M-r" . consult-history))
@@ -1483,6 +1480,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :hook ((typescript-mode . eslint-flymake-setup-backend)))
 
 (use-package compile-eslint
+  :after (compile)
   :load-path "site-lisp/compile-eslint"
   :init (push 'eslint compilation-error-regexp-alist))
 
