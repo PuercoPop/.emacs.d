@@ -550,12 +550,6 @@ And update the branch as a suffix."
 (use-package exotica-theme
   :load-path "site-lisp/exotica-theme/")
 
-(use-package tangotango-theme
-  :config
-  ;; :custom-face
-  ;; (show-paren-match ((t (:underline t :bold t :background nil))))
-  )
-
 (use-package tron-legacy-theme
   :config (setq tron-legacy-theme-vivid-cursor t
                 tron-legacy-theme-softer-bg t))
