@@ -124,8 +124,8 @@ call KILL-REGION."
 (define-key minibuffer-local-completion-map
   (kbd "C-w") 'backward-kill-word)
 
-(use-package minions
-  :config (minions-mode 1))
+(require 'minions)
+(minions-mode 1)
 
 (defvar my/recentf-update-timer nil)
 (when my/recentf-update-timer
@@ -1480,10 +1480,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package eslint-flymake
   :config (setq eslint-flymake-command '("npx" "eslint" "--no-color" "--stdin"))
   :hook ((typescript-mode . eslint-flymake-setup-backend)))
-
-(use-package compile-eslint
-  :after (compile)
-  :init (push 'eslint compilation-error-regexp-alist))
 
 ;; (use-package company
 ;;   :init (global-company-mode)

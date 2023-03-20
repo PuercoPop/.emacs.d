@@ -67,9 +67,6 @@
 [submodule "compat"]
 	path = lib/compat
 	url = git@github.com:emacsmirror/compat.git
-[submodule "compile-eslint"]
-	path = lib/compile-eslint
-	url = git@github.com:Fuco1/compile-eslint.git
 [submodule "consult"]
 	path = lib/consult
 	url = git@github.com:minad/consult.git
