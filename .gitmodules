@@ -287,6 +287,9 @@
 [submodule "parseedn"]
 	path = lib/parseedn
 	url = git@github.com:clojure-emacs/parseedn.git
+[submodule "password-vault+"]
+	path = lib/password-vault+
+	url = git@github.com:emacs-pe/password-vault-.git
 [submodule "persist"]
 	path = lib/persist
 	url = git@github.com:emacsmirror/persist.git
