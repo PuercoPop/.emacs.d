@@ -1,4 +1,5 @@
 #+TITLE: The Emacs is step in
+#+STARTUP: overview
 
 * Overview
 
@@ -112,3 +113,4 @@ Open the MDN definitions. With marginalia notes
 * What are the options for scoring completion candidates
 ** Flx
 ** fuz
+** hotfuz
