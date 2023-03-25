@@ -141,9 +141,18 @@ call KILL-REGION."
 (use-package minibuffer
   ;; :custom (completion-styles '(flex))
   ;; :custom (completion-styles '(basic partial-completion substring flex))
-  :custom (completion-styles '(substring partial-completion flex)))
+  :custom (completion-styles '(substring partial-completion flex))
+  :bind (nil
+         :map minibuffer-mode-map
+         ("C-n" . minibuffer-next-completion)
+         ("C-p" . minibuffer-previous-completion)
+         :map completion-in-region-mode-map
+         ("C-n" . minibuffer-next-completion)
+         ("C-p" . minibuffer-previous-completion)))
 
-(setq completion-styles '(basic partial-completion substring flex))
+(setq completion-auto-select nil
+      completion-styles '(basic partial-completion substring flex))
+
 (fido-vertical-mode t)
 ;; (use-package simple
 ;;   :bind ((:map completion-list-mode-map)) )
@@ -646,7 +655,7 @@ And update the branch as a suffix."
 (use-package ekg
   :init
   (when (string= "personal" (daemonp))
-    (setq ekg-db-file "personal.db")))
+    (setq ekg-db-file "/home/puercopop/.emacs.d/personal.db")))
 
 (global-set-key (kbd "C-c C-n") #'ekg-capture)
 (with-eval-after-load 'ekg
