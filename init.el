@@ -136,7 +136,6 @@ call KILL-REGION."
 (setq recentf-save-file
       (locate-user-emacs-file (concat (system-name) "-" my/server-name "-recentf")))
 (recentf-mode 1)
-(global-set-key (kbd "C-x C-r") 'recentf-open)
 
 (use-package minibuffer
   ;; :custom (completion-styles '(flex))
@@ -153,9 +152,42 @@ call KILL-REGION."
 (setq completion-auto-select nil
       completion-styles '(basic partial-completion substring flex))
 
-(fido-vertical-mode t)
 ;; (use-package simple
 ;;   :bind ((:map completion-list-mode-map)) )
+(use-package helm
+  :custom
+  (helm-echo-input-in-header-line t)
+
+  ;; (helm-source-names-using-follow '("RG" "Grep"))
+  ;; (helm-follow-mode-persistent t)
+  (helm-split-window-default-side 'below)
+  (helm-split-window-in-side-p t)
+  (helm-full-frame nil)
+  (helm-ff-skip-boring-files nil)
+  (helm-etags-fuzzy-match t)
+  (helm-locate-fuzzy-match t)
+  (helm-move-to-line-cycle-in-source t)
+  ;; (helm-completion-style 'helm-fuzzy) ; emacs
+  (helm-completion-style 'emacs)
+  ;; TODO: Enable helm ADAPTIVE scoring
+  :config (helm-mode 1)
+  :bind (("C-x r l" . helm-filtered-bookmarks)
+         ("C-c C-r" . helm-resume)
+         ("C-x C-r" . helm-recentf)
+         ("C-h a" . helm-apropos)
+         ;; ("C-h b" . helm-descbinds)
+         ;; ("C-h w" . helm-where-is)
+         ("M-x" . helm-M-x)
+         ("<insert>" . execute-extended-command) ;; FN-x
+         ("C-x b" . helm-mini)
+
+         ([remap switch-to-buffer] . helm-buffers-list)
+         ("C-*" . helm-occur)
+         ("C-x C-f" . helm-find-files)
+         ("M-y" . helm-show-kill-ring)
+         ;; ("C-x C-x" . helm-all-mark-rings)
+         (:map helm-map
+               (("C-w" . backward-kill-word)))))
 
 
 (require 'proced)
@@ -1505,7 +1537,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (require 'eglot)
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
-  ;; (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer")))
+  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer")))
   (define-key eglot-mode-map (kbd "M-.") #'xref-find-definitions)
   ;; replace this with eldoc-buffer
   ;; ("C-c h" . 'eldoc-buffer)
