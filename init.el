@@ -189,6 +189,8 @@ call KILL-REGION."
          (:map helm-map
                (("C-w" . backward-kill-word)))))
 
+(use-package helm-ls-git)
+
 
 (require 'proced)
 
@@ -333,7 +335,9 @@ call KILL-REGION."
 ;;   :config (password-vault+-register-secrets-file (substitute-in-file-name "$HOME/.emacs.d/passwords.el.gpg")))
 
 (use-package tramp
-  :config (setq tramp-default-method "ssh"))
+  :config
+  (setq tramp-default-method "ssh")
+  (tramp-set-completion-function '((tramp-parse-sconfig "~/.ssh/config"))))
 
 (defun sudo ()
   "Use TRAMP to `sudo' the current buffer"
@@ -881,6 +885,16 @@ will be built under the headline at point."
         (my/org-archive-subtree archive-buffer))))
 
   (advice-add 'org-archive-subtree :around #'my/org-archive-subtree-advice))
+
+(setq org-modules
+      ;; The default values
+      '(ol-doi ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww
+      ;; The ones I've added
+        ol-eshell ol-bookmark ol-git-link
+        org-habit org-mouse org-protocol org-annotate-file org-screenshot org-toc org-screen
+        ox-confluence))
+(with-eval-after-load 'org
+  (org-load-modules-maybe))
 
 (defun my/unschedule-waiting-entries (state-change)
   (let ((to-state (plist-get state-change :to))

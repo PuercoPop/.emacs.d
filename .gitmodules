@@ -282,6 +282,9 @@
 	path = lib/org
 	url = git@github.com:emacsmirror/org.git
         recursive-byte-compile = true
+[submodule "org-contrib"]
+	path = lib/org-contrib
+	url = git@github.com:emacsmirror/org-contrib.git
 [submodule "org-gcal"]
 	path = lib/org-gcal
 	url = https://github.com/kidd/org-gcal.el
