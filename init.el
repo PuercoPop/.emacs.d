@@ -1435,10 +1435,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (typescript-mode . subword-mode)
          (ruby-mode . subword-mode)))
 
-;; (use-package outline
-;;   :bind (:map outline-minor-mode-map
-;;               (("C-c <up>" . outline-backward-same-level)
-;;                ("C-c <down>" . outline-forward-same-level))))
+(use-package outline
+  :hook ((emacs-lisp . outline-minor-mode))
+  :bind (:map outline-minor-mode-map
+              (("C-c <up>" . outline-backward-same-level)
+               ("C-c <down>" . outline-forward-same-level))))
 
 ;; (use-package bicycle
 ;;   :after outline
