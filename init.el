@@ -175,6 +175,8 @@ call KILL-REGION."
          ("C-c C-r" . helm-resume)
          ("C-x C-r" . helm-recentf)
          ("C-h a" . helm-apropos)
+         ("C-x r b" . helm-bookmarks)
+         ("C-x 8 RET" . helm-ucs)
          ;; ("C-h b" . helm-descbinds)
          ;; ("C-h w" . helm-where-is)
          ("M-x" . helm-M-x)
