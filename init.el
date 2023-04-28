@@ -339,7 +339,7 @@ call KILL-REGION."
 (use-package tramp
   :config
   (setq tramp-default-method "ssh")
-  (tramp-set-completion-function '((tramp-parse-sconfig "~/.ssh/config"))))
+  (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "~/.ssh/config"))))
 
 (defun sudo ()
   "Use TRAMP to `sudo' the current buffer"
@@ -1435,7 +1435,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package subword
   :hook ((js-mode . subword-mode)
          (typescript-mode . subword-mode)
-         (ruby-mode . subword-mode)))
+         (ruby-mode . subword-mode)
+         (rust-mode . subword-mode)))
 
 (use-package outline
   :hook ((emacs-lisp . outline-minor-mode))
