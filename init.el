@@ -1557,6 +1557,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
   (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer")))
   (define-key eglot-mode-map (kbd "M-.") #'xref-find-definitions)
+  (define-key eglot-mode-map (kbd "C-c C-.") 'eglot-code-actions)
   ;; replace this with eldoc-buffer
   ;; ("C-c h" . 'eldoc-buffer)
   )
@@ -1950,6 +1951,13 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; Package hasn't been released yet
 ;; (use-package systemd
 ;;   :pin gnu)
+
+(defun my/nix-format-setup ()
+  (add-hook 'before-save-hook 'nix-format-before-save nil 'local))
+
+(use-package nix-format
+  :hook ((nix-mode . my/nix-format-setup))
+  :custom (nix-nixfmt-bin "nixpkgs-fmt"))
 
 (require 'time)
 ;; TODO: Add Leon and fix the other two

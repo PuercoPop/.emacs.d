@@ -81,7 +81,7 @@
  '(rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
  '(rcirc-server-alist
    '(("irc.oftc.net" :nick "PuercoPop" :user-name "PuercoPop" :channels
-      ("#wayland" "#freedesktop" "#cat-v")
+      ("#wayland" "#freedesktop" "#cat-v" "#pipewire" "#bcache")
       :encryption tls :port "6697")
      ("irc.libera.chat" :nick "PuercoPop" :user-name "PuercoPop" :channels
       ("#go-nuts" "#stumpwm" "#endoli" "#sbcl" "#emacs" "#podman" "#postgresql" "#c++")
