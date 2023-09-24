@@ -238,6 +238,12 @@ call KILL-REGION."
 (cl-defmethod project-root ((project (head ruby)))
   (cdr project))
 
+(defun my/project-try-gomod (dir)
+  (when-let (root (locate-dominating-file dir "go.mod"))
+    (cons 'go root)))
+(cl-defmethod project-root ((project (head go)))
+  (cdr project))
+
 (cl-defmethod project-files ((project (head ruby)) &optional dir)
   (mapcan #'(lambda (dir)
               ;; TODO: We shouldn't hard-code Git as the backend
@@ -245,8 +251,7 @@ call KILL-REGION."
           (or dir
               (list (project-root project)))))
 
-(setq project-find-functions (list #'my/project-try-gem #'project-try-vc))
-
+(setq project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc))
 
 (require 'anzu)
 (global-anzu-mode +1)
