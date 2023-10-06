@@ -15,6 +15,7 @@
 /abbrev_defs
 /epkgs/
 /triples.db
+/personal.db
 /request/
 /eln-cache/
 /detached/
@@ -37,3 +38,6 @@
 /mastodon.plstore
 /network-security.data
 /tramp
+\elpaca/
+\passwords.el.gpg
+\site-lisp/

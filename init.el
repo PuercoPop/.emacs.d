@@ -1,23 +1,79 @@
 ;; -*- lexical-binding: t; -*-
 
-(add-to-list 'load-path (expand-file-name "lib/borg" user-emacs-directory))
-(require 'borg)
-(borg-initialize)
-(when (and (native-comp-available-p) (getenv "ELN"))
-  (setq borg-compile-function #'native-compile))
+
+;;; Elpaca setup
+(defvar elpaca-installer-version 0.5)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil
+                              :files (:defaults (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (< emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+        (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                 ((zerop (call-process "git" nil buffer t "clone"
+                                       (plist-get order :repo) repo)))
+                 ((zerop (call-process "git" nil buffer t "checkout"
+                                       (or (plist-get order :ref) "--"))))
+                 (emacs (concat invocation-directory invocation-name))
+                 ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                       "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                 ((require 'elpaca))
+                 ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (load "./elpaca-autoloads")))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
 
-(require 'cl-lib)
-(require 'compat)
+;; Uncomment for systems which cannot create symlinks:
+;; (elpaca-no-symlink-mode)
+
+;; Install use-package support
+(elpaca elpaca-use-package
+  ;; Enable :elpaca use-package keyword.
+  (elpaca-use-package-mode)
+  ;; Assume :elpaca t unless otherwise specified.
+  (setq elpaca-use-package-by-default t))
+
+;; Block until current queue processed.
+(elpaca-wait)
+
+;;When installing a package which modifies a form used at the top-level
+;;(e.g. a package which adds a use-package key word),
+;;use `elpaca-wait' to block until that package has been installed/configured.
+;;For example:
+;;(use-package general :demand t)
+;;(elpaca-wait)
 
 
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
-(load custom-file 'noerror)
+;; (load custom-file 'noerror)
+(defun my/load-custom-file () (load custom-file 'noerror))
+(add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
 (put 'upcase-region 'disabled nil)
 
 (setq use-package-always-defer t
       use-package-enable-imenu-support t)
 (require 'use-package)
+
+(require 'cl-lib)
+;; (require 'compat)
+
 
 ;; (require 'auto-compile)
 ;; (auto-compile-on-load-mode)
@@ -124,8 +180,9 @@ call KILL-REGION."
 (define-key minibuffer-local-completion-map
   (kbd "C-w") 'backward-kill-word)
 
-(require 'minions)
-(minions-mode 1)
+(use-package minions
+  :config (minions-mode 1))
+
 
 (defvar my/recentf-update-timer nil)
 (when my/recentf-update-timer
@@ -138,9 +195,11 @@ call KILL-REGION."
 (recentf-mode 1)
 
 (use-package minibuffer
-  ;; :custom (completion-styles '(flex))
-  ;; :custom (completion-styles '(basic partial-completion substring flex))
-  :custom (completion-styles '(substring partial-completion flex))
+  :elpaca nil
+  :custom
+  (completion-styles '(basic substring partial-completion flex))
+  (read-buffer-completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
   :bind (nil
          :map minibuffer-mode-map
          ("C-n" . minibuffer-next-completion)
@@ -154,7 +213,15 @@ call KILL-REGION."
 
 ;; (use-package simple
 ;;   :bind ((:map completion-list-mode-map)) )
+(use-package vertico
+  :init (vertico-mode t)
+  :custom (vertico-cycle t)
+  :bind (:map vertico-map
+	      ("C-c C-c" . embark-act)
+	      ("C-c C-o" . embark-occur)))
+
 (use-package helm
+  :disabled t
   :custom
   (helm-echo-input-in-header-line t)
 
@@ -191,9 +258,6 @@ call KILL-REGION."
          (:map helm-map
                (("C-w" . backward-kill-word)))))
 
-(use-package helm-ls-git)
-
-
 (require 'proced)
 
 (setq bookmark-default-file
@@ -208,6 +272,7 @@ call KILL-REGION."
   (bookmark-jump bookmark 'switch-to-buffer-other-tab))
 
 (use-package tab-bar
+  :elpaca nil
   ;; :config (setq tab-bar-close-button
   ;;               (propertize " ⮾"
   ;;                           'close-tab t
@@ -253,17 +318,19 @@ call KILL-REGION."
 
 (setq project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc))
 
-(require 'anzu)
-(global-anzu-mode +1)
+(use-package anzu
+  :config (global-anzu-mode +1))
 (global-set-key [remap query-replace] 'anzu-query-replace)
 (global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
 ;; We still need to update the query-replace face
-(global-set-key [remap kill-ring-save] 'easy-kill)
+(use-package easy-kill
+  :bind (([remap kill-ring-save] . easy-kill)))
 
 
 
 ;;; Consult
 (use-package consult
+  :ensure t
   :bind (([remap yank-pop] . consult-yank-replace)
          ([remap goto-line] . consult-goto-line)
          ([remap project-find-regexp] . consult-ripgrep)
@@ -276,20 +343,43 @@ call KILL-REGION."
 ;; TODO C-x b consults buffers in the same project. C-u C-x b all buffers.
 
 (use-package embark
+  :ensure t
   :bind (("C-'" . embark-act)
          ("C-;" . embark-dwim)
          :map embark-file-map
          ("!" . async-shell-command)
-         ;; :map embark-bookmarp-map
+         ;; :map embark-bookmark-map
          ;; ("!" . async-shell-command)
          ))
 
+(use-package embark-consult
+  :hook ((embark-collect-mode . consult-preview-at-point-mode)))
+
+(use-package marginalia
+  :ensure t
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+  :init
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
+  (marginalia-mode))
+
 
-(require 'hotfuzz)
+;; (require 'hotfuzz)
+;; (use-package hotfuzz)
 ;; (require 'hotfuzz-module)
-;; (setq completion-styles '(hotfuzz))
-;; (add-hook 'icomplete-minibuffer-setup-hook
-;;           (lambda () (setq-local completion-styles '(hotfuzz))))
+;; (let ((styles '(hotfuzz flex bas)))
+;;   (setq completion-styles styles
+;; 	read-buffer-completion-ignore-case t
+;; 	read-file-name-completion-ignore-case t)
+;;   (add-hook 'icomplete-minibuffer-setup-hook
+;;             (lambda () (setq-local completion-styles styles))))
+
+
 
 (defun my/set-ruby-devdocs ()
   (setq-local devdocs-current-docs '("ruby~2.6" "rails~5.2")))
@@ -333,6 +423,7 @@ call KILL-REGION."
 (use-package pinentry)
 
 (use-package epa-file
+  :elpaca nil
   :config (setq epg-pinentry-mode 'loopback)
   ;; (load-library "~/.emacs.d/passwords.el.gpg")
   )
@@ -341,10 +432,10 @@ call KILL-REGION."
 ;;   :load-path "site-lisp/password-vault+"
 ;;   :config (password-vault+-register-secrets-file (substitute-in-file-name "$HOME/.emacs.d/passwords.el.gpg")))
 
-(use-package tramp
-  :config
-  (setq tramp-default-method "ssh")
-  (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "~/.ssh/config"))))
+;; (use-package tramp
+;;   :config
+;;   (setq tramp-default-method "ssh")
+;;   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "~/.ssh/config"))))
 
 (defun sudo ()
   "Use TRAMP to `sudo' the current buffer"
@@ -357,10 +448,12 @@ call KILL-REGION."
     (goto-char point)))
 
 (use-package wgrep
+  :ensure t
   :config (setq wgrep-auto-save-buffer t
                 wgrep-enable-key "\C-x\C-q"))
 
 (use-package ace-window
+  :ensure t
   :bind (("M-o" . 'other-window)
          ("M-0" . 'delete-window)
          ("M-1" . 'delete-other-windows)
@@ -369,9 +462,11 @@ call KILL-REGION."
          ("C-x o" . 'ace-window)))
 
 (use-package winner
+  :elpaca nil
   :config (winner-mode))
 
 (use-package ibuffer
+  :elpaca nil
   :bind ((:map ibuffer-mode-map
                ("M-o" . other-window))))
 
@@ -380,11 +475,13 @@ call KILL-REGION."
 
 ;; TODO: Check hippie expand
 (use-package abbrev
+  :elpaca nil
   :hook ((text-mode prog-mode) . abbrev-mode))
 
 ;; Spellcheck
 ;; TODO: Configure Ispell configure
 (use-package ispell
+  :elpaca nil
   :config
   (defun ispell-word-then-abbrev (p)
     "Call `ispell-word', then create an abbrev for it.
@@ -411,6 +508,7 @@ be global."
                (("C-i" . ispell-world-then-abbrev)))))
 
 (use-package flyspell
+  :elpaca nil
   :config (setq flyspell-abbrev-p t)
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)))
@@ -421,18 +519,22 @@ be global."
     (magit-show-commit revision)))
 
 (use-package ediff
+  :elpaca nil
   :custom (ediff-highlight-all-diffs nil))
 
 (use-package ediff-wind
+  :elpaca nil
   :after (ediff)
   :custom
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
 
 (use-package vc-git
+  :elpaca nil
   :custom (vc-git-print-log t))
 
 (use-package vc-annotate
+  :elpaca nil
   :config (setq vc-annotate-background-mode nil))
 
 (defun my/git-commit-hook ()
@@ -560,8 +662,7 @@ And update the branch as a suffix."
 ;;   :after (magit)
 ;;   :custom-face (forge-topic-closed ((t (:inherit magit-dimmed :strike-through t)))))
 
-(use-package gh-notify
-  :load-path "site-lisp/gh-notify")
+(use-package gh-notify)
 
 ;; (use-package github-review
 ;;   :bind ((:map magit-mode-map
@@ -595,7 +696,8 @@ And update the branch as a suffix."
 
 ;; plan9-theme
 
-(use-package parchment-theme)
+(use-package parchment-theme
+  :demand t)
 
 (use-package acme-theme)
 
@@ -625,8 +727,7 @@ And update the branch as a suffix."
     (load-theme 'doom-1337 t))
   ;; (set-face-attribute 'default nil :family "Go Mono" :height 170)
   ;; (set-frame-font "DejaVu Sans Mono-18")
-  (set-frame-font "IBM Plex Mono-14")
-  )
+  (set-frame-font "IBM Plex Mono-14"))
 ;;(set-frame-font "IBM Plex Mono-22")
 ;;(set-frame-font "Go Mono-18")
 ;; (set-frame-font "IBM Plex Mono-18" nil t)
@@ -643,12 +744,14 @@ And update the branch as a suffix."
   (setq x-underline-at-descent-line t)
   (moody-replace-mode-line-buffer-identification))
 
-(require 'comint)
-(define-key comint-mode-map (kbd "C-c C-x") nil)
-(define-key comint-mode-map (kbd "C-c C-r") nil)
-
+(use-package comint
+  :elpaca nil
+  :bind (:map comint-mode-map
+              ("C-c C-x" . nil)
+              ("C-c C-r" . nil)))
 
 (use-package compile
+  :elpaca nil
   :config (setq compilation-scroll-output 'first-error
                 compilation-ask-about-save nil)
   :bind ((:map compilation-mode-map
@@ -657,6 +760,7 @@ And update the branch as a suffix."
 
 (use-package xterm-color
   :after (compile)
+  :ensure t
   :init
   (progn
     (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter t)
@@ -688,6 +792,7 @@ And update the branch as a suffix."
 (use-package es-mode)
 
 (use-package calendar
+  :elpaca nil
   :config (setq diary-file (locate-user-emacs-file (format "%s-diary" my/server-name))))
 
 (require 'info)
@@ -698,6 +803,7 @@ And update the branch as a suffix."
 ;; TODO: Add https://github.com/alphapapa/org-ql
 
 (use-package ekg
+  :ensure t
   :init
   (when (string= "personal" (daemonp))
     (setq ekg-db-file "/home/puercopop/.emacs.d/personal.db")))
@@ -736,6 +842,7 @@ in."
         (org-agenda arg "w")))))
 
 (use-package org
+  :elpaca (:repo "https://git.savannah.gnu.org/git/emacs/org-mode.git")
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c C-x C-x" . org-clock-in-last)
@@ -1098,7 +1205,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                           "~/org/feeds.org" "Libre Lounge"))))
 
 
-(require 'org-pomodoro)
+(use-package org-pomodoro
+  :ensure t)
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro))
 
@@ -1230,6 +1338,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; TODO: Bind M-w to copy selection and exit
 (use-package isearch
+  :elpaca nil
   :custom (isearch-allow-scroll 'unlimited)
   :bind (("M-*" . isearch-forward-symbol-at-point)
          (:map isearch-mode-map
@@ -1250,15 +1359,18 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 (use-package imenu
+  :elpaca nil
   :bind (("M-i" . imenu)))
 
 (use-package dired
+  :elpaca nil
   :config
       (setq dired-dwim-target t
             dired-listing-switches "-alh")
   :hook ((dired-mode . dired-hide-details-mode)))
 
 (use-package dired-x
+  :elpaca nil
   :after (dired))
 
 (require 'ibuf-ext)
@@ -1271,9 +1383,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :hook ((ibuffer . my/ibuffer-vc-hook)))
 
 (use-package xref
+  :elpaca nil
   :config (setq xref-search-program 'ripgrep))
 
 (use-package man
+  :elpaca nil
   :custom (Man-width 80))
 
 (electric-pair-mode t)
@@ -1337,6 +1451,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;   :hook ((ruby-mode . smartparens-mode)))
 
 (use-package window
+  :elpaca nil
   ;; Still need to figure out window parameters
   :config
   :bind (("<f2>" . window-toggle-side-windows)))
@@ -1440,12 +1555,14 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; bound to isearch-forward-symbol-at-point
 
 (use-package subword
+  :elpaca nil
   :hook ((js-mode . subword-mode)
          (typescript-mode . subword-mode)
          (ruby-mode . subword-mode)
          (rust-mode . subword-mode)))
 
 (use-package outline
+  :elpaca nil
   :hook ((emacs-lisp . outline-minor-mode))
   :bind (:map outline-minor-mode-map
               (("C-c <up>" . outline-backward-same-level)
@@ -1478,6 +1595,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :mode ("\\.svelte\\'"))
 
 (use-package css-mode
+  :elpaca nil
   :custom (css-indent-offset 2))
 
 (use-package yaml-mode)
@@ -1489,6 +1607,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :mode ("\\.json\\'"))
 
 (use-package js
+  :elpaca nil
   :custom
   (js-indent-level 2)
   (js-jsx-syntax t))
@@ -1528,6 +1647,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
       (flymake-mode))))
 
 (use-package flymake
+  :elpaca nil
   :hook ((ruby-mode . my/ruby-flymake-hook)
          (js-mode . my/ruby-flymake-hook)
          (typescript-mode . my/ruby-flymake-hook))
@@ -1538,6 +1658,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("M-p" . 'flymake-goto-prev-error))))
 
 (use-package eslint-flymake
+  :elpaca (:host github :repo "emacs-pe/eslint-flymake")
   :config (setq eslint-flymake-command '("npx" "eslint" "--no-color" "--stdin"))
   :hook ((typescript-mode . eslint-flymake-setup-backend)))
 
@@ -1581,6 +1702,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (setq-local dash-docs-docsets '("Ruby on Rails" "Ruby")))
 
 (use-package ruby-mode
+  :elpaca nil
   :custom
   (ruby-deep-arglist nil)
   (ruby-deep-indent-paren nil)
@@ -1710,7 +1832,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :hook ((godoc-mode . help-mode)
          (go-mode . gofmt-mode)))
 
-(require 'go-dlv)
+(use-package go-dlv)
 ;; go-eldoc
 ;; go-autocomplete
 ;; company-go
@@ -1724,6 +1846,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; TODO: save history (comint-input-ring?)
 (use-package sql
+  :elpaca nil
   ;; :bind (("C-c a s" . sql-connect))
   :config
   ;; TODO: Use sql-product to use a different history for postgres and mysql.
@@ -1768,9 +1891,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;;; Other languages
 
-(require 'rust-mode)
-(require 'cargo)
-(add-hook 'rust-mode-hook 'cargo-minor-mode)
+(use-package rust-mode)
+(use-package cargo
+  :hook ((rust-mode . cargo-minor-mode)))
 
 ;; TODO(javier): Pull from gnu elpa
 ;; (use-package prolog-mode
@@ -1790,7 +1913,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :config (setq rainbow-x-colors nil)
   :hook ((css-mode . rainbow-mode)))
 
-(require 'multiple-cursors)
+(use-package multiple-cursors)
 (setq mc/cmds-to-run-for-all '(paredit-forward-slurp-sexp))
 (global-set-key (kbd "M-RET") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -1805,7 +1928,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("C-c M-e" . macrostep-expand))))
 
 (use-package sly
-  :load-path "site-lisp/sly"
+  ;; :load-path "site-lisp/sly"
   :config (setq inferior-lisp-program "/usr/local/bin/sbcl"
                 sly-lisp-implementations '((sbcl ("/usr/local/bin/sbcl"))
                                            (ccl ("/home/puercopop/src/ccl/lx86cl64"))
@@ -1817,7 +1940,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("C-c C-r" . nil))))
 
 (use-package sly-macrostep
-  :after macrostep)
+  :after (macrostep))
 
 
 (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name)))
@@ -1826,7 +1949,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          ;; ("C-c s" . project-search)
          ))
 
-(require 'docker)
+(use-package docker
+  )
 (setq docker-container-columns
       '((:name "Id" :width 16 :template "{{ json .ID }}" :sort nil :format nil)
         (:name "Names" :width 23 :template "{{ json .Names }}" :sort nil :format nil)
@@ -1861,6 +1985,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;          )
 
 (use-package gnus
+  :elpaca nil
   :config (progn
             (setq gnus-select-method '(nnnil "")
                   gnus-secondary-select-methods (list ;; '(nntp "news.gwene.org")
@@ -1933,7 +2058,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     :hook ((rcirc-mode . my/rcirc-mode-hook))))
 
 
-(require 'alert)
+(use-package alert)
 (setq alert-user-configuration
       '((((:category . "slack")) ignore nil)
         (((:title . "\\(eng\\)")
@@ -1962,7 +2087,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (defun my/nix-format-setup ()
   (add-hook 'before-save-hook 'nix-format-before-save nil 'local))
 
-(use-package nix-format
+(use-package nix
+  :elpaca (:host github :repo "NixOS/nix-mode")
   :hook ((nix-mode . my/nix-format-setup))
   :custom (nix-nixfmt-bin "nixpkgs-fmt"))
 
@@ -1975,11 +2101,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                          ("Asia/Tokyo" "Tokyo")))
 
 (setq term-prompt-regexp "^\\$ ")
-(require 'vterm)
-(eval-after-load 'vterm
-  (progn
-    (define-key vterm-mode-map (kbd "M-p") 'vterm-send-C-p)
-    (define-key vterm-mode-map (kbd "M-n") 'vterm-send-C-n)))
+(use-package vterm
+  :bind (:map vterm-mode-map
+              (("M-p" . vterm-send-C-p)
+               ("M-n" . vterm-send-C-n))))
+
 (defun project-vterm ()
   (declare (interactive-only shell-command))
   (interactive)
@@ -1994,8 +2120,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package axe)
 
-(require 'kubel)
-(kubel-vterm-setup)
+;; (use-package kubel)
+;; (kubel-vterm-setup)
 
 ;; (require 'dyalog-mode)
 ;; (use-package dyalog-mode
@@ -2011,8 +2137,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; Fortune Cookies
 
-(require 'oblique)
-(setq initial-scratch-message (format ";; %s\n"(oblique-strategy)))
+;; (use-package oblique
+;;   :elpaca (:repo "~/.emacs.d/lib/oblique-strategies")
+;;   :config
+;;   (setq initial-scratch-message (format ";; %s\n"(oblique-strategy))))
+
 
 
 ;; My config
