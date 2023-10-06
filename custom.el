@@ -84,7 +84,7 @@
       ("#wayland" "#freedesktop" "#cat-v" "#pipewire" "#bcache")
       :encryption tls :port "6697")
      ("irc.libera.chat" :nick "PuercoPop" :user-name "PuercoPop" :channels
-      ("#go-nuts" "#stumpwm" "#endoli" "#sbcl" "#emacs" "#podman" "#postgresql" "#c++")
+      ("#go-nuts" "#stumpwm" "#sbcl" "#emacs" "#podman" "#postgresql" "#c++" "#nixos" "#guix" "#commonlisp")
       :encryption tls :port "6697")))
  '(rcirc-track-minor-mode t)
  '(recentf-max-saved-items 50)
