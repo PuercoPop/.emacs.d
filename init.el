@@ -607,9 +607,9 @@ And update the branch as a suffix."
   :commands (magit-status magit-dispatch)
   :preface
   (defun my/show-commit ()
-  (interactive)
-  (let ((revision (car (vc-annotate-extract-revision-at-line))))
-    (magit-show-commit revision)))
+    (interactive)
+    (let ((revision (car (vc-annotate-extract-revision-at-line))))
+      (magit-show-commit revision)))
   :custom
   (magit-diff-refine-hunk t)
   (magit-visit-ref-behavior '(checkout-branch))
