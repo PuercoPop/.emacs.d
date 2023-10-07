@@ -293,11 +293,7 @@ call KILL-REGION."
 
 
 (use-package project
-  :bind (("C-c p" . project-prefix-map)
-         ("C-c f" . project-find-file)
-         ("C-c s" . project-search))
-  :config
-  (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name)))
+  :preface
   (defun my/project-try-gem (dir)
     (when-let (root (locate-dominating-file dir "Gemfile"))
       (cons 'ruby root)))
@@ -316,8 +312,12 @@ call KILL-REGION."
                 (project--vc-list-files dir 'Git nil))
             (or dir
                 (list (project-root project)))))
-
-  (setq project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc)))
+  :bind (("C-c p" . project-prefix-map)
+         ("C-c f" . project-find-file)
+         ("C-c s" . project-search))
+  :config
+  (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name))
+        project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc)))
 
 (use-package anzu
   :config (global-anzu-mode +1)
@@ -379,13 +379,13 @@ call KILL-REGION."
 ;;   (add-hook 'icomplete-minibuffer-setup-hook
 ;;             (lambda () (setq-local completion-styles styles))))
 
-(defun my/set-ruby-devdocs ()
-  (setq-local devdocs-current-docs '("ruby~2.6" "rails~5.2")))
-
-(defun my/set-js-devdocs ()
-  (setq-local devdocs-current-docs '("react")))
-
 (use-package devdocs
+  :preface
+  (defun my/set-ruby-devdocs ()
+    (setq-local devdocs-current-docs '("ruby~2.6" "rails~5.2")))
+
+  (defun my/set-js-devdocs ()
+    (setq-local devdocs-current-docs '("react")))
   :hook ((ruby-mode . my/set-ruby-devdocs)
          (js-mode . my/set-js-devdocs)
          (typescript-mode . my/set-js-devdocs)))
@@ -396,12 +396,12 @@ call KILL-REGION."
 (define-key help-mode-map (kbd "f") 'describe-function)
 (define-key help-mode-map (kbd "v") 'describe-variable)
 
-(defun my/helpful-at-buffer ()
+(use-package helpful
+  :preface
+  (defun my/helpful-at-buffer ()
   (interactive)
   (let ((help-topic (cl-second help-xref-stack-item)))
     (helpful-symbol help-topic)))
-
-(use-package helpful
   :custom (helpful-max-buffers 1)
   :bind ((:map help-mode-map
                (("H" . my/helpful-at-buffer)))))
@@ -483,7 +483,7 @@ call KILL-REGION."
 ;; TODO: Configure Ispell configure
 (use-package ispell
   :elpaca nil
-  :config
+  :preface
   (defun ispell-word-then-abbrev (p)
     "Call `ispell-word', then create an abbrev for it.
 With prefix P, create local abbrev. Otherwise it will
@@ -513,11 +513,6 @@ be global."
   :config (setq flyspell-abbrev-p t)
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)))
-
-(defun my/show-commit ()
-  (interactive)
-  (let ((revision (car (vc-annotate-extract-revision-at-line))))
-    (magit-show-commit revision)))
 
 (use-package ediff
   :elpaca nil
@@ -610,6 +605,11 @@ And update the branch as a suffix."
 (use-package magit
   :after (vc-annotate)
   :commands (magit-status magit-dispatch)
+  :preface
+  (defun my/show-commit ()
+  (interactive)
+  (let ((revision (car (vc-annotate-extract-revision-at-line))))
+    (magit-show-commit revision)))
   :custom
   (magit-diff-refine-hunk t)
   (magit-visit-ref-behavior '(checkout-branch))
@@ -807,53 +807,40 @@ And update the branch as a suffix."
   :ensure t
   :init
   (when (string= "personal" (daemonp))
-    (setq ekg-db-file "/home/puercopop/.emacs.d/personal.db")))
-
-(global-set-key (kbd "C-c C-n") #'ekg-capture)
-(with-eval-after-load 'ekg
-  (define-key ekg-notes-mode-map "e" #'ekg-notes-open))
-
-(require 'org-clock)
-(defun my/org-clock-dwim ()
-  "If the clock is active, jump to the current task. Otherwise
-present the list of recent tasks to choose which one to clock
-in."
-  (interactive)
-  (if (org-clocking-p)
-      (org-clock-jump-to-current-clock)
-    (org-clock-in '(4))))
-
-;; (defvar my-local-agenda-file nil)
-(defun my/org-agenda-list (&optional arg)
-  (interactive "P")
-  (cl-flet ((find-hacking-file ()
-                               (let* ((tld (or (locate-dominating-file default-directory ".git/")
-                                               (locate-dominating-file default-directory "HACKING.org")
-                                               default-directory))
-                                      (hacking-file (concat tld "HACKING.org")))
-                                 (and (file-exists-p hacking-file)
-                                      hacking-file))))
-    (let ((local-agenda-file (find-hacking-file)))
-      (if local-agenda-file
-          (let* ((lexical-binding nil)
-                 (org-agenda-files (list local-agenda-file)))
-            ;; (org-agenda-list)
-            (org-todo-list))
-        ;; (org-agenda-list)
-        (org-agenda arg "w")))))
+    (setq ekg-db-file "/home/puercopop/.emacs.d/personal.db"))
+  :bind (("C-c C-n" . ekg-capture)))
 
 (use-package org
   :elpaca (:repo "https://git.savannah.gnu.org/git/emacs/org-mode.git")
+  :preface
+
+
+  ;; (defvar my-local-agenda-file nil)
+  (defun my/org-agenda-list (&optional arg)
+    (interactive "P")
+    (cl-flet ((find-hacking-file ()
+                (let* ((tld (or (locate-dominating-file default-directory ".git/")
+                                (locate-dominating-file default-directory "HACKING.org")
+                                default-directory))
+                       (hacking-file (concat tld "HACKING.org")))
+                  (and (file-exists-p hacking-file)
+                       hacking-file))))
+      (let ((local-agenda-file (find-hacking-file)))
+        (if local-agenda-file
+            (let* ((lexical-binding nil)
+                   (org-agenda-files (list local-agenda-file)))
+              ;; (org-agenda-list)
+              (org-todo-list))
+          ;; (org-agenda-list)
+          (org-agenda arg "w")))))
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c C-x C-x" . org-clock-in-last)
          ("C-c C-x C-o" . org-clock-out)
          ("C-c C-x C-j" . org-clock-goto)
-         ;; ("<f5>" . my/org-clock-dwim)
          ("<f5>" . my/org-agenda-list)
          ;; ("C-c j" . org-goto)
          ("C-c b" . org-switchb)
-         ("C-c I" . my/org-clock-dwim)
          (:map org-mode-map
                (("C-c C-s" . org-schedule)
                 ("C-S-<right>" . org-metaright)
@@ -908,55 +895,80 @@ in."
                 ;; Current Sprint
                 ;; TODOS
                 org-clock-persist 'history)
-  (org-clock-persistence-insinuate)
+  (org-clock-persistence-insinuate))
 
-  (require 'org-datetree)
+(use-package org-datetree
+  :elpaca nil
+  :preface
   ;; Adapted from org-datetree-find-iso-week-create
   (defun my/org-weekly-datetree (d &optional keep-restriction)
-  "Find or create an ISO week entry for date D.
+    "Find or create an ISO week entry for date D.
 Compared to `org-datetree-find-date-create' this function creates
 entries ordered by week instead of months.
 When it is nil, the buffer will be widened to make sure an existing date
 tree can be found.  If it is the symbol `subtree-at-point', then the tree
 will be built under the headline at point."
-  (setq-local org-datetree-base-level 1)
-  (save-restriction
-    (if (eq keep-restriction 'subtree-at-point)
-	(progn
-	  (unless (org-at-heading-p) (error "Not at heading"))
-	  (widen)
-	  (org-narrow-to-subtree)
-	  (setq-local org-datetree-base-level
-		      (org-get-valid-level (org-current-level) 1)))
-      (unless keep-restriction (widen))
-      ;; Support the old way of tree placement, using a property
-      (let ((prop (org-find-property "WEEK_TREE")))
-	(when prop
-	  (goto-char prop)
-	  (setq-local org-datetree-base-level
-		      (org-get-valid-level (org-current-level) 1))
-	  (org-narrow-to-subtree))))
-    (goto-char (point-min))
-    (require 'cal-iso)
-    (let* ((year (calendar-extract-year d))
-	   (month (calendar-extract-month d))
-	   (day (calendar-extract-day d))
-	   (time (encode-time 0 0 0 day month year))
-	   (iso-date (calendar-iso-from-absolute
-		      (calendar-absolute-from-gregorian d)))
-	   (weekyear (nth 2 iso-date))
-	   (week (nth 0 iso-date)))
-      ;; ISO 8601 week format is %G-W%V(-%u)
-      (org-datetree--find-create
-       "^\\*+[ \t]+\\([12][0-9]\\{3\\}\\)\\(\\s-*?\
+    (setq-local org-datetree-base-level 1)
+    (save-restriction
+      (if (eq keep-restriction 'subtree-at-point)
+	  (progn
+	    (unless (org-at-heading-p) (error "Not at heading"))
+	    (widen)
+	    (org-narrow-to-subtree)
+	    (setq-local org-datetree-base-level
+		        (org-get-valid-level (org-current-level) 1)))
+        (unless keep-restriction (widen))
+        ;; Support the old way of tree placement, using a property
+        (let ((prop (org-find-property "WEEK_TREE")))
+	  (when prop
+	    (goto-char prop)
+	    (setq-local org-datetree-base-level
+		        (org-get-valid-level (org-current-level) 1))
+	    (org-narrow-to-subtree))))
+      (goto-char (point-min))
+      (require 'cal-iso)
+      (let* ((year (calendar-extract-year d))
+	     (month (calendar-extract-month d))
+	     (day (calendar-extract-day d))
+	     (time (encode-time 0 0 0 day month year))
+	     (iso-date (calendar-iso-from-absolute
+		        (calendar-absolute-from-gregorian d)))
+	     (weekyear (nth 2 iso-date))
+	     (week (nth 0 iso-date)))
+        ;; ISO 8601 week format is %G-W%V(-%u)
+        (org-datetree--find-create
+         "^\\*+[ \t]+\\([12][0-9]\\{3\\}\\)\\(\\s-*?\
 \\([ \t]:[[:alnum:]:_@#%%]+:\\)?\\s-*$\\)"
-       weekyear nil nil
-       (format-time-string "%G" time))
-      (org-datetree--find-create
-       "^\\*+[ \t]+%d-W\\([0-5][0-9]\\)$"
-       weekyear week nil
-       (format-time-string "%G-W%V" time)))))
+         weekyear nil nil
+         (format-time-string "%G" time))
+        (org-datetree--find-create
+         "^\\*+[ \t]+%d-W\\([0-5][0-9]\\)$"
+         weekyear week nil
+         (format-time-string "%G-W%V" time))))))
 
+(use-package org-clock
+  :after (org)
+  :elpaca nil
+  :preface
+  (defun my/org-clock-dwim ()
+    "If the clock is active, jump to the current task. Otherwise
+present the list of recent tasks to choose which one to clock
+in."
+    (interactive)
+    (if (org-clocking-p)
+        (org-clock-jump-to-current-clock)
+      (org-clock-in '(4))))
+  :config
+  (setq org-clock-persist-file
+        (convert-standard-filename
+         (concat user-emacs-directory my/server-name "-org-clock-save.el")))
+  :bind  (("<f5>" . my/org-clock-dwim)
+          ("C-c I" . my/org-clock-dwim)))
+
+(use-package org-archive
+  :after (org)
+  :elpaca nil
+  :preface
   (defun my/org-archive-subtree (archive-buffer)
     (with-current-buffer archive-buffer
       (goto-char (point-max))
@@ -988,7 +1000,7 @@ will be built under the headline at point."
             (widen)
             (org-end-of-subtree t t)
             (org-paste-subtree level tree-text))))))
-  (require 'org-archive)
+
   (defun my/org-archive-subtree-advice (orig-fn &rest args)
     (let* ((fix-archive-p (and (not current-prefix-arg)
                                (not (use-region-p))))
@@ -1000,7 +1012,7 @@ will be built under the headline at point."
       (apply orig-fn args)
       (when fix-archive-p
         (my/org-archive-subtree archive-buffer))))
-
+  :config
   (advice-add 'org-archive-subtree :around #'my/org-archive-subtree-advice))
 
 (setq org-modules
@@ -1035,10 +1047,12 @@ will be built under the headline at point."
             (calendar-last-day-of-month month year)))
     (= day last-day-of-month)))
 
-(require 'org-agenda)
+(use-package org-agenda
+  :elpaca nil)
 ;; (use-package org-tempo)
 ;; (require 'org-tempo)
-(require 'org-protocol)
+(use-package org-protocol
+  :elpaca nil)
 
 ;; (use-package org-contrib)
 
@@ -1080,9 +1094,7 @@ will be built under the headline at point."
 ;;   (message "Point at %s"  (point))
 ;;   nil)
 
-(setq org-clock-persist-file
-       (convert-standard-filename
-        (concat user-emacs-directory my/server-name "-org-clock-save.el")))
+
 
 (when (string= my/server-name "work")
   (setq org-agenda-files '("~/hcp/inbox.org")
@@ -1205,11 +1217,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                          ("Libre Lounge" "https://librelounge.org/rss-feed.rss"
                           "~/org/feeds.org" "Libre Lounge"))))
 
-
 (use-package org-pomodoro
-  :ensure t)
-(with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro))
+  :after (org-agenda)
+  :bind (nil
+         :map org-agenda-mode-map
+         ("P" . org-pomodoro)))
 
 ;; (require 'jira)
 ;; (use-package org-jira
@@ -1267,7 +1279,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          ("." . browse-url-firefox))))
 
 (when (string= my/server-name "work")
-
   (setq browse-url-firefox-program "firefox-trunk"
         browse-url-browser-function 'browse-url-firefox))
 
@@ -1374,13 +1385,13 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :elpaca nil
   :after (dired))
 
-(require 'ibuf-ext)
-(defun my/ibuffer-vc-hook ()
-  (ibuffer-vc-set-filter-groups-by-vc-root)
-  (unless (eq ibuffer-sorting-mode 'alphabetic)
-    (ibuffer-do-sort-by-alphabetic)))
-
 (use-package ibuffer-vc
+  :preface
+  ;; (require 'ibuf-ext)
+  (defun my/ibuffer-vc-hook ()
+    (ibuffer-vc-set-filter-groups-by-vc-root)
+    (unless (eq ibuffer-sorting-mode 'alphabetic)
+      (ibuffer-do-sort-by-alphabetic)))
   :hook ((ibuffer . my/ibuffer-vc-hook)))
 
 (use-package xref
