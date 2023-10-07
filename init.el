@@ -2144,11 +2144,16 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; Fortune Cookies
 
-;; (use-package oblique
-;;   :elpaca (:repo "~/.emacs.d/lib/oblique-strategies")
-;;   :config
-;;   (setq initial-scratch-message (format ";; %s\n"(oblique-strategy))))
-
+(use-package oblique
+  :elpaca (:host github :repo "zzkt/oblique-strategies")
+  :demand t
+  :preface
+  (defun my/scratch-setup ()
+    (setq initial-scratch-message (format ";; %s\n" (oblique-strategy))))
+  :custom
+  (oblique-edition "~/.emacs.d/elpaca/repos/oblique-strategies/strategies/oblique-strategies-condensed.txt")
+  :config
+  (add-hook 'elpaca-after-init-hook 'my/scratch-setup))
 
 
 ;; My config
