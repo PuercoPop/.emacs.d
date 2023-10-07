@@ -149,18 +149,15 @@
 (global-set-key (kbd "M-=") #'count-words)
 (global-set-key (kbd "C-z") nil)
 
-(setq uniquify-buffer-name-style 'forward
-      uniquify-after-kill-buffer-p t)
+(use-package uniquify
+  :elpaca nil
+  :custom
+  (uniquify-buffer-name-style 'forward)
+  (uniquify-after-kill-buffer-p t))
 
-
-(require 'uniquify)
-
-;; Relevant Faces
-;; - show-paren-match
-;; - show-paren-mismatch
-;; :custom (show-paren-style 'expression)
-(show-paren-mode t)
-
+(use-package paren
+  :custom (show-paren-ring-bell-on-mismatch t)
+  :config (show-paren-mode t))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -177,22 +174,21 @@ call KILL-REGION."
 (global-set-key (kbd "C-w") #'my/backward-kill-word-or-region)
 ;; Use M-<BACKSPACE> instead
 
-(define-key minibuffer-local-completion-map
-  (kbd "C-w") 'backward-kill-word)
-
 (use-package minions
   :config (minions-mode 1))
 
-
-(defvar my/recentf-update-timer nil)
-(when my/recentf-update-timer
-  (cancel-timer my/recentf-update-timer))
-(setq my/recentf-update-timer
-      ;; TODO: Should I use run-with-idle-timer instead?
-      (run-at-time nil (* 5 60) 'recentf-save-list))
-(setq recentf-save-file
-      (locate-user-emacs-file (concat (system-name) "-" my/server-name "-recentf")))
-(recentf-mode 1)
+(use-package recentf
+  :elpaca nil
+  :init
+  (defvar my/recentf-update-timer nil)
+  (when my/recentf-update-timer
+    (cancel-timer my/recentf-update-timer))
+  (setq my/recentf-update-timer
+        ;; TODO: Should I use run-with-idle-timer instead?
+        (run-at-time nil (* 5 60) 'recentf-save-list))
+  (setq recentf-save-file
+        (locate-user-emacs-file (concat (system-name) "-" my/server-name "-recentf")))
+  (recentf-mode t))
 
 (use-package minibuffer
   :elpaca nil
@@ -204,15 +200,19 @@ call KILL-REGION."
          :map minibuffer-mode-map
          ("C-n" . minibuffer-next-completion)
          ("C-p" . minibuffer-previous-completion)
-         :map completion-in-region-mode-map
-         ("C-n" . minibuffer-next-completion)
-         ("C-p" . minibuffer-previous-completion)))
+         ("C-c C-c" . embark-act)
+         ("C-c C-o" . embark-occur)
+         :map minibuffer-local-completion-map
+         ("C-w" . backward-kill-word)
+         ;; :map completion-in-region-mode-map
+         ;; ("C-n" . minibuffer-next-completion)
+         ;; ("C-p" . minibuffer-previous-completion)
+         ))
 
-(setq completion-auto-select nil
-      completion-styles '(basic partial-completion substring flex))
-
-;; (use-package simple
-;;   :bind ((:map completion-list-mode-map)) )
+(use-package simple
+  :custom (completion-auto-select 'second-tab)
+  ;; :bind ((:map completion-list-mode-map))
+  )
 (use-package vertico
   :init (vertico-mode t)
   :custom (vertico-cycle t)
@@ -257,8 +257,6 @@ call KILL-REGION."
          ;; ("C-x C-x" . helm-all-mark-rings)
          (:map helm-map
                (("C-w" . backward-kill-word)))))
-
-(require 'proced)
 
 (setq bookmark-default-file
       (concat user-emacs-directory (system-name) "-" my/server-name "-bookmarks"))
@@ -319,21 +317,21 @@ call KILL-REGION."
 (setq project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc))
 
 (use-package anzu
-  :config (global-anzu-mode +1))
-(global-set-key [remap query-replace] 'anzu-query-replace)
-(global-set-key [remap query-replace-regexp] 'anzu-query-replace-regexp)
+  :config (global-anzu-mode +1)
+  :bind (([remap query-replace] . anzu-query-replace)
+         ([remap query-replace-regexp] . anzu-query-replace-regexp)))
 ;; We still need to update the query-replace face
+
 (use-package easy-kill
   :bind (([remap kill-ring-save] . easy-kill)))
-
 
 
 ;;; Consult
 (use-package consult
-  :ensure t
   :bind (([remap yank-pop] . consult-yank-replace)
          ([remap goto-line] . consult-goto-line)
          ([remap project-find-regexp] . consult-ripgrep)
+         ("C-x C-r" . consult-recent-file)
          :map minibuffer-local-map
          ("M-r" . consult-history))
   :config
