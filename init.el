@@ -649,6 +649,8 @@ And update the branch as a suffix."
   :custom
   (magit-todos-exclude-globs '(".git/" "*.org")))
 
+(use-package yasnippet)
+
 (when (string= "work" (daemonp))
   (setq magit-repository-directories
         '(("/home/puercopop/hcp/" . 1))))
