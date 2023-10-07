@@ -63,8 +63,9 @@
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
 ;; (load custom-file 'noerror)
-(defun my/load-custom-file () (load custom-file 'noerror))
-(add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
+(defun my/load-custom-file ()
+  (load custom-file 'noerror))
+(add-hook 'elpaca-after-init-hook 'my/load-custom-file)
 (put 'upcase-region 'disabled nil)
 
 (setq use-package-always-defer t
@@ -72,7 +73,6 @@
 (require 'use-package)
 
 (require 'cl-lib)
-;; (require 'compat)
 
 
 ;; (require 'auto-compile)
@@ -85,7 +85,6 @@
 ;; (or (server-running-p)
 ;;     (server-start))
 (setq my/server-name (or (daemonp) "none"))
-
 
 (setq session-save-file (concat user-emacs-directory (system-name) "-" my/server-name "-session"))
 (setq desktop-base-file-name (concat (system-name) "-" my/server-name "-desktop-file"))
@@ -156,6 +155,7 @@
   (uniquify-after-kill-buffer-p t))
 
 (use-package paren
+  :elpaca nil
   :custom (show-paren-ring-bell-on-mismatch t)
   :config (show-paren-mode t))
 
@@ -201,19 +201,18 @@ call KILL-REGION."
          ("C-n" . minibuffer-next-completion)
          ("C-p" . minibuffer-previous-completion)
          ("C-c C-c" . embark-act)
-         ("C-c C-o" . embark-occur)
          :map minibuffer-local-completion-map
          ("C-w" . backward-kill-word)
-         ;; :map completion-in-region-mode-map
-         ;; ("C-n" . minibuffer-next-completion)
-         ;; ("C-p" . minibuffer-previous-completion)
-         ))
+         :map completion-in-region-mode-map
+         ("C-n" . minibuffer-next-completion)
+         ("C-p" . minibuffer-previous-completion)))
 
 (use-package simple
-  :custom (completion-auto-select 'second-tab)
-  ;; :bind ((:map completion-list-mode-map))
-  )
+  :elpaca nil
+  :custom (completion-auto-select 't))
+
 (use-package vertico
+  :disabled t
   :init (vertico-mode t)
   :custom (vertico-cycle t)
   :bind (:map vertico-map
@@ -292,29 +291,33 @@ call KILL-REGION."
                ("k" . tab-close)
                ("j" . bookmark-jump-other-tab)))))
 
-(require 'project)
-(global-set-key (kbd "C-c p") project-prefix-map)
 
-(defun my/project-try-gem (dir)
-  (when-let (root (locate-dominating-file dir "Gemfile"))
-    (cons 'ruby root)))
-(cl-defmethod project-root ((project (head ruby)))
-  (cdr project))
+(use-package project
+  :bind (("C-c p" . project-prefix-map)
+         ("C-c f" . project-find-file)
+         ("C-c s" . project-search))
+  :config
+  (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name)))
+  (defun my/project-try-gem (dir)
+    (when-let (root (locate-dominating-file dir "Gemfile"))
+      (cons 'ruby root)))
+  (cl-defmethod project-root ((project (head ruby)))
+    (cdr project))
 
-(defun my/project-try-gomod (dir)
-  (when-let (root (locate-dominating-file dir "go.mod"))
-    (cons 'go root)))
-(cl-defmethod project-root ((project (head go)))
-  (cdr project))
+  (defun my/project-try-gomod (dir)
+    (when-let (root (locate-dominating-file dir "go.mod"))
+      (cons 'go root)))
+  (cl-defmethod project-root ((project (head go)))
+    (cdr project))
 
-(cl-defmethod project-files ((project (head ruby)) &optional dir)
-  (mapcan #'(lambda (dir)
-              ;; TODO: We shouldn't hard-code Git as the backend
-              (project--vc-list-files dir 'Git nil))
-          (or dir
-              (list (project-root project)))))
+  (cl-defmethod project-files ((project (head ruby)) &optional dir)
+    (mapcan #'(lambda (dir)
+                ;; TODO: We shouldn't hard-code Git as the backend
+                (project--vc-list-files dir 'Git nil))
+            (or dir
+                (list (project-root project)))))
 
-(setq project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc))
+  (setq project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc)))
 
 (use-package anzu
   :config (global-anzu-mode +1)
@@ -341,20 +344,19 @@ call KILL-REGION."
 ;; TODO C-x b consults buffers in the same project. C-u C-x b all buffers.
 
 (use-package embark
-  :ensure t
   :bind (("C-'" . embark-act)
          ("C-;" . embark-dwim)
          :map embark-file-map
          ("!" . async-shell-command)
-         ;; :map embark-bookmark-map
-         ;; ("!" . async-shell-command)
-         ))
+         :map embark-bookmark-map
+         ("!" . async-shell-command)
+         :map completion-list-mode-map
+         ("." . embark-act)))
 
 (use-package embark-consult
   :hook ((embark-collect-mode . consult-preview-at-point-mode)))
 
 (use-package marginalia
-  :ensure t
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
   ;; available in the *Completions* buffer, add it to the
   ;; `completion-list-mode-map'.
@@ -376,8 +378,6 @@ call KILL-REGION."
 ;; 	read-file-name-completion-ignore-case t)
 ;;   (add-hook 'icomplete-minibuffer-setup-hook
 ;;             (lambda () (setq-local completion-styles styles))))
-
-
 
 (defun my/set-ruby-devdocs ()
   (setq-local devdocs-current-docs '("ruby~2.6" "rails~5.2")))
@@ -430,10 +430,13 @@ call KILL-REGION."
 ;;   :load-path "site-lisp/password-vault+"
 ;;   :config (password-vault+-register-secrets-file (substitute-in-file-name "$HOME/.emacs.d/passwords.el.gpg")))
 
-;; (use-package tramp
-;;   :config
-;;   (setq tramp-default-method "ssh")
-;;   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "~/.ssh/config"))))
+(use-package tramp
+  :elpaca nil
+  :custom
+  (enable-remote-dir-locals t)
+  :config
+  (setq tramp-default-method "ssh")
+  (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "~/.ssh/config"))))
 
 (defun sudo ()
   "Use TRAMP to `sudo' the current buffer"
@@ -452,12 +455,12 @@ call KILL-REGION."
 
 (use-package ace-window
   :ensure t
-  :bind (("M-o" . 'other-window)
-         ("M-0" . 'delete-window)
-         ("M-1" . 'delete-other-windows)
-         ("M-2" . 'split-window-vertically)
-         ("M-3" . 'split-window-right)
-         ("C-x o" . 'ace-window)))
+  :bind (("M-o" . other-window)
+         ("M-0" . delete-window)
+         ("M-1" . delete-other-windows)
+         ("M-2" . split-window-vertically)
+         ("M-3" . split-window-right)
+         ("C-x o" . ace-window)))
 
 (use-package winner
   :elpaca nil
@@ -1940,13 +1943,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package sly-macrostep
   :after (macrostep))
 
-
-(setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name)))
-(use-package project
-  :bind (("C-c f" . project-find-file)
-         ;; ("C-c s" . project-search)
-         ))
-
 (use-package docker
   )
 (setq docker-container-columns
@@ -2100,17 +2096,19 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (setq term-prompt-regexp "^\\$ ")
 (use-package vterm
-  :bind (:map vterm-mode-map
-              (("M-p" . vterm-send-C-p)
-               ("M-n" . vterm-send-C-n))))
-
-(defun project-vterm ()
-  (declare (interactive-only shell-command))
-  (interactive)
-  ;; TODO(javier): Error out if we are not in a project.
-  (let ((default-directory (cdr (project-current))))
-    (vterm (format "*vterm: %s*" default-directory))))
-(define-key project-prefix-map (kbd "v") 'project-vterm)
+  :bind (nil
+         :map vterm-mode-map
+         (("M-p" . vterm-send-C-p)
+          ("M-n" . vterm-send-C-n))
+         :map project-prefix-map
+         (("v" . project-vterm)))
+  :config
+  (defun project-vterm ()
+    (declare (interactive-only shell-command))
+    (interactive)
+    ;; TODO(javier): Error out if we are not in a project.
+    (let ((default-directory (cdr (project-current))))
+      (vterm (format "*vterm: %s*" default-directory)))))
 
 (use-package detached
   :init (detached-init)
