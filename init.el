@@ -198,26 +198,26 @@ call KILL-REGION."
   (read-file-name-completion-ignore-case t)
   :bind (nil
          :map minibuffer-mode-map
-         ("C-n" . minibuffer-next-completion)
-         ("C-p" . minibuffer-previous-completion)
+         ;; ("C-n" . minibuffer-next-completion)
+         ;; ("C-p" . minibuffer-previous-completion)
          ("C-c C-c" . embark-act)
          :map minibuffer-local-completion-map
          ("C-w" . backward-kill-word)
-         :map completion-in-region-mode-map
-         ("C-n" . minibuffer-next-completion)
-         ("C-p" . minibuffer-previous-completion)))
+         ;; :map completion-in-region-mode-map
+         ;; ("C-n" . minibuffer-next-completion)
+         ;; ("C-p" . minibuffer-previous-completion)
+         ))
 
 (use-package simple
   :elpaca nil
   :custom (completion-auto-select 't))
 
 (use-package vertico
-  :disabled t
   :init (vertico-mode t)
   :custom (vertico-cycle t)
-  :bind (:map vertico-map
-	      ("C-c C-c" . embark-act)
-	      ("C-c C-o" . embark-occur)))
+  :bind (nil
+         :map vertico-map
+	 ("C-c C-c" . embark-act)))
 
 (use-package helm
   :disabled t
