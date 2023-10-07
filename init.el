@@ -2107,19 +2107,19 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (setq term-prompt-regexp "^\\$ ")
 (use-package vterm
-  :bind (nil
-         :map vterm-mode-map
-         (("M-p" . vterm-send-C-p)
-          ("M-n" . vterm-send-C-n))
-         :map project-prefix-map
-         (("v" . project-vterm)))
-  :config
+  :preface
   (defun project-vterm ()
     (declare (interactive-only shell-command))
     (interactive)
     ;; TODO(javier): Error out if we are not in a project.
     (let ((default-directory (cdr (project-current))))
-      (vterm (format "*vterm: %s*" default-directory)))))
+      (vterm (format "*vterm: %s*" default-directory))))
+  :bind (nil
+         :map vterm-mode-map
+         (("M-p" . vterm-send-C-p)
+          ("M-n" . vterm-send-C-n))
+         :map project-prefix-map
+         (("v" . project-vterm))))
 
 (use-package detached
   :init (detached-init)
