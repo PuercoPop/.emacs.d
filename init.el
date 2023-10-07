@@ -625,7 +625,8 @@ And update the branch as a suffix."
                ("<return>" . my/show-commit))
          (:map magit-file-section-map
                ("<return>" . magit-diff-visit-file-other-window)))
-  :hook ((magit-log-edit-mode . auto-fill-mode))
+  :hook ((magit-log-edit-mode . auto-fill-mode)
+         (magit-status-mode . magit-todos-mode))
   :config (progn
             (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-topleft-v1
                   ;; magit-display-buffer-function 'magit-display-buffer-traditional
@@ -643,6 +644,10 @@ And update the branch as a suffix."
             ;; (transient-replace-suffix).
             (transient-append-suffix 'magit-worktree "c"
               '("%" "My Branch and worktree" my/magit-worktree-branch))))
+
+(use-package magit-todos
+  :custom
+  (magit-todos-exclude-globs '(".git/" "*.org")))
 
 (when (string= "work" (daemonp))
   (setq magit-repository-directories
