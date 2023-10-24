@@ -64,6 +64,7 @@
  '(kubectl-kubectl
    "/opt/rancher-desktop/resources/resources/linux/bin/kubectl")
  '(kubel-use-namespace-list 'on)
+ '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(mastodon-active-user "PuercoPop")
  '(objed-cursor-color "#FF8080")
  '(org-drill-done-count-color "#663311")
@@ -93,7 +94,12 @@
  '(rustic-ansi-faces
    ["#1E1C31" "#FF8080" "#95FFA4" "#FFE9AA" "#91DDFF" "#C991E1" "#AAFFE4" "#CBE3E7"])
  '(safe-local-variable-values
-   '((vc-prepare-patches-separately)
+   '((eval add-hook 'eglot-managed-mode-hook
+           (lambda nil
+             (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
+     (eglot-server-programs
+      (ruby-mode "ruby-lsp"))
+     (vc-prepare-patches-separately)
      (diff-add-log-use-relative-names . t)
      (vc-git-annotate-switches . "-w")
      (magit-todos-exclude-globs)

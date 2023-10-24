@@ -217,7 +217,11 @@ call KILL-REGION."
   :custom (vertico-cycle t)
   :bind (nil
          :map vertico-map
-	 ("C-c C-c" . embark-act)))
+	 ("C-c C-c" . embark-act)
+         ("C-c C-o" . embark-collect)
+         ("C-." . embark-act)
+         ("C-;" . embark-dwim)
+         ("C-'" . vertico-quick-jump)))
 
 (use-package helm
   :disabled t
@@ -735,13 +739,13 @@ And update the branch as a suffix."
     (load-theme 'doom-1337 t))
   ;; (set-face-attribute 'default nil :family "Go Mono" :height 170)
   ;; (set-frame-font "DejaVu Sans Mono-18")
-  (set-frame-font "IBM Plex Mono-14"))
+  (set-frame-font "IBM Plex Mono-18"))
 ;;(set-frame-font "IBM Plex Mono-22")
 ;;(set-frame-font "Go Mono-18")
 ;; (set-frame-font "IBM Plex Mono-18" nil t)
 ;;(set-frame-font "DejaVu Sans Mono-18")
 (add-to-list 'default-frame-alist
-	     (cons 'font "IBM Plex Mono-14"))
+	     (cons 'font "IBM Plex Mono-18"))
 ;; (set-frame-font "IBM Plex Mono-18" nil t)
 ;; (add-hook 'after-init-hook 'my/set-theme)
 (add-hook 'after-make-frame-functions 'my/set-theme)
@@ -1358,7 +1362,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; TODO: Bind M-w to copy selection and exit
 (use-package isearch
   :elpaca nil
-  :custom (isearch-allow-scroll 'unlimited)
+  :custom
+  (isearch-allow-scroll 'unlimited)
+  (isearch-repeat-on-direction-change t)
+  (isearch-wrap-pause 'no)
   :bind (("M-*" . isearch-forward-symbol-at-point)
          (:map isearch-mode-map
                ("C-j " . isearch-exit))))
@@ -1433,6 +1440,12 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
              t ; Check if this makes sense
            (let ((text-before (buffer-substring-no-properties (- (point) 2) (point))))
              (not (string-equal "#P" text-before)))))))
+  (advice-add 'paredit-RET
+            :after
+            (lambda ()
+              (when (string-prefix-p "*sly-mrepl for"
+                                     (buffer-name (current-buffer)))
+                (sly-mrepl-return))))
   :hook ((emacs-lisp-mode . enable-paredit-mode)
          (ielm-mode . enable-paredit-mode)
          (eval-expression-minibuffer-setup . enable-paredit-mode)
@@ -1708,6 +1721,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   ;; replace this with eldoc-buffer
   ;; ("C-c h" . 'eldoc-buffer)
   )
+
+;; (use-package eglot-x
+;;   :after (eglot)
+;;   :config (eglot-x-setup))
 
 
 ;;; Ruby mode
@@ -1998,25 +2015,27 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package gnus
   :elpaca nil
-  :config (progn
-            (setq gnus-select-method '(nnnil "")
-                  gnus-secondary-select-methods (list ;; '(nntp "news.gwene.org")
-                                                 '(nntp "news.gmane.io")
-                                                 '(nntp "nntp.lore.kernel.org"))
-                  ;; gnus-secondary-select-methods '((nntp "news.gwene.org")
-                  ;;                                 (nnmaildir "remotelock"
-                  ;;                                               (directory "~/Maildir/remotelock/")
-                  ;;                                               (directory-files nnheader-directory-files-safe)
-                  ;;                                               (get-new-mail nil)))
-                  gnus-use-cache 'active
-                  gnus-agent-directory "/media/data/News/agent/"
-                  gnus-save-article-buffer "/media/data/News/"
-                  gnus-extra-headers '(To Newsgroups X-GM-LABELS)
-                  gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-datee
-                                               (not gnus-thread-sort-by-number))
-                  gnus-use-adaptive-scoring '(word line)
-                  gnus-adaptive-word-length-limit 5
-                  gnus-adaptive-word-no-group-words t)))
+  :config
+  (setq gnus-select-method '(nnnil "")
+        gnus-secondary-select-methods (list
+                                       '(nntp "news.gwene.org")
+                                       '(nntp "news.gmane.io")
+                                       ;; TODO: I want to read the mseal discussion
+                                       '(nntp "nntp.lore.kernel.org")
+                                       ;; '(nnmaildir "remotelock"
+                                       ;;             (directory "~/Maildir/remotelock/")
+                                       ;;             (directory-files nnheader-directory-files-safe)
+                                       ;;             (get-new-mail nil))
+                                       )
+        gnus-use-cache 'active
+        gnus-agent-directory "/media/data/News/agent/"
+        gnus-save-article-buffer "/media/data/News/"
+        gnus-extra-headers '(To Newsgroups X-GM-LABELS)
+        gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-datee
+                                     (not gnus-thread-sort-by-number))
+        gnus-use-adaptive-scoring '(word line)
+        gnus-adaptive-word-length-limit 5
+        gnus-adaptive-word-no-group-words t))
 
 ;; (use-package nntwitter
 ;;   :after (gnus)
@@ -2037,7 +2056,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (when (string= "social" my/server-name)
   (use-package elpher)
 
-  (require 'mastodon)
+  (use-package mastodon)
 
   (use-package elfeed
     :config
@@ -2051,15 +2070,15 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
             "https://scattered-thoughts.net/atom.xml"
             ("https://www.youtube.com/feeds/videos.xml?channel_id=UCHP9CdeguNUI-_nBv_UXBhw" chess youtube))))
 
-  (defun my/rcirc-mode-hook ()
-    (flyspell-mode 1)
-    (rcirc-omit-mode))
-
-  (defun my/rcirc-set-credentials ()
-    (interactive)
-    (setq rcirc-authinfo `(("libera" nickserv "PuercoPop" ,(auth-source-pick-first-password :host "irc.libera.chat" :login "PuercoPop")))))
-
   (use-package rcirc
+    :elpaca nil
+    :preface
+    (defun my/rcirc-mode-hook ()
+      (flyspell-mode 1)
+      (rcirc-omit-mode 1))
+    (defun my/rcirc-set-credentials ()
+      (interactive)
+      (setq rcirc-authinfo `(("libera" nickserv "PuercoPop" ,(auth-source-pick-first-password :host "irc.libera.chat" :login "PuercoPop")))))
     :commands (rcirc)
     :config (setq rcirc-debug-flag nil ; (load "rcirc-sasl")
                   rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
@@ -2079,6 +2098,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
         (((:message . "@javier\\|Javier")
           (:category . "slack"))
          libnotify nil)))
+
+(use-package debbugs)
 
 (use-package j-mode
   :load-path "site-lisp/j-mode")
