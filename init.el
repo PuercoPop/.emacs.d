@@ -310,6 +310,15 @@ call KILL-REGION."
   (cl-defmethod project-root ((project (head go)))
     (cdr project))
 
+  (defun my/project-try-cargo (dir)
+    (or
+     (when-let (root (locate-dominating-file dir "Cargo.toml"))
+       (cons 'rust root))
+     (when-let (root (locate-dominating-file dir "rust-project.json"))
+       (cons 'rust root))))
+  (cl-defmethod project-root ((project (head rust)))
+    (cdr project))
+
   (cl-defmethod project-files ((project (head ruby)) &optional dir)
     (mapcan #'(lambda (dir)
                 ;; TODO: We shouldn't hard-code Git as the backend
@@ -321,7 +330,7 @@ call KILL-REGION."
          ("C-c s" . project-search))
   :config
   (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name))
-        project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc)))
+        project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'my/project-try-cargo #'project-try-vc)))
 
 (use-package anzu
   :config (global-anzu-mode +1)
@@ -1715,7 +1724,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (require 'eglot)
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
-  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer")))
+  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+  (defun my/eglot-format-on-save ()
+    (add-hook 'before-save-hook #'eglot-format-buffer nil t))
+  (add-hook 'eglot-managed-mode-hook
+            'my/eglot-format-on-save)
   (define-key eglot-mode-map (kbd "M-.") #'xref-find-definitions)
   (define-key eglot-mode-map (kbd "C-c C-.") 'eglot-code-actions)
   ;; replace this with eldoc-buffer
