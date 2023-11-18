@@ -1,71 +1,9 @@
 ;; -*- lexical-binding: t; -*-
 
 
-;;; Elpaca setup
-(defvar elpaca-installer-version 0.5)
-(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref nil
-                              :files (:defaults (:exclude "extensions"))
-                              :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-       (build (expand-file-name "elpaca/" elpaca-builds-directory))
-       (order (cdr elpaca-order))
-       (default-directory repo))
-  (add-to-list 'load-path (if (file-exists-p build) build repo))
-  (unless (file-exists-p repo)
-    (make-directory repo t)
-    (when (< emacs-major-version 28) (require 'subr-x))
-    (condition-case-unless-debug err
-        (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                 ((zerop (call-process "git" nil buffer t "clone"
-                                       (plist-get order :repo) repo)))
-                 ((zerop (call-process "git" nil buffer t "checkout"
-                                       (or (plist-get order :ref) "--"))))
-                 (emacs (concat invocation-directory invocation-name))
-                 ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                       "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                 ((require 'elpaca))
-                 ((elpaca-generate-autoloads "elpaca" repo)))
-            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-          (error "%s" (with-current-buffer buffer (buffer-string))))
-      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-  (unless (require 'elpaca-autoloads nil t)
-    (require 'elpaca)
-    (elpaca-generate-autoloads "elpaca" repo)
-    (load "./elpaca-autoloads")))
-(add-hook 'after-init-hook #'elpaca-process-queues)
-(elpaca `(,@elpaca-order))
-
-;; Uncomment for systems which cannot create symlinks:
-;; (elpaca-no-symlink-mode)
-
-;; Install use-package support
-(elpaca elpaca-use-package
-  ;; Enable :elpaca use-package keyword.
-  (elpaca-use-package-mode)
-  ;; Assume :elpaca t unless otherwise specified.
-  (setq elpaca-use-package-by-default t))
-
-;; Block until current queue processed.
-(elpaca-wait)
-
-;;When installing a package which modifies a form used at the top-level
-;;(e.g. a package which adds a use-package key word),
-;;use `elpaca-wait' to block until that package has been installed/configured.
-;;For example:
-;;(use-package general :demand t)
-;;(elpaca-wait)
-
-
 ;;; Customize
 (setq custom-file "~/.emacs.d/custom.el")
-;; (load custom-file 'noerror)
-(defun my/load-custom-file ()
-  (load custom-file 'noerror))
-(add-hook 'elpaca-after-init-hook 'my/load-custom-file)
+(load custom-file 'noerror)
 (put 'upcase-region 'disabled nil)
 
 (setq use-package-always-defer t
@@ -149,13 +87,11 @@
 (global-set-key (kbd "C-z") nil)
 
 (use-package uniquify
-  :elpaca nil
   :custom
   (uniquify-buffer-name-style 'forward)
   (uniquify-after-kill-buffer-p t))
 
 (use-package paren
-  :elpaca nil
   :custom (show-paren-ring-bell-on-mismatch t)
   :config (show-paren-mode t))
 
@@ -178,7 +114,6 @@ call KILL-REGION."
   :config (minions-mode 1))
 
 (use-package recentf
-  :elpaca nil
   :init
   (defvar my/recentf-update-timer nil)
   (when my/recentf-update-timer
@@ -191,7 +126,6 @@ call KILL-REGION."
   (recentf-mode t))
 
 (use-package minibuffer
-  :elpaca nil
   :custom
   (completion-styles '(basic substring partial-completion flex))
   (read-buffer-completion-ignore-case t)
@@ -209,7 +143,6 @@ call KILL-REGION."
          ))
 
 (use-package simple
-  :elpaca nil
   :custom (completion-auto-select 't))
 
 (use-package vertico
@@ -273,7 +206,6 @@ call KILL-REGION."
   (bookmark-jump bookmark 'switch-to-buffer-other-tab))
 
 (use-package tab-bar
-  :elpaca nil
   ;; :config (setq tab-bar-close-button
   ;;               (propertize " ⮾"
   ;;                           'close-tab t
@@ -434,7 +366,6 @@ call KILL-REGION."
 (use-package pinentry)
 
 (use-package epa-file
-  :elpaca nil
   :config (setq epg-pinentry-mode 'loopback)
   ;; (load-library "~/.emacs.d/passwords.el.gpg")
   )
@@ -444,7 +375,6 @@ call KILL-REGION."
 ;;   :config (password-vault+-register-secrets-file (substitute-in-file-name "$HOME/.emacs.d/passwords.el.gpg")))
 
 (use-package tramp
-  :elpaca nil
   :custom
   (enable-remote-dir-locals t)
   :config
@@ -476,11 +406,9 @@ call KILL-REGION."
          ("C-x o" . ace-window)))
 
 (use-package winner
-  :elpaca nil
   :config (winner-mode))
 
 (use-package ibuffer
-  :elpaca nil
   :bind ((:map ibuffer-mode-map
                ("M-o" . other-window))))
 
@@ -489,13 +417,11 @@ call KILL-REGION."
 
 ;; TODO: Check hippie expand
 (use-package abbrev
-  :elpaca nil
   :hook ((text-mode prog-mode) . abbrev-mode))
 
 ;; Spellcheck
 ;; TODO: Configure Ispell configure
 (use-package ispell
-  :elpaca nil
   :preface
   (defun ispell-word-then-abbrev (p)
     "Call `ispell-word', then create an abbrev for it.
@@ -522,28 +448,23 @@ be global."
                (("C-i" . ispell-world-then-abbrev)))))
 
 (use-package flyspell
-  :elpaca nil
   :config (setq flyspell-abbrev-p t)
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)))
 
 (use-package ediff
-  :elpaca nil
   :custom (ediff-highlight-all-diffs nil))
 
 (use-package ediff-wind
-  :elpaca nil
   :after (ediff)
   :custom
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
 
 (use-package vc-git
-  :elpaca nil
   :custom (vc-git-print-log t))
 
 (use-package vc-annotate
-  :elpaca nil
   :config (setq vc-annotate-background-mode nil))
 
 (defun my/git-commit-hook ()
@@ -766,13 +687,11 @@ And update the branch as a suffix."
   (moody-replace-mode-line-buffer-identification))
 
 (use-package comint
-  :elpaca nil
   :bind (:map comint-mode-map
               ("C-c C-x" . nil)
               ("C-c C-r" . nil)))
 
 (use-package compile
-  :elpaca nil
   :config (setq compilation-scroll-output 'first-error
                 compilation-ask-about-save nil)
   :bind ((:map compilation-mode-map
@@ -813,7 +732,6 @@ And update the branch as a suffix."
 (use-package es-mode)
 
 (use-package calendar
-  :elpaca nil
   :config (setq diary-file (locate-user-emacs-file (format "%s-diary" my/server-name))))
 
 (require 'info)
@@ -831,7 +749,6 @@ And update the branch as a suffix."
   :bind (("C-c C-n" . ekg-capture)))
 
 (use-package org
-  :elpaca (:repo "https://git.savannah.gnu.org/git/emacs/org-mode.git")
   :preface
 
 
@@ -918,7 +835,6 @@ And update the branch as a suffix."
   (org-clock-persistence-insinuate))
 
 (use-package org-datetree
-  :elpaca nil
   :preface
   ;; Adapted from org-datetree-find-iso-week-create
   (defun my/org-weekly-datetree (d &optional keep-restriction)
@@ -968,7 +884,6 @@ will be built under the headline at point."
 
 (use-package org-clock
   :after (org)
-  :elpaca nil
   :preface
   (defun my/org-clock-dwim ()
     "If the clock is active, jump to the current task. Otherwise
@@ -987,7 +902,6 @@ in."
 
 (use-package org-archive
   :after (org)
-  :elpaca nil
   :preface
   (defun my/org-archive-subtree (archive-buffer)
     (with-current-buffer archive-buffer
@@ -1067,12 +981,10 @@ in."
             (calendar-last-day-of-month month year)))
     (= day last-day-of-month)))
 
-(use-package org-agenda
-  :elpaca nil)
+(use-package org-agenda)
 ;; (use-package org-tempo)
 ;; (require 'org-tempo)
-(use-package org-protocol
-  :elpaca nil)
+(use-package org-protocol)
 
 ;; (use-package org-contrib)
 
@@ -1370,7 +1282,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; TODO: Bind M-w to copy selection and exit
 (use-package isearch
-  :elpaca nil
   :custom
   (isearch-allow-scroll 'unlimited)
   (isearch-repeat-on-direction-change t)
@@ -1394,18 +1305,15 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 (use-package imenu
-  :elpaca nil
   :bind (("M-i" . imenu)))
 
 (use-package dired
-  :elpaca nil
   :config
       (setq dired-dwim-target t
             dired-listing-switches "-alh")
   :hook ((dired-mode . dired-hide-details-mode)))
 
 (use-package dired-x
-  :elpaca nil
   :after (dired))
 
 (use-package ibuffer-vc
@@ -1418,11 +1326,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :hook ((ibuffer . my/ibuffer-vc-hook)))
 
 (use-package xref
-  :elpaca nil
   :config (setq xref-search-program 'ripgrep))
 
 (use-package man
-  :elpaca nil
   :custom (Man-width 80))
 
 (electric-pair-mode t)
@@ -1492,7 +1398,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;   :hook ((ruby-mode . smartparens-mode)))
 
 (use-package window
-  :elpaca nil
   ;; Still need to figure out window parameters
   :config
   :bind (("<f2>" . window-toggle-side-windows)))
@@ -1596,14 +1501,12 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; bound to isearch-forward-symbol-at-point
 
 (use-package subword
-  :elpaca nil
   :hook ((js-mode . subword-mode)
          (typescript-mode . subword-mode)
          (ruby-mode . subword-mode)
          (rust-mode . subword-mode)))
 
 (use-package outline
-  :elpaca nil
   :hook ((emacs-lisp . outline-minor-mode))
   :bind (:map outline-minor-mode-map
               (("C-c <up>" . outline-backward-same-level)
@@ -1636,7 +1539,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :mode ("\\.svelte\\'"))
 
 (use-package css-mode
-  :elpaca nil
   :custom (css-indent-offset 2))
 
 (use-package yaml-mode)
@@ -1648,7 +1550,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :mode ("\\.json\\'"))
 
 (use-package js
-  :elpaca nil
   :custom
   (js-indent-level 2)
   (js-jsx-syntax t))
@@ -1688,7 +1589,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
       (flymake-mode))))
 
 (use-package flymake
-  :elpaca nil
   :hook ((ruby-mode . my/ruby-flymake-hook)
          (js-mode . my/ruby-flymake-hook)
          (typescript-mode . my/ruby-flymake-hook))
@@ -1699,7 +1599,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("M-p" . 'flymake-goto-prev-error))))
 
 (use-package eslint-flymake
-  :elpaca (:host github :repo "emacs-pe/eslint-flymake")
   :config (setq eslint-flymake-command '("npx" "eslint" "--no-color" "--stdin"))
   :hook ((typescript-mode . eslint-flymake-setup-backend)))
 
@@ -1751,7 +1650,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (setq-local dash-docs-docsets '("Ruby on Rails" "Ruby")))
 
 (use-package ruby-mode
-  :elpaca nil
   :custom
   (ruby-deep-arglist nil)
   (ruby-deep-indent-paren nil)
@@ -1895,7 +1793,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; TODO: save history (comint-input-ring?)
 (use-package sql
-  :elpaca nil
   ;; :bind (("C-c a s" . sql-connect))
   :config
   ;; TODO: Use sql-product to use a different history for postgres and mysql.
@@ -2027,7 +1924,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;          )
 
 (use-package gnus
-  :elpaca nil
   :config
   (setq gnus-select-method '(nnnil "")
         gnus-secondary-select-methods (list
@@ -2084,7 +1980,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
             ("https://www.youtube.com/feeds/videos.xml?channel_id=UCHP9CdeguNUI-_nBv_UXBhw" chess youtube))))
 
   (use-package rcirc
-    :elpaca nil
     :preface
     (defun my/rcirc-mode-hook ()
       (flyspell-mode 1)
@@ -2134,7 +2029,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (add-hook 'before-save-hook 'nix-format-before-save nil 'local))
 
 (use-package nix
-  :elpaca (:host github :repo "NixOS/nix-mode")
   :hook ((nix-mode . my/nix-format-setup))
   :custom (nix-nixfmt-bin "nixpkgs-fmt"))
 
@@ -2185,16 +2079,15 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;; Fortune Cookies
 
-(use-package oblique
-  :elpaca (:host github :repo "zzkt/oblique-strategies")
-  :demand t
-  :preface
-  (defun my/scratch-setup ()
-    (setq initial-scratch-message (format ";; %s\n" (oblique-strategy))))
-  :custom
-  (oblique-edition "~/.emacs.d/elpaca/repos/oblique-strategies/strategies/oblique-strategies-condensed.txt")
-  :config
-  (add-hook 'elpaca-after-init-hook 'my/scratch-setup))
+;; (use-package oblique
+;;   :demand t
+;;   :preface
+;;   (defun my/scratch-setup ()
+;;     (setq initial-scratch-message (format ";; %s\n" (oblique-strategy))))
+;;   :custom
+;;   (oblique-edition "~/.emacs.d/elpaca/repos/oblique-strategies/strategies/oblique-strategies-condensed.txt")
+;;   :config
+;;   (add-hook 'elpaca-after-init-hook 'my/scratch-setup))
 
 
 ;; My config
