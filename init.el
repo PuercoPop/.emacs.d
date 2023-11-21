@@ -134,7 +134,7 @@ call KILL-REGION."
          :map minibuffer-mode-map
          ;; ("C-n" . minibuffer-next-completion)
          ;; ("C-p" . minibuffer-previous-completion)
-         ("C-c C-c" . embark-act)
+         ;; ("C-c C-c" . embark-act)
          :map minibuffer-local-completion-map
          ("C-w" . backward-kill-word)
          ;; :map completion-in-region-mode-map
@@ -146,6 +146,7 @@ call KILL-REGION."
   :custom (completion-auto-select 't))
 
 (use-package vertico
+  :after (embark)
   :init (vertico-mode t)
   :custom (vertico-cycle t)
   :bind (nil
@@ -291,6 +292,8 @@ call KILL-REGION."
 (use-package embark
   :bind (("C-'" . embark-act)
          ("C-;" . embark-dwim)
+         :map minibuffer-mode-map
+         ("C-c C-c" . embark-act)
          :map embark-file-map
          ("!" . async-shell-command)
          :map embark-bookmark-map
@@ -299,6 +302,8 @@ call KILL-REGION."
          ("." . embark-act)))
 
 (use-package embark-consult
+  :after (embark consult)
+  :demand t
   :hook ((embark-collect-mode . consult-preview-at-point-mode)))
 
 (use-package marginalia
