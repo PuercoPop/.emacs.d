@@ -37,6 +37,7 @@
         paredit-backslash
         paredit-backward
         paredit-backward-kill-word
+        paredit-close-round
         paredit-close-square
         paredit-comment-dwim
         paredit-doublequote

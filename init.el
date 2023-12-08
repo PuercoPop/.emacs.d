@@ -93,7 +93,9 @@
 
 (use-package paren
   :custom (show-paren-ring-bell-on-mismatch t)
-  :config (show-paren-mode t))
+  :config (show-paren-mode t)
+  :bind (:map paredit-mode-map
+              ("RET" . nil)))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
