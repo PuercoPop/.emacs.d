@@ -93,9 +93,7 @@
 
 (use-package paren
   :custom (show-paren-ring-bell-on-mismatch t)
-  :config (show-paren-mode t)
-  :bind (:map paredit-mode-map
-              ("RET" . nil)))
+  :config (show-paren-mode t))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -303,6 +301,7 @@ call KILL-REGION."
          :map completion-list-mode-map
          ("." . embark-act)))
 
+(require 'embark-consult)
 (use-package embark-consult
   :after (embark consult)
   :demand t
@@ -1345,6 +1344,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :bind ((:map paredit-mode-map
                (("M-?" . nil)
                 ("M-s" . nil)
+                ("RET" . nil)
                 ("M-k" . paredit-splice-sexp)))
          (:map search-map
                (("M-s" . paredit-splice-sexp))))
@@ -1876,6 +1876,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package macrostep
   :bind ((:map emacs-lisp-mode-map
+               ("C-c M-e" . macrostep-expand))
+         (:map lisp-mode-map
                ("C-c M-e" . macrostep-expand))
          (:map lisp-interaction-mode-map
                ("C-c M-e" . macrostep-expand))))
