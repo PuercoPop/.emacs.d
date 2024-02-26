@@ -243,15 +243,6 @@ call KILL-REGION."
   (cl-defmethod project-root ((project (head go)))
     (cdr project))
 
-  (defun my/project-try-cargo (dir)
-    (or
-     (when-let (root (locate-dominating-file dir "Cargo.toml"))
-       (cons 'rust root))
-     (when-let (root (locate-dominating-file dir "rust-project.json"))
-       (cons 'rust root))))
-  (cl-defmethod project-root ((project (head rust)))
-    (cdr project))
-
   (cl-defmethod project-files ((project (head ruby)) &optional dir)
     (mapcan #'(lambda (dir)
                 ;; TODO: We shouldn't hard-code Git as the backend
@@ -263,7 +254,7 @@ call KILL-REGION."
          ("C-c s" . project-search))
   :config
   (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name))
-        project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'my/project-try-cargo #'project-try-vc)))
+        project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc)))
 
 (use-package anzu
   :config (global-anzu-mode +1)
