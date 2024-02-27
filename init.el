@@ -252,6 +252,7 @@ call KILL-REGION."
   :bind (("C-c p" . project-prefix-map)
          ("C-c f" . project-find-file)
          ("C-c s" . project-search))
+  :custom (project-vc-extra-root-markers '(".jj"))
   :config
   (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name))
         project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc)))
