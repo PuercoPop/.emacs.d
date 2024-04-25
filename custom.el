@@ -81,11 +81,14 @@
  '(rcirc-log-directory nil)
  '(rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
  '(rcirc-server-alist
-   '(("irc.oftc.net" :nick "PuercoPop" :user-name "PuercoPop" :channels
+   '(("irc.hackint.org" :nick "PuercoPop" :user-name "PuercoPop" :channels
+      ("#tvix-dev")
+      :encryption tls :port "6697")
+     ("irc.oftc.net" :nick "PuercoPop" :user-name "PuercoPop" :channels
       ("#wayland" "#freedesktop" "#cat-v" "#pipewire" "#bcache")
       :encryption tls :port "6697")
      ("irc.libera.chat" :nick "PuercoPop" :user-name "PuercoPop" :channels
-      ("#go-nuts" "#stumpwm" "#sbcl" "#emacs" "#podman" "#postgresql" "#c++" "#nixos" "#guix" "#commonlisp")
+      ("##rust" "#stumpwm" "#sbcl" "#emacs" "#nixos" "#guix" "#commonlisp" "#indieweb-dev")
       :encryption tls :port "6697")))
  '(rcirc-track-minor-mode t)
  '(recentf-max-saved-items 50)
@@ -94,7 +97,11 @@
  '(rustic-ansi-faces
    ["#1E1C31" "#FF8080" "#95FFA4" "#FFE9AA" "#91DDFF" "#C991E1" "#AAFFE4" "#CBE3E7"])
  '(safe-local-variable-values
-   '((eval add-hook 'eglot-managed-mode-hook
+   '((etags-regen-ignores "test/manual/etags/")
+     (etags-regen-regexp-alist
+      (("c" "objc")
+       "/[ \11]*DEFVAR_[A-Z_ \11(]+\"\\([^\"]+\\)\"/\\1/" "/[ \11]*DEFVAR_[A-Z_ \11(]+\"[^\"]+\",[ \11]\\([A-Za-z0-9_]+\\)/\\1/"))
+     (eval add-hook 'eglot-managed-mode-hook
            (lambda nil
              (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
      (eglot-server-programs
