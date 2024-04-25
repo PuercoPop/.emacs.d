@@ -1633,9 +1633,11 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   ;; ("C-c h" . 'eldoc-buffer)
   )
 
-;; (use-package eglot-x
-;;   :after (eglot)
-;;   :config (eglot-x-setup))
+(use-package eglot-x
+  :after (eglot)
+  :config (eglot-x-setup))
+
+(use-package dape)
 
 
 ;;; Ruby mode
@@ -1984,7 +1986,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     :preface
     (defun my/rcirc-mode-hook ()
       (flyspell-mode 1)
-      (rcirc-omit-mode 1))
+      ;; (rcirc-omit-mode 1)
+      )
     (defun my/rcirc-set-credentials ()
       (interactive)
       (setq rcirc-authinfo `(("libera" nickserv "PuercoPop" ,(auth-source-pick-first-password :host "irc.libera.chat" :login "PuercoPop")))))
