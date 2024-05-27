@@ -1998,21 +1998,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
   (use-package rcirc
     :preface
-    (defun my/rcirc-mode-hook ()
-      (flyspell-mode 1)
-      ;; (rcirc-omit-mode 1)
-      )
-    (defun my/rcirc-set-credentials ()
-      (interactive)
-      (setq rcirc-authinfo `(("libera" nickserv "PuercoPop" ,(auth-source-pick-first-password :host "irc.libera.chat" :login "PuercoPop")))))
     :commands (rcirc)
-    :config (setq rcirc-debug-flag nil ; (load "rcirc-sasl")
-                  rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE")
-                  rcirc-log-directory nil
-
-                  ;; rcirc-authinfo `(("freenode" nickserv "PuercoPop" ,(auth-source-pick-first-password :host "irc.freenode.net" :login "PuercoPop")))
-                  )
-    :hook ((rcirc-mode . my/rcirc-mode-hook))))
+    :custom (rcirc-omit-responses ("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
+    :hook ((rcirc-mode . flyspell-mode)
+           (rcirc-mode . rcirc-omit-mode))))
 
 
 (use-package alert)

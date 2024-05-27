@@ -81,14 +81,11 @@
  '(rcirc-log-directory nil)
  '(rcirc-omit-responses '("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
  '(rcirc-server-alist
-   '(("irc.hackint.org" :nick "PuercoPop" :user-name "PuercoPop" :channels
-      ("#tvix-dev")
-      :encryption tls :port "6697")
-     ("irc.oftc.net" :nick "PuercoPop" :user-name "PuercoPop" :channels
+   '(("irc.oftc.net" :nick "PuercoPop" :user-name "PuercoPop" :channels
       ("#wayland" "#freedesktop" "#cat-v" "#pipewire" "#bcache")
       :encryption tls :port "6697")
      ("irc.libera.chat" :nick "PuercoPop" :user-name "PuercoPop" :channels
-      ("##rust" "#stumpwm" "#sbcl" "#emacs" "#nixos" "#guix" "#commonlisp" "#indieweb-dev")
+      ("##rust" "#stumpwm" "#sbcl" "#guix" "#nonguix" "#indieweb-dev" "#commonlisp")
       :encryption tls :port "6697")))
  '(rcirc-track-minor-mode t)
  '(recentf-max-saved-items 50)
