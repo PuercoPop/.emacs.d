@@ -350,9 +350,10 @@ call KILL-REGION."
                (("H" . my/helpful-at-buffer)))))
 ;; XXX: C-h F Info-goto-emacs-command-node
 
-(use-package emaps
-  ;; Consider C-h K
-  :bind (("C-h M-k" . emaps-describe-keymap-bindings)))
+;; TODO: Submit emaps to guix
+;; (use-package emaps
+;;   ;; Consider C-h K
+;;   :bind (("C-h M-k" . emaps-describe-keymap-bindings)))
 
 (use-package transient)
 ;; (define-transient-command my/counsel ()
@@ -602,7 +603,8 @@ And update the branch as a suffix."
 ;;   :after (magit)
 ;;   :custom-face (forge-topic-closed ((t (:inherit magit-dimmed :strike-through t)))))
 
-(use-package gh-notify)
+;; TODO: Submit gh-notify to guix
+;; (use-package gh-notify)
 
 ;; (use-package github-review
 ;;   :bind ((:map magit-mode-map
@@ -612,10 +614,11 @@ And update the branch as a suffix."
 ;;   ;; - C-c s my/github-review-kill-suggestion
 ;;   )
 
-(use-package code-review
-  :config (setq code-review-fill-column 80)
-  :bind ((:map magit-mode-map
-               (("C-c r" . code-review-forge-pr-at-point)))))
+;; TODO: Submit code-review to guix
+;; (use-package code-review
+;;   :config (setq code-review-fill-column 80)
+;;   :bind ((:map magit-mode-map
+;;                (("C-c r" . code-review-forge-pr-at-point)))))
 
 (use-package browse-at-remote
   :after (magit)
@@ -636,29 +639,32 @@ And update the branch as a suffix."
 
 ;; plan9-theme
 
-(use-package parchment-theme
-  :demand t)
+;; TODO: Submit parchment-theme
+;; (use-package parchment-theme
+;;   :demand t)
 
 (use-package acme-theme)
 
 (use-package exotica-theme
   :load-path "site-lisp/exotica-theme/")
 
-(use-package tron-legacy-theme
-  :config (setq tron-legacy-theme-vivid-cursor t
-                tron-legacy-theme-softer-bg t))
+;; TODO: Submit tron-legacy to guix
+;; (use-package tron-legacy-theme
+;;   :config (setq tron-legacy-theme-vivid-cursor t
+;;                 tron-legacy-theme-softer-bg t))
 
 (use-package doom-themes)
 
+(load-theme 'doom-opera t)
 (defun my/set-theme (frame)
   ;; (load-theme 'parchment t)
   (when (string= "personal" (daemonp))
     (if (display-graphic-p frame)
         ;; (load-theme 'exotica t)
-        ;; (load-theme 'doom-opera t)
+        (load-theme 'doom-opera t)
         ;; (load-theme 'ef-day t)
         ;; (disable-theme 'exotica)
-        (load-theme 'parchment t)
+        ;; (load-theme 'parchment t)
       ))
   (when (string= "work" (daemonp))
     ;; (load-theme 'doom-xcode t)
@@ -739,12 +745,13 @@ And update the branch as a suffix."
 ;;; Org-mode
 ;; TODO: Add https://github.com/alphapapa/org-ql
 
-(use-package ekg
-  :ensure t
-  :init
-  (when (string= "personal" (daemonp))
-    (setq ekg-db-file "/home/puercopop/.emacs.d/personal.db"))
-  :bind (("C-c C-n" . ekg-capture)))
+;; TODO: Add ekg to gnu guix
+;; (use-package ekg
+;;   :ensure t
+;;   :init
+;;   (when (string= "personal" (daemonp))
+;;     (setq ekg-db-file "/home/puercopop/.emacs.d/personal.db"))
+;;   :bind (("C-c C-n" . ekg-capture)))
 
 (use-package org
   :preface
@@ -1225,38 +1232,38 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :load-path "/usr/local/share/emacs/site-lisp/")
 
 (when (string= my/server-name "work")
-  (use-package mu4e
-    :load-path "/usr/local/share/emacs/site-lisp/mu4e/"
-    :commands (mu4e)
-    :custom (mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
-    ;; (mu4e-split-view 'single-window)
-    (mu4e-index-lazy-check t)
-    :config (setq mu4e-sent-folder "/Sent Mail"
-                  mu4e-trash-folder "/Trash"
-                  ;; `(,(make-mu4e-bookmark
-                  ;;                    :name "Boring Lists"
-                  ;;                    :query
-                  ;;                    :key ?l))
-                  mu4e-bookmarks '(("flag:unread AND NOT flag:trashed" "Unread messages" 117)
-                                   ("date:today..now" "Today's messages" 116)
-                                   ("date:7d..now" "Last 7 days" 119)
-                                   ("flag:unread AND (from:sentry OR from:ayla)" "Boring lists" 108)
-                                   ("mime:image/*" "Messages with images" 112))
-                  mail-user-agent 'mu4e-user-agent
-                  ;; mu4e-get-mail-command "mbsync remotelock-all"
-                  mu4e-change-filenames-when-moving t
-                  ;; Increase read-process-output-max to make
-                  ;; communication faster.
-                  read-process-output-max (* 1024 1024)
-                  mu4e-headers-include-related nil
-                  mu4e-view-show-addresses t
-                  user-mail-address "javier.olaechea@remotelock.com"))
+  ;; (use-package mu4e
+  ;;   :load-path "/usr/local/share/emacs/site-lisp/mu4e/"
+  ;;   :commands (mu4e)
+  ;;   :custom (mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
+  ;;   ;; (mu4e-split-view 'single-window)
+  ;;   (mu4e-index-lazy-check t)
+  ;;   :config (setq mu4e-sent-folder "/Sent Mail"
+  ;;                 mu4e-trash-folder "/Trash"
+  ;;                 ;; `(,(make-mu4e-bookmark
+  ;;                 ;;                    :name "Boring Lists"
+  ;;                 ;;                    :query
+  ;;                 ;;                    :key ?l))
+  ;;                 mu4e-bookmarks '(("flag:unread AND NOT flag:trashed" "Unread messages" 117)
+  ;;                                  ("date:today..now" "Today's messages" 116)
+  ;;                                  ("date:7d..now" "Last 7 days" 119)
+  ;;                                  ("flag:unread AND (from:sentry OR from:ayla)" "Boring lists" 108)
+  ;;                                  ("mime:image/*" "Messages with images" 112))
+  ;;                 mail-user-agent 'mu4e-user-agent
+  ;;                 ;; mu4e-get-mail-command "mbsync remotelock-all"
+  ;;                 mu4e-change-filenames-when-moving t
+  ;;                 ;; Increase read-process-output-max to make
+  ;;                 ;; communication faster.
+  ;;                 read-process-output-max (* 1024 1024)
+  ;;                 mu4e-headers-include-related nil
+  ;;                 mu4e-view-show-addresses t
+  ;;                 user-mail-address "javier.olaechea@remotelock.com"))
 
-  (require 'mu4e-contrib)
-  ;; TODO: Configure mu4e-alert
-  (require 'mu4e-org)
-  (use-package mu4e-alert
-    :after (mu4e))
+  ;; (require 'mu4e-contrib)
+  ;; ;; TODO: Configure mu4e-alert
+  ;; (require 'mu4e-org)
+  ;; (use-package mu4e-alert
+  ;;   :after (mu4e))
 
   ;; (require 'mu4e-icalendar)
   ;; (mu4e-icalendar-setup)
@@ -1557,12 +1564,13 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :after (js-mode)
   :hook ((js-mode . js2-minor-mode)))
 
-(use-package xref-js2
-  :config (define-key js2-mode-map (kbd "M-.") nil)
-  (setq xref-js2-search-program 'rg)
-  (add-hook 'js2-mode-hook
-            (lambda ()
-              (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
+;; TODO: Submit xref-js2 to guix
+;; (use-package xref-js2
+;;   :config (define-key js2-mode-map (kbd "M-.") nil)
+;;   (setq xref-js2-search-program 'rg)
+;;   (add-hook 'js2-mode-hook
+;;             (lambda ()
+;;               (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
 
 (use-package typescript-mode
   :custom (typescript-indent-level 2)
@@ -1575,11 +1583,12 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (json-mode . prettier-js-mode)
          (typescript-mode . prettier-js-mode)))
 
-(use-package jest-test-mode
-  :defer t
-  :commands jest-test-mode
-  :hook ((js-mode . jest-test-mode)
-         (typescript-mode . jest-test-mode)))
+;; TODO: Submit it to guix
+;; (use-package jest-test-mode
+;;   :defer t
+;;   :commands jest-test-mode
+;;   :hook ((js-mode . jest-test-mode)
+;;          (typescript-mode . jest-test-mode)))
 
 (defun my/ruby-flymake-hook ()
   (let ((in-rlock-p (string-prefix-p "/home/puercopop/hcp/"
@@ -1637,7 +1646,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :after (eglot)
   :config (eglot-x-setup))
 
-(use-package dape)
+;; TODO: Submit dape to guix
+;; (use-package dape)
 
 
 ;;; Ruby mode
@@ -1676,9 +1686,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :hook ((inf-ruby-mode . my/load-irb-history)
          (after-init . inf-ruby-switch-setup)))
 
-(use-package chruby
-  ;; :config (chruby-use "ruby-2.6.6")
-  )
+;; TODO: Submit chruby to guix
+;; (use-package chruby
+;;   ;; :config (chruby-use "ruby-2.6.6")
+;;   )
 
 (defun my/read-env-file (env-file)
   (with-current-buffer (find-file-noselect env-file)
@@ -1766,7 +1777,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package rails-log-mode
   :load-path "site-lisp/rails-log-mode")
 
-(use-package bundler)
+;; TODO: Submit bundler to emacs
+;; (use-package bundler)
 
 ;; Go
 
@@ -1780,7 +1792,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :hook ((godoc-mode . help-mode)
          (go-mode . gofmt-mode)))
 
-(use-package go-dlv)
+;;TODO: Submit go-dlv to guix
+;; (use-package go-dlv)
 ;; go-eldoc
 ;; go-autocomplete
 ;; company-go
@@ -1839,8 +1852,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;; Other languages
 
 (use-package rust-mode)
-(use-package cargo
-  :hook ((rust-mode . cargo-minor-mode)))
+;; TODO: Submit cargo to guix
+;; (use-package cargo
+;;   :hook ((rust-mode . cargo-minor-mode)))
 
 ;; TODO(javier): Pull from gnu elpa
 ;; (use-package prolog-mode
@@ -2064,7 +2078,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :init (detached-init)
   :bind (([remap async-shell-command] . detached-shell-command)))
 
-(use-package axe)
+;; TODO: Submit it to guix
+;; (use-package axe)
 
 ;; (use-package kubel)
 ;; (kubel-vterm-setup)
