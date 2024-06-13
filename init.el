@@ -6,7 +6,7 @@
 (load custom-file 'noerror)
 (put 'upcase-region 'disabled nil)
 
-(setq use-package-always-defer t
+(setq ;; use-package-always-defer t
       use-package-enable-imenu-support t)
 (require 'use-package)
 
@@ -673,13 +673,16 @@ And update the branch as a suffix."
     (load-theme 'doom-1337 t))
   ;; (set-face-attribute 'default nil :family "Go Mono" :height 170)
   ;; (set-frame-font "DejaVu Sans Mono-18")
-  (set-frame-font "IBM Plex Mono-18"))
+  ;; (set-frame-font "IBM Plex Mono-18")
+  (set-frame-font "Jetbrains Mono-18"))
 ;;(set-frame-font "IBM Plex Mono-22")
 ;;(set-frame-font "Go Mono-18")
 ;; (set-frame-font "IBM Plex Mono-18" nil t)
 ;;(set-frame-font "DejaVu Sans Mono-18")
+;; (add-to-list 'default-frame-alist
+;;              (cons 'font "IBM Plex Mono-18"))
 (add-to-list 'default-frame-alist
-	     (cons 'font "IBM Plex Mono-18"))
+             (cons 'font "Jetbrains Mono-18"))
 ;; (set-frame-font "IBM Plex Mono-18" nil t)
 ;; (add-hook 'after-init-hook 'my/set-theme)
 (add-hook 'after-make-frame-functions 'my/set-theme)
@@ -1631,7 +1634,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (require 'eglot)
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
-  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+  ;; (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
   (defun my/eglot-format-on-save ()
     (add-hook 'before-save-hook #'eglot-format-buffer nil t))
   (add-hook 'eglot-managed-mode-hook
@@ -2038,6 +2042,9 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package nix
   :hook ((nix-mode . my/nix-format-setup))
   :custom (nix-nixfmt-bin "nixpkgs-fmt"))
+
+(use-package envrc
+  :hook ((after-init . envrc-global-mode)))
 
 (require 'time)
 ;; TODO: Add Leon and fix the other two
