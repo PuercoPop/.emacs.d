@@ -1857,8 +1857,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package rust-mode)
 ;; TODO: Submit cargo to guix
-;; (use-package cargo
-;;   :hook ((rust-mode . cargo-minor-mode)))
+(use-package cargo
+  :hook ((rust-mode . cargo-minor-mode)))
 
 ;; TODO(javier): Pull from gnu elpa
 ;; (use-package prolog-mode
