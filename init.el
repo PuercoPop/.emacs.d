@@ -598,10 +598,9 @@ And update the branch as a suffix."
 ;; (transient-insert-suffix 'forge-dispatch "Remote"
 ;;   ;; Maybe branch
 ;;   '("o" "Browse repository" forge-browse-remote))
-;; (use-package forge
-;;   ;; :load-path "/home/puercopop/code/forge"
-;;   :after (magit)
-;;   :custom-face (forge-topic-closed ((t (:inherit magit-dimmed :strike-through t)))))
+(use-package forge
+  :after (magit)
+  :custom-face (forge-topic-closed ((t (:inherit magit-dimmed :strike-through t)))))
 
 ;; TODO: Submit gh-notify to guix
 ;; (use-package gh-notify)
