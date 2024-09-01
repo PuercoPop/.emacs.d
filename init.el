@@ -2091,11 +2091,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 
 (use-package lilypond-mode
-  :load-path "site-lisp/lilypond"
   :mode ("\\.ly\\'" . LilyPond-mode))
-;; (add-to-list 'auto-mode-alist '("\\.ly\\'" . LilyPond-mode))
-;; (add-to-list 'auto-mode-alist '("\\.ily\\'" . LilyPond-mode))
-;; (add-hook 'LilyPond-mode-hook (lambda () (turn-on-font-lock)))
 
 (defun my/vim-it ()
   (interactive)
