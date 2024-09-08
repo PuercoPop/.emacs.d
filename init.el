@@ -2066,7 +2066,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     (declare (interactive-only shell-command))
     (interactive)
     ;; TODO(javier): Error out if we are not in a project.
-    (let ((default-directory (cdr (project-current))))
+    (let ((default-directory (project-root (project-current))))
       (vterm (format "*vterm: %s*" default-directory))))
   :bind (nil
          :map vterm-mode-map
