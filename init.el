@@ -1071,13 +1071,6 @@ in."
                                       ((org-agenda-overriding-header "Unscheduled TODOs")
                                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))))
 
-  (defun my/clock-out-when-waiting ()
-    (when (string= org-state "WAITING")
-      (and (org-clocking-p)
-           (org-clock-out))))
-
-  (add-hook 'org-after-todo-state-change-hook 'my/clock-out-when-waiting)
-
   (setq org-capture-templates
         '(
           ("n" "Add Note to Current Task" plain (clock))
@@ -1151,13 +1144,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
           ("n" "Add Note to Current Task" plain (clock))
           ;; TODO: Add a template to capture a new note under the currently clocked template
           )))
-
-(when (string= my/server-name "social")
-  (require 'org-feed)
-  (setq org-feed-alist '(("Hiper Derecho" "https://hiperderecho.org/feed/"
-                          "~/org/feeds.org" "Hiper Derecho")
-                         ("Libre Lounge" "https://librelounge.org/rss-feed.rss"
-                          "~/org/feeds.org" "Libre Lounge"))))
 
 (use-package org-pomodoro
   :after (org-agenda)
@@ -1449,6 +1435,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (reuseable-frames . t)
          (frame-predicate . ,(frame-named-p "mu4e"))
          (pop-up-frame-parameters . ((name . "mu4e"))))
+
+        ("*Async Shell Command*" display-buffer-no-window)
 
 
         ;; (,(my/make-display-buffer-matcher-function '(org-mode org-agenda-mode))
@@ -2068,6 +2056,12 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
     ;; TODO(javier): Error out if we are not in a project.
     (let ((default-directory (project-root (project-current))))
       (vterm (format "*vterm: %s*" default-directory))))
+  (defun vterm-send-C-n ()
+    (interactive)
+    (vterm-send-key "C-n"))
+  (defun vterm-send-C-p ()
+    (interactive)
+    (vterm-send-key "C-p"))
   :bind (nil
          :map vterm-mode-map
          (("M-p" . vterm-send-C-p)
