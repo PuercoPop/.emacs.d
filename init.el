@@ -631,6 +631,17 @@ And update the branch as a suffix."
          (:map magit-log-mode-map
                (("C-c o" . browse-at-remote)))))
 
+(use-package modus-themes
+  :custom
+  (modus-themes-italic-constructs t)
+  (modus-themes-bold-constructs t)
+  (modus-themes-fringes 'intense)
+  (modus-themes-mixed-fonts t)
+  (modus-themes-org-agenda '((header-block . (variable-pitch scale-title))
+                             (scheduled . uniform)))
+  (modus-themes-variable-pitch-ui t)
+  (modus-themes-region '(bg-only no-extend)))
+
 (use-package moe-theme)
 
 (use-package cyberpunk-theme
@@ -654,13 +665,15 @@ And update the branch as a suffix."
 
 (use-package doom-themes)
 
-(load-theme 'doom-opera t)
+;; (load-theme 'doom-opera t)
+(load-theme 'modus-operandi t)
 (defun my/set-theme (frame)
   ;; (load-theme 'parchment t)
   (when (string= "personal" (daemonp))
     (if (display-graphic-p frame)
         ;; (load-theme 'exotica t)
-        (load-theme 'doom-opera t)
+        ;; (load-theme 'doom-opera t)
+        (load-theme 'modus-operandi t)
         ;; (load-theme 'ef-day t)
         ;; (disable-theme 'exotica)
         ;; (load-theme 'parchment t)
