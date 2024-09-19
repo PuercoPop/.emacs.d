@@ -269,6 +269,7 @@ call KILL-REGION."
 
 ;;; Consult
 (use-package consult
+  :custom (consult-preview-key (list :debounce 0.5 'any))
   :bind (([remap yank-pop] . consult-yank-replace)
          ([remap goto-line] . consult-goto-line)
          ([remap project-find-regexp] . consult-ripgrep)
