@@ -770,6 +770,8 @@ And update the branch as a suffix."
 ;;   :bind (("C-c C-n" . ekg-capture)))
 
 (use-package sisyphus
+  :config
+  (add-to-list 'embark-keymap-alist '(jira-issue . sisyphus-jira-issue-action-map))
   :bind (("C-c c" . sisyphus-dispatch)
          ("<f1>" . sisyphus-dispatch)))
 
