@@ -770,7 +770,8 @@ And update the branch as a suffix."
 ;;   :bind (("C-c C-n" . ekg-capture)))
 
 (use-package sisyphus
-  :bind (("C-c c" . sisyphus-dispatch)))
+  :bind (("C-c c" . sisyphus-dispatch)
+         ("<f1>" . sisyphus-dispatch)))
 
 (use-package org
   :preface
