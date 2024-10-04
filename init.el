@@ -230,32 +230,13 @@ call KILL-REGION."
 
 
 (use-package project
-  :preface
-  (defun my/project-try-gem (dir)
-    (when-let (root (locate-dominating-file dir "Gemfile"))
-      (cons 'ruby root)))
-  (cl-defmethod project-root ((project (head ruby)))
-    (cdr project))
-
-  (defun my/project-try-gomod (dir)
-    (when-let (root (locate-dominating-file dir "go.mod"))
-      (cons 'go root)))
-  (cl-defmethod project-root ((project (head go)))
-    (cdr project))
-
-  (cl-defmethod project-files ((project (head ruby)) &optional dir)
-    (mapcan #'(lambda (dir)
-                ;; TODO: We shouldn't hard-code Git as the backend
-                (project--vc-list-files dir 'Git nil))
-            (or dir
-                (list (project-root project)))))
   :bind (("C-c p" . project-prefix-map)
          ("C-c f" . project-find-file)
          ("C-c s" . project-search))
   :custom (project-vc-extra-root-markers '(".jj"))
   :config
   (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name))
-        project-find-functions (list #'my/project-try-gomod #'my/project-try-gem #'project-try-vc)))
+        project-find-functions (list #'project-try-vc)))
 
 (use-package anzu
   :config (global-anzu-mode +1)
