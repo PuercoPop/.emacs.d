@@ -230,9 +230,17 @@ call KILL-REGION."
 
 
 (use-package project
+  :preface
+  (defun project-vterm ()
+    (interactive)
+    (let ((default-directory (project-root (project-current t))))
+      (vterm-other-window)))
   :bind (("C-c p" . project-prefix-map)
          ("C-c f" . project-find-file)
-         ("C-c s" . project-search))
+         ("C-c s" . project-search)
+         :map project-prefix-map
+         ("v" . project-vterm)
+         ("V" . project-vc-dir))
   :custom (project-vc-extra-root-markers '(".jj"))
   :config
   (setq project-list-file (locate-user-emacs-file (format "%s-projects" my/server-name))
@@ -2048,12 +2056,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (setq term-prompt-regexp "^\\$ ")
 (use-package vterm
   :preface
-  (defun project-vterm ()
-    (declare (interactive-only shell-command))
-    (interactive)
-    ;; TODO(javier): Error out if we are not in a project.
-    (let ((default-directory (project-root (project-current))))
-      (vterm (format "*vterm: %s*" default-directory))))
   (defun vterm-send-C-n ()
     (interactive)
     (vterm-send-key "C-n"))
@@ -2063,9 +2065,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :bind (nil
          :map vterm-mode-map
          (("M-p" . vterm-send-C-p)
-          ("M-n" . vterm-send-C-n))
-         :map project-prefix-map
-         (("v" . project-vterm))))
+          ("M-n" . vterm-send-C-n))))
 
 (use-package detached
   :init (detached-init)
