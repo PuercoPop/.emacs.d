@@ -1533,6 +1533,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;   (setq indent-tabs-mode))
 ;; (add-hook c-mode-hook 'my/c-mode-hook)
 
+(use-package sgml-mode
+  :bind (:map html-mode-map
+              ("M-o" . nil)))
+
 (use-package web-mode
   :mode "\\.erb\\'"
   :bind (:map web-mode-map
