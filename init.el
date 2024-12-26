@@ -2043,7 +2043,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :custom (nix-nixfmt-bin "nixpkgs-fmt"))
 
 (use-package envrc
-  :hook ((after-init . envrc-global-mode)))
+  :hook ((after-init . envrc-global-mode))
+  :bind (("C-c e" . envrc-command-map)))
 
 (require 'time)
 ;; TODO: Add Leon and fix the other two
