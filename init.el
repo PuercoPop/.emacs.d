@@ -2088,6 +2088,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 
 (use-package lilypond-mode
+  :custom
+  (LilyPond-pdf-command "okular")
   :mode ("\\.ly\\'" . LilyPond-mode))
 
 (defun my/vim-it ()
