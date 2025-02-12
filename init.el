@@ -549,7 +549,8 @@ And update the branch as a suffix."
          (:map magit-file-section-map
                ("<return>" . magit-diff-visit-file-other-window)))
   :hook ((magit-log-edit-mode . auto-fill-mode)
-         (magit-status-mode . magit-todos-mode))
+         ;; (magit-status-mode . magit-todos-mode)
+         )
   :config (progn
             (setq magit-display-buffer-function 'magit-display-buffer-fullframe-status-topleft-v1
                   ;; magit-display-buffer-function 'magit-display-buffer-traditional
