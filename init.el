@@ -768,8 +768,6 @@ And update the branch as a suffix."
 
 (use-package org
   :preface
-
-
   ;; (defvar my-local-agenda-file nil)
   (defun my/org-agenda-list (&optional arg)
     (interactive "P")
@@ -2046,7 +2044,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package nix
   :hook ((nix-mode . my/nix-format-setup))
-  :custom (nix-nixfmt-bin "nixpkgs-fmt"))
+  :custom (nix-nixfmt-bin "nixfmt"))
 
 (use-package envrc
   :hook ((after-init . envrc-global-mode))
