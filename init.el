@@ -702,8 +702,9 @@ And update the branch as a suffix."
               ("C-c C-r" . nil)))
 
 (use-package compile
-  :config (setq compilation-scroll-output 'first-error
-                compilation-ask-about-save nil)
+  :custom
+  (compilation-scroll-output t)
+  (compilation-ask-about-save nil)
   :bind ((:map compilation-mode-map
                ("n" . compilation-next-error)
                ("p" . compilation-previous-error))))
