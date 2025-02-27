@@ -2076,8 +2076,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :init (detached-init)
   :bind (([remap async-shell-command] . detached-shell-command)))
 
-;; TODO: Submit it to guix
-;; (use-package axe)
+(use-package axe)
 
 ;; (use-package kubel)
 ;; (kubel-vterm-setup)
