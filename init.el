@@ -1517,6 +1517,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
               (("C-c <up>" . outline-backward-same-level)
                ("C-c <down>" . outline-forward-same-level))))
 
+(use-package package-lint)
+
 ;; (use-package bicycle
 ;;   :after outline
 ;;   :bind (:map outline-minor-mode-map
