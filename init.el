@@ -1596,7 +1596,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package flymake
   :hook ((ruby-mode . my/ruby-flymake-hook)
          (js-mode . my/ruby-flymake-hook)
-         (typescript-mode . my/ruby-flymake-hook))
+         (typescript-mode . my/ruby-flymake-hook)
+         (elisp-mode . flymake-mode))
   ;; flymake-diagnostic-function -> ruby-flymake-auto
   :config (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
   :bind ((:map flymake-mode-map
