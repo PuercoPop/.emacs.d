@@ -627,8 +627,6 @@ And update the branch as a suffix."
   (modus-themes-variable-pitch-ui t)
   (modus-themes-region '(bg-only no-extend)))
 
-(use-package moe-theme)
-
 (use-package cyberpunk-theme
   :load-path "site-lisp/cyberpunk-theme/")
 
