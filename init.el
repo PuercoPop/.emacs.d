@@ -1857,6 +1857,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   (cargo-process--rustc-cmd "rustc")
   :hook ((rust-mode . cargo-minor-mode)))
 
+(use-package rmsbolt)
+
 ;; TODO(javier): Pull from gnu elpa
 ;; (use-package prolog-mode
 ;;   :config (setq prolog-system 'swi
