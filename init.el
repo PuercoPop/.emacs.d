@@ -1894,12 +1894,12 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                ("C-c M-e" . macrostep-expand))))
 
 (use-package sly
-  ;; :load-path "site-lisp/sly"
-  :config (setq inferior-lisp-program "/usr/local/bin/sbcl"
-                sly-lisp-implementations '((sbcl ("/usr/local/bin/sbcl"))
+  :config (setq ;; inferior-lisp-program "sbcl"
+                sly-default-lisp 'sbcl
+                sly-lisp-implementations '((sbcl ("sbcl"))
                                            (ccl ("/home/puercopop/src/ccl/lx86cl64"))
-					   (ecl ("/usr/local/bin/ecl"))
-                                           (clasp ("/home/puercopop/code/clasp/build/clasp"))))
+					   (ecl ("ecl"))
+                                           (clasp ("clasp"))))
   :bind ((:map sly-mode-map
                ("C-c C-r" . nil))
          (:map sly-prefix-map
