@@ -1629,7 +1629,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
   ;; (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer" :initializationOptions (:check (:command "clippy")))))
-  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) .
+                                        ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
   (defun my/eglot-format-on-save ()
     (add-hook 'before-save-hook #'eglot-format-buffer nil t))
   (add-hook 'eglot-managed-mode-hook
