@@ -1869,8 +1869,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package ediprolog)
 
-(use-package graphql-mode)
-
 (use-package terraform-mode)
 
 
