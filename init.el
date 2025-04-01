@@ -1845,13 +1845,19 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; (require 'sqlformat)
 ;; (setq sqlformat-command 'pgformatter
 ;;       sqlformat-args '("-s2" "-g"))
-:;; (add-hook 'sql-mode-hook
+;; (add-hook 'sql-mode-hook
 ;;           'sqlformat-on-save-mode)
 
 
 ;;; Other languages
 
-(use-package rust-mode)
+;; TODO: Replace with rust-ts-mode or rust-mode-treesitter
+;; (require 'rust-ts-mode)
+;; (use-package rust-mode)
+(use-package rust-ts-mode
+  :custom (rust-ts-flymake-command ("cargo" "clippy"))
+  :hook ((rust-ts-mode . flymake-mode)))
+
 ;; TODO: Submit cargo to guix
 (use-package cargo
   :custom
