@@ -2074,6 +2074,10 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (("M-p" . vterm-send-C-p)
           ("M-n" . vterm-send-C-n))))
 
+(use-package eat
+  :hook ((eshell-mode . eat-eshell-mode)
+         (eshell-mode . eat-eshell-visual-command-mode)))
+
 (use-package detached
   :init (detached-init)
   :bind (([remap async-shell-command] . detached-shell-command)))
