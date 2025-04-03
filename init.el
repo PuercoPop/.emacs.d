@@ -1500,8 +1500,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (use-package subword
   :hook ((js-mode . subword-mode)
          (typescript-mode . subword-mode)
-         (ruby-mode . subword-mode)
-         (rust-mode . subword-mode)))
+         (ruby-mode . subword-mode)))
 
 (use-package outline
   :hook ((emacs-lisp . outline-minor-mode))
@@ -1851,19 +1850,18 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 ;;; Other languages
 
-;; TODO: Replace with rust-ts-mode or rust-mode-treesitter
-;; (require 'rust-ts-mode)
-;; (use-package rust-mode)
 (use-package rust-ts-mode
-  :custom (rust-ts-flymake-command ("cargo" "clippy"))
-  :hook ((rust-ts-mode . flymake-mode)))
+  :mode ("\\.rs\\'" . rust-ts-mode)
+  :custom
+  (rust-ts-flymake-command '("cargo" "clippy"))
+  :hook ((rust-ts-mode . flymake-mode)
+         (rust-ts-mode . subword-mode)))
 
-;; TODO: Submit cargo to guix
 (use-package cargo
   :custom
   (cargo-process--custom-path-to-bin "cargo")
   (cargo-process--rustc-cmd "rustc")
-  :hook ((rust-mode . cargo-minor-mode)))
+  :hook ((rust-ts-mode . cargo-minor-mode)))
 
 (use-package rmsbolt)
 
