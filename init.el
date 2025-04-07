@@ -722,7 +722,17 @@ And update the branch as a suffix."
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
 (use-package markdown-mode
-  :custom (markdown-reference-location 'end)
+  :preface
+  ;; Don't like that `live-preview-mode' writes a file to disc.
+  (defun markdown-eww-preview ()
+    "Preview the rendered version of the buffer in another window."
+    (interactive)
+    (let ((preview-buf (get-buffer-create "*eww-preview*")))
+      (markdown-standalone (buffer-name preview-buf))
+      (shr-render-buffer preview-buf)))
+  :custom
+  (markdown-reference-location 'end)
+  (markdown-command "cmark")
   :hook ((markdown-mode . auto-fill-mode)))
 
 (use-package restclient
