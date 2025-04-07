@@ -689,6 +689,9 @@ And update the branch as a suffix."
   (moody-replace-mode-line-buffer-identification))
 
 (use-package comint
+  :custom
+  (comint-input-autoexpand t)
+  (comint-prompt-read-only t)
   :bind (:map comint-mode-map
               ("C-c C-x" . nil)
               ("C-c C-r" . nil)))
