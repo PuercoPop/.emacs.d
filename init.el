@@ -1981,6 +1981,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
                                      (not gnus-thread-sort-by-number))
         gnus-use-adaptive-scoring '(word line)
         gnus-adaptive-word-length-limit 5
+        gnus-save-score t
         gnus-adaptive-word-no-group-words t))
 
 ;; (use-package nntwitter
