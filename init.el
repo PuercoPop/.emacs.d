@@ -698,7 +698,7 @@ And update the branch as a suffix."
 
 (use-package compile
   :custom
-  (compilation-scroll-output t)
+  (compilation-scroll-output nil)
   (compilation-ask-about-save nil)
   :bind ((:map compilation-mode-map
                ("n" . compilation-next-error)
@@ -2095,6 +2095,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 
 (use-package axe)
 
+(use-package slint)
+
 ;; (use-package kubel)
 ;; (kubel-vterm-setup)
 
@@ -2127,6 +2129,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;   (oblique-edition "~/.emacs.d/elpaca/repos/oblique-strategies/strategies/oblique-strategies-condensed.txt")
 ;;   :config
 ;;   (add-hook 'elpaca-after-init-hook 'my/scratch-setup))
+
+(setq gc-cons-threshold 134217728) ; 128 MiB
 
 
 ;; My config
