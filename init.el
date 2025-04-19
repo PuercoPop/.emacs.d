@@ -1998,6 +1998,29 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;;  "python"
 
 
+;; # Channels
+;; ## libera.chat
+;; - ##rust
+;; - #commonlisp
+;; - #emacs
+;; - #guile-emacs
+;; - #jujutsu
+;; - #libera-dev
+;; - #lispgames
+;; - #sr.ht
+;; - #whereiseveryone
+(use-package rcirc
+  :commands (irc)
+  :custom
+  (rcirc-default-full-name "PuercoPop")
+  (rcirc-default-nick "PuercoPop")
+  (rcirc-track-minor-mode t)
+  (rcirc-omit-responses ("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
+  (rcirc-server-alist (("chat.sr.ht" :nick "puercopop" :port 6697 :encryption tls)))
+  (rcirc-authinfo (("chat.sr.ht" sasl "puercopop")))
+  :hook ((rcirc-mode . flyspell-mode)
+         (rcirc-mode . rcirc-omit-mode)))
+
 ;;; Chat et other recreational activities
 (when (string= "social" my/server-name)
   (use-package elpher)
@@ -2014,14 +2037,7 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
             "https://conexiones.hiperderecho.org/feed/podcast"
             "https://librelounge.org/rss-feed.rss"
             "https://scattered-thoughts.net/atom.xml"
-            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCHP9CdeguNUI-_nBv_UXBhw" chess youtube))))
-
-  (use-package rcirc
-    :preface
-    :commands (rcirc)
-    :custom (rcirc-omit-responses ("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
-    :hook ((rcirc-mode . flyspell-mode)
-           (rcirc-mode . rcirc-omit-mode))))
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCHP9CdeguNUI-_nBv_UXBhw" chess youtube)))))
 
 
 (use-package alert)
