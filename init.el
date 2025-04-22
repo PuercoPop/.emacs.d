@@ -1637,22 +1637,22 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; TODO:
 ;; https://www.reddit.com/r/emacs/comments/ijbvwv/eglot_sqls_sql_client/
 ;; setup SQL LSP action for switching databases;
-(require 'xref)
-(require 'eglot)
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
-  ;; (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer" :initializationOptions (:check (:command "clippy")))))
-  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) .
-                                        ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+(use-package xref)
+(use-package eglot
+  :after (xref)
+  :preface
   (defun my/eglot-format-on-save ()
     (add-hook 'before-save-hook #'eglot-format-buffer nil t))
-  (add-hook 'eglot-managed-mode-hook
-            'my/eglot-format-on-save)
-  (define-key eglot-mode-map (kbd "M-.") #'xref-find-definitions)
-  (define-key eglot-mode-map (kbd "C-c C-.") 'eglot-code-actions)
-  ;; replace this with eldoc-buffer
+  :config
+  (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
+  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) .
+                                        ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
+  :hook ((eglot-managed-mode . my/eglot-format-on-save))
+  :bind ((:map eglot-mode-map
+               (("M-." . xref-find-definitions)
+                ("C-c C-." . eglot-code-actions)))))
+;; replace this with eldoc-buffer
   ;; ("C-c h" . 'eldoc-buffer)
-  )
 
 (use-package eglot-x
   :after (eglot)
