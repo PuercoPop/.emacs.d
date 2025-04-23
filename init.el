@@ -127,7 +127,7 @@ call KILL-REGION."
 
 (use-package minibuffer
   :custom
-  ;; (completion-styles '(basic substring partial-completion flex))
+  (completion-styles '(basic substring partial-completion flex))
   (read-buffer-completion-ignore-case t)
   (read-file-name-completion-ignore-case t)
   :bind (nil
@@ -302,9 +302,9 @@ call KILL-REGION."
   (marginalia-mode))
 
 
-(use-package hotfuzz
-  :custom
-  (completion-styles '(hotfuzz basic substring partial-completion flex)))
+;; (use-package hotfuzz
+;;   :custom
+;;   (completion-styles '(hotfuzz basic substring partial-completion flex)))
 
 (use-package devdocs
   :preface
