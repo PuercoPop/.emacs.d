@@ -739,6 +739,7 @@ And update the branch as a suffix."
   :hook ((markdown-mode . auto-fill-mode)))
 
 (use-package restclient
+  :mode "\\.http\\'"
   :bind (:map restclient-mode-map
               ("C-c C-f" . json-mode-beautify)))
 
