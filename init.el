@@ -1644,16 +1644,14 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
   :preface
   (defun my/eglot-format-on-save ()
     (add-hook 'before-save-hook #'eglot-format-buffer nil t))
-  :config
-  (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
-  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) .
-                                        ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
   :hook ((eglot-managed-mode . my/eglot-format-on-save))
   :bind ((:map eglot-mode-map
                (("M-." . xref-find-definitions)
                 ("C-c C-." . eglot-code-actions)))))
-;; replace this with eldoc-buffer
-  ;; ("C-c h" . 'eldoc-buffer)
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs '((js-mode typescript-mode) "typescript-language-server" "--stdio"))
+  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) .
+                                        ("rust-analyzer" :initializationOptions (:check (:command "clippy"))))))
 
 (use-package eglot-x
   :after (eglot)
