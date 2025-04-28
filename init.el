@@ -1870,10 +1870,8 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
          (rust-ts-mode . subword-mode)))
 
 (use-package cargo
-  :custom
-  (cargo-process--custom-path-to-bin "cargo")
-  (cargo-process--rustc-cmd "rustc")
-  :hook ((rust-ts-mode . cargo-minor-mode)))
+  :bind ((:map rust-ts-mode-map
+          ("C-c C-c" . cargo-dispatch))))
 
 (use-package rmsbolt)
 
