@@ -1638,7 +1638,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 ;; TODO:
 ;; https://www.reddit.com/r/emacs/comments/ijbvwv/eglot_sqls_sql_client/
 ;; setup SQL LSP action for switching databases;
-(use-package xref)
 (use-package eglot
   :after (xref)
   :preface
