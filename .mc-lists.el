@@ -40,6 +40,7 @@
         paredit-close-round
         paredit-close-square
         paredit-comment-dwim
+        paredit-delete-char
         paredit-doublequote
         paredit-forward
         paredit-forward-delete
