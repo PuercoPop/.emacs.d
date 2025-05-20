@@ -348,6 +348,9 @@ call KILL-REGION."
 ;;              ("r" "Grep Project" counsel-git-grep) ; pass flags to it like -ni
 ;;              ("p" "Find file in Project" counsel-git)])
 
+(use-package auth-source
+  :custom
+  (auth-sources '("~/.authinfo.gpg" "secrets:kdewallet" "secrets:Login")))
 (use-package pinentry)
 
 (use-package epa-file
