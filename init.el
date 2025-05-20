@@ -631,25 +631,7 @@ And update the branch as a suffix."
   (modus-themes-variable-pitch-ui t)
   (modus-themes-region '(bg-only no-extend)))
 
-(use-package cyberpunk-theme
-  :load-path "site-lisp/cyberpunk-theme/")
-
 ;; plan9-theme
-
-;; TODO: Submit parchment-theme
-;; (use-package parchment-theme
-;;   :demand t)
-
-(use-package acme-theme)
-
-(use-package exotica-theme
-  :load-path "site-lisp/exotica-theme/")
-
-;; TODO: Submit tron-legacy to guix
-;; (use-package tron-legacy-theme
-;;   :config (setq tron-legacy-theme-vivid-cursor t
-;;                 tron-legacy-theme-softer-bg t))
-
 (use-package doom-themes)
 
 ;; (load-theme 'doom-opera t)
@@ -747,11 +729,6 @@ And update the branch as a suffix."
   :bind (:map restclient-mode-map
               ("C-c C-f" . json-mode-beautify)))
 
-(use-package ob-restclient)
-
-;; This provides elasticsearch language to org-babel
-(use-package es-mode)
-
 (use-package calendar
   :config (setq diary-file (locate-user-emacs-file (format "%s-diary" my/server-name))))
 
@@ -811,8 +788,7 @@ And update the branch as a suffix."
   :init (org-babel-do-load-languages
          'org-babel-load-languages
          '((sql . t)
-           (shell . t)
-           (restclient . t)))
+           (shell . t)))
   :hook  ((org-clock-in . save-buffer)
           (org-clock-out . save-buffer))
   :custom
@@ -1052,160 +1028,23 @@ in."
 ;;   (message "Point at %s"  (point))
 ;;   nil)
 
+(setq org-agenda-files '("~/org/household.org" "~/org/all.org")
+      org-refile-targets '(("~/org/all.org" :maxlevel . 1))
+      org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "WONT-DO(x)")))
 
-
-(when (string= my/server-name "work")
-  (setq org-agenda-files '("~/hcp/inbox.org")
-        org-refile-targets '(("~/hcp/inbox.org" :maxlevel . 1))
-        org-todo-keywords '(
-                            ;; Story flow ; To we want a NEXT/Current header?
-                            ;; The code Review flow only involves TODO WAITING and DONE
-                            (sequence "TODO"  "WAITING(!)" "TO-DEPLOY" "|" "DONE" "WONT-DO(x)"))
-        org-agenda-custom-commands '(("o" "At the Office" tags-todo "@office"
-                                      ((org-agenda-overriding-header "Office")
-                                       (org-agenda-skip-function 'my/org-agenda-skip-all-siblings-but-first)))
-                                     ("w" "HousecallPro"
-                                      ;; First meetings
-                                      ((tags-todo "meeting"
-                                                  ((org-agenda-overriding-header "Meetings for today")
-                                                   (org-agenda-todo-ignore-scheduled 'future)
-                                                   ;; (org-agenda-skip-function 'my/skip-unless-scheduled-for-today)
-                                                   )) ; Add skip if today
-                                       (tags-todo "code_review"
-                                                  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("WAITING")))
-                                                   (org-agenda-overriding-header "Pending Code Review"))) ; Add skip if not waiting
-                                       (tags-todo "PRIORITY=\"A\"")
-                                       (agenda "")
-                                       (alltodo)
-                                       )
-                                      ;; This is unnecessary,;; we can use the :work: tag.
-                                      ((org-agenda-files '("~/org/remotelock.org"))
-                                       (org-agenda-span 'day)
-                                       (org-agenda-start-day nil)
-                                       (org-agenda-use-time-grid nil)))
-                                     ("u" "Unscheduled TODOs" tags-todo "@work"
-                                      ((org-agenda-overriding-header "Unscheduled TODOs")
-                                       (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))))))
-
-  (setq org-capture-templates
-        '(
-          ("n" "Add Note to Current Task" plain (clock))
-          ("t" "Work task" entry (file+headline "~/hcp/inbox.org" "Tasks")
-           "* TODO %?
-SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n"
-           :prepend t)
-          ("f" "Mail follow-up" entry (file+headline "~/hcp/inbox.org" "Tasks")
-           "* TODO Reply to email from %:fromname
-:PROPERTIES:
-:MAIL-SOURCE: %a
-:END:
-")
-          ("d" "Daily Journal" entry (file+olp+datetree "~/hcp/inbox.org" "Journal")
-           "* %t %?
-#+BEGIN: clocktable maxlevel: 5 :block %(format-time-string \"%Y-%m-%d\" (current-time)) :scope file-with-archives :link t
-#+CAPTION:
-#+END: clocktable
-\n" :prepend t :jump-to-captured t)
-
-          ;; TODO: I could leverage org-dblock-write:clocktable
-          ;; org-clocktable-steps to generate the table
-          ;; ("w" "Weekly Reports" entry
-;;            (file+olp+datetree "~/org/remotelock.org" "Weekly Reports")
-;;            "* Recap %?
-;; #+BEGIN: clocktable maxlevel: 5 :block %(format-time-string \"%G-W%V\" (current-time)) :scope file-with-archives :emphasize t
-;; #+CAPTION:
-;; #+END: clocktable
-;; \n" :tree-type week :prepend t :time-prompt t)
-
-;;           ("r" "Monthly Report" entry
-;;            (file+olp+datetree "~/org/remotelock.org" "Monthly Reports")
-;;            "* Recap
-;; #+BEGIN: clocktable maxlevel: 5 :block %(format-time-string \"%Y-%m\" (current-time)) :scope file-with-archives :emphasize t
-;; #+CAPTION:
-;; #+END: clocktable
-;; \n" :tree-type month :prepend t :time-prompt t)
-
-          ("m" "Meeting" entry (file+headline "~/hcp/inbox.org" "Meetings")
-           "* %?\n %T\n" :prompt t :prepend t)
-          ;; Accompanying Bookmarklet
-          ;; javascript:location.href'org-protocol://capture?template=wr&title='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(window.location.href)
-          ("R" "Code Review" entry
-           (file+headline "~/hcp/inbox.org" "Code Reviews")
-           "* TODO Review %?%:title
-SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
-:PROPERTIES:
-:GITHUB-URL: %:link
-:END:
-\n")
-          ;; TODO: Add a capture for the JIRA ticket
-          ;; javascript:location.href'org-protocol://capture?template=wJ&title='+encodeURIComponent(document.title)+'&issue_url='+encodeURIComponent(window.location.href)
-          ("J" "Jira Ticket" entry
-           (file+headline "~/hcp/inbox.org" "Tasks")
-           "* TODO %?%:title
-:PROPERTIES:
-:JIRA-URL: %:link
-:END:
-\n"))))
-
-(when (not (string= my/server-name "work"))
-  (setq org-agenda-files '("~/org/household.org" "~/org/all.org")
-        org-refile-targets '(("~/org/all.org" :maxlevel . 1))
-        org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "WONT-DO(x)")))
-
-  (setq org-capture-templates
-        '(("t" "Task" entry (file+headline "~/org/all.org" "Miscellaneous Captures")
-           "* TODO %?\n %i\n %a")
-          ;; Deprecated date/weektree capture templates changed to ‘file+olp+datetree’.
-          ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?"  :empty-lines 1)
-          ("n" "Add Note to Current Task" plain (clock))
-          ;; TODO: Add a template to capture a new note under the currently clocked template
-          )))
-
-(use-package org-pomodoro
-  :after (org-agenda)
-  :bind (nil
-         :map org-agenda-mode-map
-         ("P" . org-pomodoro)))
-
-;; (require 'jira)
-;; (use-package org-jira
-;;   :load-path "site-lisp/org-jira"
-;;   :config (setq jiralib-url "https://remotelock.atlassian.net/"
-;;                 org-jira-working-dir "~/org/jira/"
-;;                 org-jira-worklog-sync-p nil
-;;                 org-jira-default-jql "sprint in openSprints() and sprint not in futureSprints() and assignee = currentUser() and resolution = unresolved ORDER BY priority DESC, created SAC"))
-
-;; (use-package ox-jira
-;;   :load-path "site-lisp/ox-jira.el")
-
-;; (use-package jiralib2
-;;   :load-path "site-lisp/jiralib2")
-
-;; (use-package ejira
-;;   :load-path "site-lisp/ejira")
+(setq org-capture-templates
+      '(("t" "Task" entry (file+headline "~/org/all.org" "Miscellaneous Captures")
+         "* TODO %?\n %i\n %a")
+        ;; Deprecated date/weektree capture templates changed to ‘file+olp+datetree’.
+        ("j" "Journal" entry (file+datetree "~/org/journal.org") "* %?"  :empty-lines 1)
+        ("n" "Add Note to Current Task" plain (clock))
+        ;; TODO: Add a template to capture a new note under the currently clocked template
+        ))
 
 (require 'bug-reference)
 (when (string= "work" (daemonp))
   (setq bug-reference-bug-regexp "\\(GROW-\\([0-9]+\\)\\)"
         bug-reference-url-format "https://housecall.atlassian.net/browse/GROW-%s"))
-
-;; (use-package org-gcal
-;;   :load-path "site-lisp/org-gcal.el"
-;;   :config (setq org-gcal-client-id "1005544412528-m1u3gtf77an81a54mndal3j49eccq08e.apps.googleusercontent.com"
-;;                 org-gcal-client-secret "QieULkXk8DUCsMunLSJ_Tubful"
-;;                 ;; developers@remotelock.com id
-;;                 org-gcal-file-alist '(("pirata@gmail.com" . "~/org/calendars/personal.org")
-;;                                       ("javier.olaechea@remotelock.com" . "~/org/calendars/remotelock.org"))))
-
-;; org-gcal-autoarchive y notify-p
-
-;; (use-package annotate
-;;   :hook ((prog-mode . annotate-mode)))
-
-;; (use-package org-annotate
-;;   :load-path "site-lisp/org-annotate")
-
-;; (use-package hyperbole)
 
 
 ;;; Browser
@@ -1234,9 +1073,6 @@ SCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))
 (if (string= my/server-name "work")
     (setq user-mail-address "javier.olaechea@housecallpro.com")
   (setq user-mail-address "pirata@gmail.com"))
-
-(use-package notmuch
-  :load-path "/usr/local/share/emacs/site-lisp/")
 
 (when (string= my/server-name "work")
   ;; (use-package mu4e
