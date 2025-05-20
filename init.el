@@ -288,7 +288,6 @@ call KILL-REGION."
 (require 'embark-consult)
 (use-package embark-consult
   :after (embark consult)
-  :demand t
   :hook ((embark-collect-mode . consult-preview-at-point-mode)))
 
 (use-package marginalia
@@ -567,22 +566,6 @@ And update the branch as a suffix."
             (transient-append-suffix 'magit-worktree "c"
               '("%" "My Branch and worktree" my/magit-worktree-branch))))
 
-(use-package magit-todos
-  :custom
-  (magit-todos-exclude-globs '(".git/" "*.org")))
-
-(use-package yasnippet)
-
-(when (string= "work" (daemonp))
-  (setq magit-repository-directories
-        '(("/home/puercopop/hcp/" . 1))))
-
-(when (not (string= "work" (daemonp)))
-  (setq magit-repository-directories
-        '(("/home/puercopop/quicklisp/local-projects/cl-xcb/" . 0)
-          ("/home/puercopop/quicklisp/local-projects/tsuru/" . 0)
-          ("/home/puercopop/quicklisp/local-projects/tenahu/" . 0))))
-
 ;; TODO:
 ;; (transient-insert-suffix 'forge-dispatch "Remote"
 ;;   ;; Maybe branch
@@ -849,30 +832,30 @@ will be built under the headline at point."
     (setq-local org-datetree-base-level 1)
     (save-restriction
       (if (eq keep-restriction 'subtree-at-point)
-	  (progn
-	    (unless (org-at-heading-p) (error "Not at heading"))
-	    (widen)
-	    (org-narrow-to-subtree)
-	    (setq-local org-datetree-base-level
-		        (org-get-valid-level (org-current-level) 1)))
+          (progn
+            (unless (org-at-heading-p) (error "Not at heading"))
+            (widen)
+            (org-narrow-to-subtree)
+            (setq-local org-datetree-base-level
+                        (org-get-valid-level (org-current-level) 1)))
         (unless keep-restriction (widen))
         ;; Support the old way of tree placement, using a property
         (let ((prop (org-find-property "WEEK_TREE")))
-	  (when prop
-	    (goto-char prop)
-	    (setq-local org-datetree-base-level
-		        (org-get-valid-level (org-current-level) 1))
-	    (org-narrow-to-subtree))))
+          (when prop
+            (goto-char prop)
+            (setq-local org-datetree-base-level
+                        (org-get-valid-level (org-current-level) 1))
+            (org-narrow-to-subtree))))
       (goto-char (point-min))
       (require 'cal-iso)
       (let* ((year (calendar-extract-year d))
-	     (month (calendar-extract-month d))
-	     (day (calendar-extract-day d))
-	     (time (encode-time 0 0 0 day month year))
-	     (iso-date (calendar-iso-from-absolute
-		        (calendar-absolute-from-gregorian d)))
-	     (weekyear (nth 2 iso-date))
-	     (week (nth 0 iso-date)))
+             (month (calendar-extract-month d))
+             (day (calendar-extract-day d))
+             (time (encode-time 0 0 0 day month year))
+             (iso-date (calendar-iso-from-absolute
+                        (calendar-absolute-from-gregorian d)))
+             (weekyear (nth 2 iso-date))
+             (week (nth 0 iso-date)))
         ;; ISO 8601 week format is %G-W%V(-%u)
         (org-datetree--find-create
          "^\\*+[ \t]+\\([12][0-9]\\{3\\}\\)\\(\\s-*?\
@@ -950,16 +933,6 @@ in."
         (my/org-archive-subtree archive-buffer))))
   :config
   (advice-add 'org-archive-subtree :around #'my/org-archive-subtree-advice))
-
-(setq org-modules
-      ;; The default values
-      '(ol-doi ol-w3m ol-bbdb ol-bibtex ol-docview ol-gnus ol-info ol-irc ol-mhe ol-rmail ol-eww
-      ;; The ones I've added
-        ol-eshell ol-bookmark ol-git-link
-        org-habit org-mouse org-protocol org-annotate-file org-screenshot org-toc org-screen
-        ox-confluence))
-(with-eval-after-load 'org
-  (org-load-modules-maybe))
 
 (defun my/unschedule-waiting-entries (state-change)
   (let ((to-state (plist-get state-change :to))
@@ -1053,7 +1026,8 @@ in."
 
 ;; Warning (browse-url): Having ‘browse-url-browser-function’ set to an
 ;; alist is deprecated.  Use ‘browse-url-handlers’ instead. Disable showing Disable logging
-(when (string= my/server-name "personal")
+(when (or (string= my/server-name "personal")
+          (string= my/server-name "none"))
   (setq browse-url-default-handlers
         '(("\\`mailto:" . browse-url--mailto)
          ("\\`man:" . browse-url--man)
@@ -1074,49 +1048,13 @@ in."
     (setq user-mail-address "javier.olaechea@housecallpro.com")
   (setq user-mail-address "pirata@gmail.com"))
 
-(when (string= my/server-name "work")
-  ;; (use-package mu4e
-  ;;   :load-path "/usr/local/share/emacs/site-lisp/mu4e/"
-  ;;   :commands (mu4e)
-  ;;   :custom (mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
-  ;;   ;; (mu4e-split-view 'single-window)
-  ;;   (mu4e-index-lazy-check t)
-  ;;   :config (setq mu4e-sent-folder "/Sent Mail"
-  ;;                 mu4e-trash-folder "/Trash"
-  ;;                 ;; `(,(make-mu4e-bookmark
-  ;;                 ;;                    :name "Boring Lists"
-  ;;                 ;;                    :query
-  ;;                 ;;                    :key ?l))
-  ;;                 mu4e-bookmarks '(("flag:unread AND NOT flag:trashed" "Unread messages" 117)
-  ;;                                  ("date:today..now" "Today's messages" 116)
-  ;;                                  ("date:7d..now" "Last 7 days" 119)
-  ;;                                  ("flag:unread AND (from:sentry OR from:ayla)" "Boring lists" 108)
-  ;;                                  ("mime:image/*" "Messages with images" 112))
-  ;;                 mail-user-agent 'mu4e-user-agent
-  ;;                 ;; mu4e-get-mail-command "mbsync remotelock-all"
-  ;;                 mu4e-change-filenames-when-moving t
-  ;;                 ;; Increase read-process-output-max to make
-  ;;                 ;; communication faster.
-  ;;                 read-process-output-max (* 1024 1024)
-  ;;                 mu4e-headers-include-related nil
-  ;;                 mu4e-view-show-addresses t
-  ;;                 user-mail-address "javier.olaechea@remotelock.com"))
-
-  ;; (require 'mu4e-contrib)
-  ;; ;; TODO: Configure mu4e-alert
-  ;; (require 'mu4e-org)
-  ;; (use-package mu4e-alert
-  ;;   :after (mu4e))
-
-  ;; (require 'mu4e-icalendar)
-  ;; (mu4e-icalendar-setup)
-  (require 'gnus-icalendar)
-  (use-package gnus-icalendar
-    :after (org-agenda)
-    :config
-    (setq gnus-icalendar-org-capture-file "~/org/remotelock.org"
-          gnus-icalendar-org-capture-headline '("Meetings"))
-    (gnus-icalendar-org-setup)))
+(require 'gnus-icalendar)
+(use-package gnus-icalendar
+  :after (org-agenda)
+  :config
+  (setq gnus-icalendar-org-capture-file "~/org/remotelock.org"
+        gnus-icalendar-org-capture-headline '("Meetings"))
+  (gnus-icalendar-org-setup))
 
 
 ;; TODO: add mu4e-action to process an ical invitation and capture it in an org-file
@@ -1134,16 +1072,16 @@ in."
   (isearch-allow-scroll 'unlimited)
   (isearch-repeat-on-direction-change t)
   (isearch-wrap-pause 'no)
-  :bind (("M-*" . isearch-forward-symbol-at-point)
-         (:map isearch-mode-map
-               ("C-j " . isearch-exit))))
-
-(advice-add 'isearch-exit :after
+  :config
+  (advice-add 'isearch-exit :after
             (lambda (&rest _ignore)
               (when (and isearch-forward
                          isearch-success
                          isearch-other-end)
                (goto-char isearch-other-end))))
+  :bind (("M-*" . isearch-forward-symbol-at-point)
+         (:map isearch-mode-map
+               ("C-j " . isearch-exit))))
 
 (use-package isearch-dabbrev
   :bind (:map isearch-mode-map
@@ -1215,13 +1153,6 @@ in."
          (eval-expression-minibuffer-setup . enable-paredit-mode)
          (lisp-mode . enable-paredit-mode)
          (sly-mrepl-mode . enable-paredit-mode)))
-
-
-;; (use-package smartparens
-;;   :init (require 'smartparens-ruby)
-;;   :hook ((ruby-mode . smartparens-mode)
-;;          (js-mode . smartparens-mode)
-;;          (typescript-mode . smartparens-mode)))
 
 ;; (use-package smartparens
 ;;   :config
@@ -1458,6 +1389,8 @@ in."
                ("M-p" . 'flymake-goto-prev-error))))
 
 (use-package eslint-flymake
+  :vc (:url "https://github.com/emacs-pe/eslint-flymake.git"
+       :branch "default")
   :config (setq eslint-flymake-command '("npx" "eslint" "--no-color" "--stdin"))
   :hook ((typescript-mode . eslint-flymake-setup-backend)))
 
@@ -1495,6 +1428,11 @@ in."
 (use-package eglot-x
   :after (eglot)
   :config (eglot-x-setup))
+
+(use-package gdb-mi
+  :init
+  (setq gdb-many-windows t
+        gdb-show-main t))
 
 ;; TODO: Submit dape to guix
 ;; (use-package dape)
@@ -1552,7 +1490,7 @@ in."
 (defun my/call-in-rspec-mode (fn)
   (lambda (orig-fn &rest args)
     (if (eq major-mode 'rspec-compilation-mode)
-      	(apply fn orig-fn args)
+        (apply fn orig-fn args)
       (apply orig-fn args))))
 
 (defun my/maybe-inject-proccess-environment (orig-fun &rest args)
@@ -1701,6 +1639,11 @@ in."
 
 ;;; Other languages
 
+(use-package treesit
+  :config
+  (setq treesit-language-source-alist
+        '((rust "https://github.com/tree-sitter/tree-sitter-rust.git"))))
+
 (use-package rust-ts-mode
   :mode ("\\.rs\\'" . rust-ts-mode)
   :custom
@@ -1709,16 +1652,14 @@ in."
          (rust-ts-mode . subword-mode)))
 
 (use-package cargo
+  :vc (:url "https://git.sr.ht/~puercopop/rust-x.el"
+            :branch "default"
+            :rev "v0.0.2"
+            :main-file "cargo.el")
   :bind ((:map rust-ts-mode-map
           ("C-c C-c" . cargo-dispatch))))
 
 (use-package rmsbolt)
-
-;; TODO(javier): Pull from gnu elpa
-;; (use-package prolog-mode
-;;   :config (setq prolog-system 'swi
-;;                 prolog-electric-if-then-else-flag t)
-;;   :mode "\\.pl$")
 
 (use-package ediprolog)
 
@@ -1761,39 +1702,15 @@ in."
   :after (macrostep))
 
 (use-package docker
-  )
-(setq docker-container-columns
+  :config
+  (setq docker-container-columns
       '((:name "Id" :width 16 :template "{{ json .ID }}" :sort nil :format nil)
         (:name "Names" :width 23 :template "{{ json .Names }}" :sort nil :format nil)
         (:name "Image" :width 15 :template "{{ json .Image }}" :sort nil :format nil)
         (:name "Command" :width 30 :template "{{ json .Command }}" :sort nil :format nil)
         (:name "Created" :width 19 :template "{{ json .CreatedAt }}" :sort nil :format (lambda (x) (format-time-string "%F %T" (date-to-time x))))
         (:name "Status" :width 20 :template "{{ json .Status }}" :sort nil :format nil)
-        (:name "Ports" :width 10 :template "{{ json .Ports }}" :sort nil :format nil)))
-
-;; (use-package honcho
-;;   :load-path "site-lisp/honcho.el"
-;;   :config
-;;   (setq honcho-procfile-env-suffix-p nil))
-
-;; (honcho-define-service connect-backend
-;;   :cwd "/home/puercopop/rlock/connect-backend/master/"
-;;   :command ("foreman" "start"))
-
-;; (honcho-define-service connect-web
-;;   :cwd "/home/puercopop/rlock/connect-web/"
-;;   :command ("yarn" "start"))
-
-;; '(nnimap "gmail-rlock"
-;;          (nnimap-address "imap.gmail.com")
-;;          (nnimap-server-port 993)
-;;          (nnimap-stream ssl)
-;;          (nnir-search-engine imap)
-;;          ;; @see http://www.gnu.org/software/emacs/manual/html_node/gnus/Expiring-Mail.html
-;;          ;; press 'E' to expire email
-;;          ;; (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")
-;;          ;; (nnmail-expiry-wait 90)
-;;          )
+        (:name "Ports" :width 10 :template "{{ json .Ports }}" :sort nil :format nil))))
 
 (use-package gnus
   :config
@@ -1819,61 +1736,23 @@ in."
         gnus-save-score t
         gnus-adaptive-word-no-group-words t))
 
-;; (use-package nntwitter
-;;   :after (gnus)
-;;   :config (add-to-list 'gnus-secondary-select-methods '(nntwitter "")))
-
-;; This are the rules I want to apply
-;; (setq nnmail-split-methods
-;;       '(("[Gmail]/All Mail" "^Subject: Ayla")
-;;         ("[Gmail]/All Mail" "^Subject: Sentry")))
-
-;; (use-package nnreddit
-;;   :custom (nnreddit-python-command "python3")
-;;   :config (add-to-list 'gnus-secondary-select-methods '(nnreddit "")))
-;;  "python"
-
 
-;; # Channels
-;; ## libera.chat
-;; - ##rust
-;; - #commonlisp
-;; - #emacs
-;; - #guile-emacs
-;; - #jujutsu
-;; - #libera-dev
-;; - #lispgames
-;; - #sr.ht
-;; - #whereiseveryone
-(use-package rcirc
-  :commands (irc)
-  :custom
-  (rcirc-default-full-name "PuercoPop")
-  (rcirc-default-nick "PuercoPop")
-  (rcirc-track-minor-mode t)
-  (rcirc-omit-responses ("JOIN" "PART" "QUIT" "NICK" "AWAY" "MODE"))
-  (rcirc-server-alist (("chat.sr.ht" :nick "puercopop" :port 6697 :encryption tls)))
-  (rcirc-authinfo (("chat.sr.ht" sasl "puercopop")))
-  :hook ((rcirc-mode . flyspell-mode)
-         (rcirc-mode . rcirc-omit-mode)))
-
 ;;; Chat et other recreational activities
-(when (string= "social" my/server-name)
-  (use-package elpher)
+(use-package elpher)
 
-  (use-package mastodon)
+(use-package mastodon)
 
-  (use-package elfeed
-    :config
-    (setq elfeed-feeds
-          '("https://tychoish.com/post/index.xml"
-            "http://langnostic.inaimathi.ca/feed"
-            "https://lobste.rs/t/email.rss"
-            "https://hiperderecho.org/feed/"
-            "https://conexiones.hiperderecho.org/feed/podcast"
-            "https://librelounge.org/rss-feed.rss"
-            "https://scattered-thoughts.net/atom.xml"
-            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCHP9CdeguNUI-_nBv_UXBhw" chess youtube)))))
+(use-package elfeed
+  :config
+  (setq elfeed-feeds
+        '("https://tychoish.com/post/index.xml"
+          "http://langnostic.inaimathi.ca/feed"
+          "https://lobste.rs/t/email.rss"
+          "https://hiperderecho.org/feed/"
+          "https://conexiones.hiperderecho.org/feed/podcast"
+          "https://librelounge.org/rss-feed.rss"
+          "https://scattered-thoughts.net/atom.xml"
+          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCHP9CdeguNUI-_nBv_UXBhw" chess youtube))))
 
 
 (use-package alert)
@@ -1903,17 +1782,6 @@ in."
 ;; Package hasn't been released yet
 ;; (use-package systemd
 ;;   :pin gnu)
-
-(defun my/nix-format-setup ()
-  (add-hook 'before-save-hook 'nix-format-before-save nil 'local))
-
-(use-package nix
-  :hook ((nix-mode . my/nix-format-setup))
-  :custom (nix-nixfmt-bin "nixfmt"))
-
-(use-package envrc
-  :hook ((after-init . envrc-global-mode))
-  :bind (("C-c e" . envrc-command-map)))
 
 (require 'time)
 ;; TODO: Add Leon and fix the other two
