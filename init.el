@@ -351,12 +351,11 @@ call KILL-REGION."
 (use-package auth-source
   :custom
   (auth-sources '("~/.authinfo.gpg" "secrets:kdewallet" "secrets:Login")))
+
 (use-package pinentry)
 
 (use-package epa-file
-  :config (setq epg-pinentry-mode 'loopback)
-  ;; (load-library "~/.emacs.d/passwords.el.gpg")
-  )
+  :config (setq epg-pinentry-mode 'loopback))
 
 ;; (use-package password-vault+
 ;;   :load-path "site-lisp/password-vault+"
