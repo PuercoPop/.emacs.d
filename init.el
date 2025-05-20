@@ -6,16 +6,18 @@
 (load custom-file 'noerror)
 (put 'upcase-region 'disabled nil)
 
-(setq ;; use-package-always-defer t
-      use-package-enable-imenu-support t)
+
+(require 'package)
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ("melpa" . "https://melpa.org/packages/")))
+(package-initialize)
+
+(setq use-package-enable-imenu-support t)
 (require 'use-package)
 
 (require 'cl-lib)
-
-
-;; (require 'auto-compile)
-;; (auto-compile-on-load-mode)
-;; (auto-compile-on-save-mode)
 
 
 ;;; Daemon
