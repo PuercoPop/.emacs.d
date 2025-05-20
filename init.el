@@ -153,7 +153,7 @@ call KILL-REGION."
   :custom (vertico-cycle t)
   :bind (nil
          :map vertico-map
-	 ("C-c C-c" . embark-act)
+         ("C-c C-c" . embark-act)
          ("C-c C-o" . embark-collect)
          ("C-." . embark-act)
          ("C-;" . embark-dwim)
@@ -1737,7 +1737,6 @@ in."
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
-
 (use-package macrostep
   :bind ((:map emacs-lisp-mode-map
                ("C-c M-e" . macrostep-expand))
@@ -1751,7 +1750,7 @@ in."
                 sly-default-lisp 'sbcl
                 sly-lisp-implementations '((sbcl ("sbcl"))
                                            (ccl ("/home/puercopop/src/ccl/lx86cl64"))
-					   (ecl ("ecl"))
+                                           (ecl ("ecl"))
                                            (clasp ("clasp"))))
   :bind ((:map sly-mode-map
                ("C-c C-r" . nil))
