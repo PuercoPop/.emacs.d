@@ -159,44 +159,6 @@ call KILL-REGION."
          ("C-;" . embark-dwim)
          ("C-'" . vertico-quick-jump)))
 
-(use-package helm
-  :disabled t
-  :custom
-  (helm-echo-input-in-header-line t)
-
-  ;; (helm-source-names-using-follow '("RG" "Grep"))
-  ;; (helm-follow-mode-persistent t)
-  (helm-split-window-default-side 'below)
-  (helm-split-window-in-side-p t)
-  (helm-full-frame nil)
-  (helm-ff-skip-boring-files nil)
-  (helm-etags-fuzzy-match t)
-  (helm-locate-fuzzy-match t)
-  (helm-move-to-line-cycle-in-source t)
-  ;; (helm-completion-style 'helm-fuzzy) ; emacs
-  (helm-completion-style 'emacs)
-  ;; TODO: Enable helm ADAPTIVE scoring
-  :config (helm-mode 1)
-  :bind (("C-x r l" . helm-filtered-bookmarks)
-         ("C-c C-r" . helm-resume)
-         ("C-x C-r" . helm-recentf)
-         ("C-h a" . helm-apropos)
-         ("C-x r b" . helm-bookmarks)
-         ("C-x 8 RET" . helm-ucs)
-         ;; ("C-h b" . helm-descbinds)
-         ;; ("C-h w" . helm-where-is)
-         ("M-x" . helm-M-x)
-         ("<insert>" . execute-extended-command) ;; FN-x
-         ("C-x b" . helm-mini)
-
-         ([remap switch-to-buffer] . helm-buffers-list)
-         ("C-*" . helm-occur)
-         ("C-x C-f" . helm-find-files)
-         ("M-y" . helm-show-kill-ring)
-         ;; ("C-x C-x" . helm-all-mark-rings)
-         (:map helm-map
-               (("C-w" . backward-kill-word)))))
-
 (setq bookmark-default-file
       (concat user-emacs-directory (system-name) "-" my/server-name "-bookmarks"))
 
