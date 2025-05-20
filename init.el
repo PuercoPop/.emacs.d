@@ -617,24 +617,20 @@ And update the branch as a suffix."
 ;; plan9-theme
 (use-package doom-themes)
 
+(load-theme 'ef-day t)
 ;; (load-theme 'doom-opera t)
-(load-theme 'modus-operandi t)
+;; (load-theme 'modus-operandi t)
 (defun my/set-theme (frame)
   ;; (load-theme 'parchment t)
-  (when (string= "personal" (daemonp))
-    (if (display-graphic-p frame)
-        ;; (load-theme 'exotica t)
-        ;; (load-theme 'doom-opera t)
-        (load-theme 'modus-operandi t)
-        ;; (load-theme 'ef-day t)
-        ;; (disable-theme 'exotica)
-        ;; (load-theme 'parchment t)
-      ))
-  (when (string= "work" (daemonp))
+  (when (display-graphic-p frame)
+    ;; (load-theme 'exotica t)
+    ;; (load-theme 'doom-opera t)
+    ;; (load-theme 'modus-operandi t)
+    (load-theme 'ef-day t)
     ;; (load-theme 'doom-xcode t)
-    (load-theme 'ef-spring t))
-  (when (string= "social" (daemonp))
-    (load-theme 'doom-1337 t))
+    ;; (load-theme 'ef-spring t)
+    ;; (load-theme 'doom-1337 t)
+    )
   ;; (set-face-attribute 'default nil :family "Go Mono" :height 170)
   ;; (set-frame-font "DejaVu Sans Mono-18")
   ;; (set-frame-font "IBM Plex Mono-18")
@@ -721,14 +717,6 @@ And update the branch as a suffix."
 
 ;;; Org-mode
 ;; TODO: Add https://github.com/alphapapa/org-ql
-
-;; TODO: Add ekg to gnu guix
-;; (use-package ekg
-;;   :ensure t
-;;   :init
-;;   (when (string= "personal" (daemonp))
-;;     (setq ekg-db-file "/home/puercopop/.emacs.d/personal.db"))
-;;   :bind (("C-c C-n" . ekg-capture)))
 
 (use-package sisyphus
   :config
@@ -1653,9 +1641,9 @@ in."
 
 (use-package cargo
   :vc (:url "https://git.sr.ht/~puercopop/rust-x.el"
-            :branch "default"
-            :rev "v0.0.2"
-            :main-file "cargo.el")
+       :branch "default"
+       :rev "v0.0.2"
+       :main-file "cargo.el")
   :bind ((:map rust-ts-mode-map
           ("C-c C-c" . cargo-dispatch))))
 
