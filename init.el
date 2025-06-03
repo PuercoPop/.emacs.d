@@ -127,6 +127,13 @@ call KILL-REGION."
         (locate-user-emacs-file (concat (system-name) "-" my/server-name "-recentf")))
   (recentf-mode t))
 
+(use-package autoinsert
+  :custom
+  (auto-insert-directory (locate-user-emacs-file "templates"))
+  (auto-insert-query nil "Don't ask before auto-inserting.")
+  :config
+  (auto-insert-mode t))
+
 (use-package minibuffer
   :custom
   (completion-styles '(basic substring partial-completion flex))
