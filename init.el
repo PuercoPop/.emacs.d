@@ -1315,6 +1315,8 @@ in."
   :mode ("\\.tsx\\'" "\\.ts\\'"))
 
 (use-package prettier-js
+  :vc (:url "https://github.com/emacs-pe/prettier-emacs.git"
+       :branch "default")
   :config ;; (setq prettier-js-command "npx"
           ;;       prettier-js-args '("prettier"))
   :hook ((js-mode . prettier-js-mode)
