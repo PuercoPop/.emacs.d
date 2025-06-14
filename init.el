@@ -602,8 +602,9 @@ And update the branch as a suffix."
     )
   ;; (set-face-attribute 'default nil :family "Go Mono" :height 170)
   ;; (set-frame-font "DejaVu Sans Mono-18")
-  ;; (set-frame-font "IBM Plex Mono-18")
-  (set-frame-font "Jetbrains Mono-18"))
+  (set-frame-font "IBM Plex Mono-17")
+  ;; (set-frame-font "Jetbrains Mono-18")
+  )
 ;;(set-frame-font "IBM Plex Mono-22")
 ;;(set-frame-font "Go Mono-18")
 ;; (set-frame-font "IBM Plex Mono-18" nil t)
@@ -611,7 +612,7 @@ And update the branch as a suffix."
 ;; (add-to-list 'default-frame-alist
 ;;              (cons 'font "IBM Plex Mono-18"))
 (add-to-list 'default-frame-alist
-             (cons 'font "Jetbrains Mono-18"))
+             (cons 'font "IBM Plex Mono-17"))
 ;; (set-frame-font "IBM Plex Mono-18" nil t)
 ;; (add-hook 'after-init-hook 'my/set-theme)
 (add-hook 'after-make-frame-functions 'my/set-theme)
