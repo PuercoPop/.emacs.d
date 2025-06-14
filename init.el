@@ -1624,8 +1624,7 @@ in."
   :mode ("\\.rs\\'" . rust-ts-mode)
   :custom
   (rust-ts-flymake-command '("cargo" "clippy"))
-  :hook ((rust-ts-mode . flymake-mode)
-         (rust-ts-mode . subword-mode)))
+  :hook ((rust-ts-mode . subword-mode)))
 
 (use-package cargo
   :vc (:url "https://git.sr.ht/~puercopop/rust-x.el"
