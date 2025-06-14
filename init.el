@@ -1561,6 +1561,7 @@ in."
 (use-package sql
   ;; :bind (("C-c a s" . sql-connect))
   :config
+  (setq sql-sqlite-program "sqlite3")
   ;; TODO: Use sql-product to use a different history for postgres and mysql.
   (setq sql-input-ring-file-name (substitute-in-file-name "$HOME/.sqli_history"))
   (plist-put (cdr (assq 'postgres sql-product-alist)) :prompt-regexp "^[[:alnum:]_-]*=[#>] ")
