@@ -1386,6 +1386,10 @@ in."
 
 (use-package eglot-x
   :after (eglot)
+  :vc (:url "git@github.com:nemethf/eglot-x.git"
+       :branch "master"
+       :rev "ca565df30d8e207c00471a3723d7bd5803497a95"
+       :main-file "eglot-x.el")
   :config (eglot-x-setup))
 
 (use-package gdb-mi
