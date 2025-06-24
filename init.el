@@ -333,7 +333,10 @@ call KILL-REGION."
   :custom
   (enable-remote-dir-locals t)
   :config
-  (setq tramp-default-method "ssh")
+  (setq tramp-default-method "ssh"
+        remote-file-name-inhibit-locks t
+        remote-file-name-inhibit-auto-save-visited t
+        tramp-use-scp-direct-remote-copying t)
   (tramp-set-completion-function "ssh" '((tramp-parse-sconfig "~/.ssh/config"))))
 
 (defun sudo ()
