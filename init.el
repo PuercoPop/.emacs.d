@@ -22,8 +22,9 @@
 
 ;;; Daemon
 
-;; (or (server-running-p)
-;;     (server-start))
+(require 'server)
+(or (server-running-p)
+    (server-start))
 (setq my/server-name (or (daemonp) "none"))
 
 (setq session-save-file (concat user-emacs-directory (system-name) "-" my/server-name "-session"))
