@@ -1802,7 +1802,8 @@ in."
 
 (use-package axe)
 
-(use-package slint)
+(use-package slint
+  :disabled t)
 
 ;; (use-package kubel)
 ;; (kubel-vterm-setup)
