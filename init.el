@@ -719,7 +719,7 @@ And update the branch as a suffix."
           ;; (org-agenda-list)
           (org-agenda arg "w")))))
   :bind (("C-c a" . org-agenda)
-         ;; ("C-c c" . org-capture)
+         ("C-c c" . org-capture)
          ("C-c C-x C-x" . org-clock-in-last)
          ("C-c C-x C-o" . org-clock-out)
          ("C-c C-x C-j" . org-clock-goto)
