@@ -1417,6 +1417,11 @@ in."
   (setq-local imenu-create-index-function #'ruby-imenu-create-index)
   (setq-local dash-docs-docsets '("Ruby on Rails" "Ruby")))
 
+(require 'eglot)
+(defun my/eglot-format-buffer ()
+  (when (eglot-managed-p)
+    (add-hook 'before-save-hook 'eglot-format-buffer nil 'local)))
+
 (use-package ruby-mode
   :custom
   (ruby-deep-arglist nil)
@@ -1424,7 +1429,7 @@ in."
   :hook ((ruby-mode . my/set-ruby-docsets)
          ;; (ruby-mode . my/ruby-imenu-setup)
          ;; (ruby-mode . my/enable-ruby-flymake)
-         ))
+         (ruby-mode . my/eglot-format-buffer)))
 
 ;; (use-package enh-ruby-mode
 ;;   :mode "\\.rb$"
