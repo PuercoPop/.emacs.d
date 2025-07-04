@@ -1468,7 +1468,7 @@ in."
       (apply orig-fn args))))
 
 (defun my/maybe-inject-proccess-environment (orig-fun &rest args)
-  (chruby-use-corresponding)
+  ;; (chruby-use-corresponding)
   (when-let (;; (default-directory (locate-dominating-file default-directory ".git"))
              (default-directory (locate-dominating-file default-directory #'inf-ruby-console-match))
              (process-environment (append (my/read-env-file ".env") process-environment)))
