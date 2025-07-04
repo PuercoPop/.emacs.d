@@ -1461,12 +1461,6 @@ in."
                              (match-string-no-properties 1 line)
                              (match-string-no-properties 2 line)))))
 
-(defun my/call-in-rspec-mode (fn)
-  (lambda (orig-fn &rest args)
-    (if (eq major-mode 'rspec-compilation-mode)
-        (apply fn orig-fn args)
-      (apply orig-fn args))))
-
 (defun my/maybe-inject-proccess-environment (orig-fun &rest args)
   ;; (chruby-use-corresponding)
   (when-let (;; (default-directory (locate-dominating-file default-directory ".git"))
@@ -1479,59 +1473,67 @@ in."
   :hook ((ruby-mode . robe-mode))
   :init (advice-add 'inf-ruby-console-auto :around #'my/maybe-inject-proccess-environment))
 
-;; TODO: Hook/advice into rspec-spec-file-for to add mappings for connect backend
-;; We want to redirect controllers to spec/api/v1/
-;; and tenant -> tenant_api/
-;; Think using a alist to make it extensible for the user.
+;; (defun my/call-in-rspec-mode (fn)
+;;   (lambda (orig-fn &rest args)
+;;     (if (eq major-mode 'rspec-compilation-mode)
+;;         (apply fn orig-fn args)
+;;       (apply orig-fn args))))
 
-;; TODO: We need to define match for the reverse case. my/rspec-target-file-for
-(defun my/override-rspec-spec-file-for (file-name)
-  (let ((mappings
-         '(("rlock/connect-backend/.*?/app/controllers/api/v1/"
-            "app/controllers/api/v1/\\(.*\\)_controller.rb"
-            "spec/api/v1/\\1_spec.rb")
-           ("rlock/connect-backend/.*?/app/controllers/tenant_api/"
-            "app/controllers/tenant_api/\\(.*\\).rb"
-            "spec/tenant_api/\\1_spec.rb"))))
-    (assoc file-name mappings
-           (lambda (pat file-name)
-             (string-match pat file-name)))))
+;; ;; TODO: Hook/advice into rspec-spec-file-for to add mappings for connect backend
+;; ;; We want to redirect controllers to spec/api/v1/
+;; ;; and tenant -> tenant_api/
+;; ;; Think using a alist to make it extensible for the user.
 
-(defun my/advice-rspec-spec-file-for (orig-fn a-file-name)
-  (if-let ((rule (my/override-rspec-spec-file-for a-file-name)))
-      (replace-regexp-in-string (cl-second rule)
-                                (cl-third rule)
-                                a-file-name)
-    (funcall orig-fn a-file-name)))
+;; ;; TODO: We need to define match for the reverse case. my/rspec-target-file-for
+;; (defun my/override-rspec-spec-file-for (file-name)
+;;   (let ((mappings
+;;          '(("rlock/connect-backend/.*?/app/controllers/api/v1/"
+;;             "app/controllers/api/v1/\\(.*\\)_controller.rb"
+;;             "spec/api/v1/\\1_spec.rb")
+;;            ("rlock/connect-backend/.*?/app/controllers/tenant_api/"
+;;             "app/controllers/tenant_api/\\(.*\\).rb"
+;;             "spec/tenant_api/\\1_spec.rb"))))
+;;     (assoc file-name mappings
+;;            (lambda (pat file-name)
+;;              (string-match pat file-name)))))
 
-(defun my/override-rspec-target-file-for (file-name)
-  (let ((mappings
-         '(("rlock/connect-backend/.*?/spec/api/v1/"
-            "spec/api/v1/\\(.*\\)_spec.rb"
-            "app/controllers/api/v1/\\1_controller.rb")
-           ("rlock/connect-backend/.*?/spec/tenant_api/"
-            "spec/tenant_api/\\(.*\\)_spec.rb"
-            "app/controllers/tenant/\\1.rb"))))
-    (assoc file-name mappings
-           (lambda (pat file-name)
-             (string-match pat file-name)))))
+;; (defun my/advice-rspec-spec-file-for (orig-fn a-file-name)
+;;   (if-let ((rule (my/override-rspec-spec-file-for a-file-name)))
+;;       (replace-regexp-in-string (cl-second rule)
+;;                                 (cl-third rule)
+;;                                 a-file-name)
+;;     (funcall orig-fn a-file-name)))
 
-(defun my/advice-rspec-target-file-for (orig-fn a-file-name)
-  (if-let ((rule (my/override-rspec-target-file-for a-file-name)))
-      (replace-regexp-in-string (cl-second rule)
-                                (cl-third rule)
-                                a-file-name)
-    (funcall orig-fn a-file-name)))
+;; (defun my/override-rspec-target-file-for (file-name)
+;;   (let ((mappings
+;;          '(("rlock/connect-backend/.*?/spec/api/v1/"
+;;             "spec/api/v1/\\(.*\\)_spec.rb"
+;;             "app/controllers/api/v1/\\1_controller.rb")
+;;            ("rlock/connect-backend/.*?/spec/tenant_api/"
+;;             "spec/tenant_api/\\(.*\\)_spec.rb"
+;;             "app/controllers/tenant/\\1.rb"))))
+;;     (assoc file-name mappings
+;;            (lambda (pat file-name)
+;;              (string-match pat file-name)))))
 
-(use-package rspec-mode
-  :hook ((dired-mode . rspec-dired-mode))
-  :custom (rspec-use-spring-when-possible nil)
-  :init (progn
-          ;; (advice-add 'rspec-compile :around #'my/maybe-inject-proccess-environment)
-          ;; (advice-add 'recompile :around (my/call-in-rspec-mode  #'my/maybe-inject-proccess-environment))
-          (advice-add 'rspec-spec-file-for :around #'my/advice-rspec-spec-file-for)
-          (advice-add 'rspec-target-file-for :around #'my/advice-rspec-target-file-for)
-          (add-hook 'after-init-hook 'inf-ruby-switch-setup)))
+;; (defun my/advice-rspec-target-file-for (orig-fn a-file-name)
+;;   (if-let ((rule (my/override-rspec-target-file-for a-file-name)))
+;;       (replace-regexp-in-string (cl-second rule)
+;;                                 (cl-third rule)
+;;                                 a-file-name)
+;;     (funcall orig-fn a-file-name)))
+
+;; (use-package rspec-mode
+;;   :hook ((dired-mode . rspec-dired-mode))
+;;   :custom (rspec-use-spring-when-possible nil)
+;;   :init (progn
+;;           ;; (advice-add 'rspec-compile :around #'my/maybe-inject-proccess-environment)
+;;           ;; (advice-add 'recompile :around (my/call-in-rspec-mode  #'my/maybe-inject-proccess-environment))
+;;           (advice-add 'rspec-spec-file-for :around #'my/advice-rspec-spec-file-for)
+;;           (advice-add 'rspec-target-file-for :around #'my/advice-rspec-target-file-for)
+;;           (add-hook 'after-init-hook 'inf-ruby-switch-setup)))
+
+(use-package minitest)
 
 (fset 'my/rails-open-backtrace
       (kmacro [?o ?p ?e ?n ?\( ?\' ?s ?c ?r ?a ?t ?c ?h ?. ?h ?t ?m ?l ?\' ?, ?  ?\' ?w ?\' ?\) ?  ?\{ ?  ?| ?f ?| ?  ?f ?. ?w ?r ?i ?t ?e ?\( ?r ?e ?s ?p ?o ?n ?s ?e ?_ ?b ?o ?d ?y ?\) ?  ?\} ?\C-m ?\M-: ?\( ?f ?i ?n ?d ?- ?f ?i ?l ?e ?  ?\" ?s ?c ?r ?a ?t ?c ?h ?. ?h ?t ?m ?l ?\" ?\) ?\C-m ?\M-x ?s ?h ?r ?- ?r ?e ?n ?d ?e ?r ?- ?b ?u ?f ?f ?e ?r ?\C-m] 0 "%d"))
