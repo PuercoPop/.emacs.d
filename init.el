@@ -692,11 +692,11 @@ And update the branch as a suffix."
 ;;; Org-mode
 ;; TODO: Add https://github.com/alphapapa/org-ql
 
-(use-package sisyphus
-  :config
-  (add-to-list 'embark-keymap-alist '(jira-issue . sisyphus-jira-issue-action-map))
-  :bind (("C-c c" . sisyphus-dispatch)
-         ("<f1>" . sisyphus-dispatch)))
+;; (use-package sisyphus
+;;   :config
+;;   (add-to-list 'embark-keymap-alist '(jira-issue . sisyphus-jira-issue-action-map))
+;;   :bind (("C-c c" . sisyphus-dispatch)
+;;          ("<f1>" . sisyphus-dispatch))))
 
 (use-package org
   :preface
