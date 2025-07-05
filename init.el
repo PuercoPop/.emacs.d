@@ -14,7 +14,8 @@
         ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
-(setq use-package-enable-imenu-support t)
+(setq use-package-enable-imenu-support t
+      use-package-compute-statistics t)
 (require 'use-package)
 
 (require 'cl-lib)
