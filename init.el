@@ -1447,7 +1447,8 @@ in."
                (("C-c C-x" . nil)
                 ("C-c C-r" . nil))))
   :hook ((inf-ruby-mode . my/load-irb-history)
-         (after-init . inf-ruby-switch-setup)))
+         (after-init . inf-ruby-switch-setup)
+         (compilation-filter . inf-ruby-auto-enter-and-focus)))
 
 ;; TODO: Submit chruby to guix
 ;; (use-package chruby
