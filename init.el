@@ -1610,6 +1610,16 @@ in."
         ;; '("puercopop" "" "connect_development" "localhost")
         ))
 
+(use-package pg
+  :vc (:url "https://github.com/emarsden/pg-el"
+       :branch "main"
+       :rev :newest))
+
+(use-package pgmacs
+  :vc (:url "https://github.com/emarsden/pgmacs"
+       :branch "main"
+       :rev :newest))
+
 ;; TODO(javier): Remove
 ;; (defun my/setup-sqlformat ()
 ;;   ;; the sql-product is set too late
