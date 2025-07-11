@@ -1,0 +1,12 @@
+[Unit]
+Description=Emacs: the extensible, self-documenting text editor.
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/emacs --daemon=%i --chdir %h
+ExecStop=/usr/bin/emacsclient --server-file=%i --eval "(progn (setq kill-emacs-hook 'nil) (kill-emacs))"
+Restart=always
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

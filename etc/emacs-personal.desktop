@@ -1,0 +1,22 @@
+[Desktop Entry]
+Name=personal@emacs
+GenericName=Text Editor
+Comment=Edit text
+Icon=emacs
+Type=Application
+Terminal=false
+Categories=Development;TextEditor;
+StartupNotify=true
+StartupWMClass=Emacs
+Keywords=emacsclient;
+Actions=new-window;new-instance;
+MimeType=text/x-tcl;
+Exec=/usr/bin/emacsclient --server-file=personal --create-frame %F
+
+[Desktop Action new-window]
+Name=New Window
+Exec=/usr/bin/emacsclient --server-file=personal --alternate-editor="" --create-frame %F
+
+[Desktop Action new-instance]
+Name=New Instance
+Exec=/usr/bin/emacsclient --server-file=work --create-frame %F
