@@ -24,6 +24,7 @@
 ;;; Daemon
 
 (require 'server)
+(setq server-use-tcp t)
 (or (server-running-p)
     (server-start))
 (setq my/server-name (or (daemonp) "none"))
